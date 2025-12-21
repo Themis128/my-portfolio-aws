@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { ContactForm } from "@/components/contact-form";
-import { ContactPageShell } from "@/components/layout/contact-page-shell";
-import { usePersonalData } from "@/lib/personal-data-client";
-import { useMounted } from "@/hooks/use-mounted";
-import { Button, Card, Flex, Heading, Text, View } from "@aws-amplify/ui-react";
-import Link from "next/link";
-import { useState } from "react";
+import { ContactForm } from '@/components/contact-form';
+import { ContactPageShell } from '@/components/layout/contact-page-shell';
+import { useMounted } from '@/hooks/use-mounted';
+import { usePersonalData } from '@/lib/personal-data-client';
+import { Button, Card, Flex, Heading, Text, View } from '@aws-amplify/ui-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 export default function ContactPage() {
   const { data: personalData, loading } = usePersonalData();
@@ -14,12 +14,18 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const mounted = useMounted();
 
-  if (loading || !personalData || !mounted) {
+  if (loading || !personalData) {
     return (
-      <ContactPageShell
-        title="Get In Touch"
-        description="Loading contact information..."
-      >
+      <ContactPageShell title="Get In Touch" description="Loading contact information...">
+        <Text>Loading contact information...</Text>
+      </ContactPageShell>
+    );
+  }
+
+  // Only render content after hydration to prevent mismatches
+  if (!mounted) {
+    return (
+      <ContactPageShell title="Get In Touch" description="Loading contact information...">
         <Text>Loading contact information...</Text>
       </ContactPageShell>
     );
@@ -38,13 +44,13 @@ export default function ContactPage() {
               <Flex direction="column" alignItems="center" gap="medium">
                 <div
                   style={{
-                    width: "64px",
-                    height: "64px",
-                    backgroundColor: "var(--amplify-colors-background-success)",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    width: '64px',
+                    height: '64px',
+                    backgroundColor: 'var(--amplify-colors-background-success)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   <svg
@@ -53,7 +59,7 @@ export default function ContactPage() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    style={{ color: "var(--amplify-colors-font-success)" }}
+                    style={{ color: 'var(--amplify-colors-font-success)' }}
                     aria-hidden="true"
                   >
                     <title>Success</title>
@@ -80,7 +86,7 @@ export default function ContactPage() {
             <ContactForm
               title="Send a Message"
               description="Ready to start your next project? I'd love to hear from you. Send me a message and let's discuss how we can work together."
-              submitButtonText={isSubmitting ? "Sending..." : "Send Message"}
+              submitButtonText={isSubmitting ? 'Sending...' : 'Send Message'}
               onSubmit={(_data) => {
                 setIsSubmitting(true);
                 // Simulate form submission
@@ -122,9 +128,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <Text className="font-medium">Email</Text>
-                  <Text className="text-muted-foreground">
-                    {personalData.contact.email}
-                  </Text>
+                  <Text className="text-muted-foreground">{personalData.contact.email}</Text>
                 </div>
               </div>
 
@@ -148,9 +152,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <Text className="font-medium">Phone</Text>
-                  <Text className="text-muted-foreground">
-                    {personalData.contact.phone}
-                  </Text>
+                  <Text className="text-muted-foreground">{personalData.contact.phone}</Text>
                 </div>
               </div>
 
@@ -180,9 +182,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <Text className="font-medium">Location</Text>
-                  <Text className="text-muted-foreground">
-                    {personalData.location}
-                  </Text>
+                  <Text className="text-muted-foreground">{personalData.location}</Text>
                 </div>
               </div>
             </div>

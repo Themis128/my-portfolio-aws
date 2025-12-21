@@ -47,7 +47,7 @@ Public repositories do not require a token and can upload coverage without one.
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 16, React 18, TypeScript
+- **Frontend**: Next.js 16, React 19, TypeScript
 - **State Management**: Jotai (Atomic state management)
 - **Backend**: AWS Amplify, AWS Lambda, API Gateway
 - **Styling**: Tailwind CSS v4, Magic UI Components
@@ -98,7 +98,7 @@ pnpm install
 pnpm dev
 ```
 
-The portfolio will be available at `http://localhost:3000`
+The portfolio will be available at `http://localhost:3003`
 
 ### 3. Build for Production
 
@@ -359,7 +359,7 @@ Next.js provides built-in SEO features:
 
 ```mermaid
 graph TD
-    A[Next.js 16] --> B[React 18]
+    A[Next.js 16] --> B[React 19]
     A --> C[TypeScript]
     B --> D[Jotai]
     D --> E[Atomic State]
@@ -510,4 +510,4 @@ This project is private and proprietary. All rights reserved.
 
 Built with ❤️ using Next.js 16, Jotai, AWS Amplify, and modern web technologies.
 
-_Last updated: December 19, 2025_
+_Last updated: December 22, 2025_

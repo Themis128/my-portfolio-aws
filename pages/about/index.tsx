@@ -1,24 +1,26 @@
-"use client";
+'use client';
 
-import { HeroSection } from "@/components/hero-section";
-import { usePersonalData } from "@/lib/personal-data-client";
-import { useMounted } from "@/hooks/use-mounted";
-import {
-  Badge,
-  Button,
-  Card,
-  Flex,
-  Heading,
-  Loader,
-  Text,
-} from "@aws-amplify/ui-react";
-import Link from "next/link";
+import { HeroSection } from '@/components/hero-section';
+import { useMounted } from '@/hooks/use-mounted';
+import { usePersonalData } from '@/lib/personal-data-client';
+import { Badge, Button, Card, Flex, Heading, Loader, Text } from '@aws-amplify/ui-react';
+import Link from 'next/link';
 
 export default function AboutPage() {
   const { data: personalData, loading } = usePersonalData();
   const mounted = useMounted();
 
-  if (!mounted || loading || !personalData) {
+  if (loading || !personalData) {
+    return (
+      <div className="text-center">
+        <Loader size="large" />
+        <Text className="mt-4 text-muted-foreground">Loading...</Text>
+      </div>
+    );
+  }
+
+  // Only render content after hydration to prevent mismatches
+  if (!mounted) {
     return (
       <div className="text-center">
         <Loader size="large" />
@@ -37,11 +39,11 @@ export default function AboutPage() {
         primaryButtonText="View My Experience"
         secondaryButtonText="Download CV"
         onPrimaryClick={() => {
-          const experienceSection = document.getElementById("experience");
-          experienceSection?.scrollIntoView({ behavior: "smooth" });
+          const experienceSection = document.getElementById('experience');
+          experienceSection?.scrollIntoView({ behavior: 'smooth' });
         }}
         onSecondaryClick={() => {
-          window.location.href = "/cv";
+          window.location.href = '/cv';
         }}
       />
 
@@ -112,19 +114,13 @@ export default function AboutPage() {
         </Heading>
         <div className="space-y-6">
           {personalData.experience.map((exp) => (
-            <Card
-              key={`${exp.title}-${exp.company}`}
-              variation="outlined"
-              className="p-6"
-            >
+            <Card key={`${exp.title}-${exp.company}`} variation="outlined" className="p-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                 <div>
                   <Heading level={3} className="mb-1">
                     {exp.title}
                   </Heading>
-                  <Text className="text-muted-foreground font-medium">
-                    {exp.company}
-                  </Text>
+                  <Text className="text-muted-foreground font-medium">{exp.company}</Text>
                 </div>
                 <Badge className="mt-2 md:mt-0">{exp.period}</Badge>
               </div>
@@ -145,9 +141,7 @@ export default function AboutPage() {
               <Heading level={3} className="mb-3">
                 {service.title}
               </Heading>
-              <Text className="text-muted-foreground">
-                {service.description}
-              </Text>
+              <Text className="text-muted-foreground">{service.description}</Text>
             </Card>
           ))}
         </div>
@@ -159,9 +153,9 @@ export default function AboutPage() {
           Let's Work Together
         </Heading>
         <Text className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-          I'm always interested in new opportunities and exciting projects.
-          Whether you need a full-stack application, cloud architecture, or
-          technical consulting, I'd love to hear about your project.
+          I'm always interested in new opportunities and exciting projects. Whether you need a
+          full-stack application, cloud architecture, or technical consulting, I'd love to hear
+          about your project.
         </Text>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
