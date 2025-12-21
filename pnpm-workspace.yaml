@@ -1,0 +1,8 @@
+ignoredBuiltDependencies:
+  - msw
+
+onlyBuiltDependencies:
+  - core-js
+  - sharp
+  - sqlite3
+  - unrs-resolver

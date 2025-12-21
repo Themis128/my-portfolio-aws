@@ -1,0 +1,125 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
+type Author @model {
+  id: ID!
+  name: String!
+  avatar: String
+  bio: String
+  socialLinks: SocialLinks
+  blogPosts: [BlogPost] @hasMany
+}
+
+type SocialLinks {
+  linkedin: String
+  github: String
+  instagram: String
+  twitter: String
+}
+
+type BlogPost @model {
+  id: ID!
+  title: String!
+  slug: String! @index(name: "bySlug", queryField: "blogPostBySlug")
+  excerpt: String!
+  content: String!
+  author: Author! @belongsTo
+  publishedAt: AWSDate!
+  updatedAt: AWSDate
+  category: String!
+  tags: [String]
+  image: String
+  readTime: Int!
+  featured: Boolean @default(value: "false")
+}
+
+type Project @model {
+  id: ID!
+  title: String!
+  slug: String! @index(name: "byProjectSlug", queryField: "projectBySlug")
+  description: String!
+  technologies: [String!]!
+  category: String!
+  featured: Boolean @default(value: "false")
+  image: String
+  github: String
+  demo: String
+  year: String!
+  status: ProjectStatus @default(value: "completed")
+}
+
+enum ProjectStatus {
+  planned
+  in_progress
+  completed
+  archived
+}
+
+type ContactMessage @model {
+  id: ID!
+  name: String!
+  email: String!
+  subject: String
+  message: String!
+  createdAt: AWSDateTime!
+  read: Boolean @default(value: "false")
+  responded: Boolean @default(value: "false")
+}
+
+type Todo @model {
+  id: ID!
+  name: String!
+  description: String
+  completed: Boolean @default(value: "false")
+  priority: TodoPriority @default(value: "medium")
+  dueDate: AWSDate
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+enum TodoPriority {
+  low
+  medium
+  high
+  urgent
+}
+
+type Skill @model {
+  id: ID!
+  name: String!
+  category: SkillCategory!
+  proficiency: Int @default(value: "75") # 1-100 scale
+  yearsOfExperience: Int
+}
+
+enum SkillCategory {
+  frontend
+  backend
+  cloud
+  databases
+  tools
+  other
+}
+
+type Experience @model {
+  id: ID!
+  title: String!
+  company: String!
+  period: String!
+  description: String!
+  startDate: AWSDate
+  endDate: AWSDate
+  current: Boolean @default(value: "false")
+  location: String
+}
+
+type Service @model {
+  id: ID!
+  title: String!
+  description: String!
+  icon: String
+  featured: Boolean @default(value: "false")
+  order: Int @default(value: "0")
+}

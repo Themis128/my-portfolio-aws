@@ -1,0 +1,16 @@
+projects:
+  yourportfolio:
+    schemaPath: amplify/backend/api/yourportfolio/build/schema.graphql
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: ""
+        docsFilePath: src/graphql
+        maxDepth: 2
+extensions:
+  amplify:
+    version: 3

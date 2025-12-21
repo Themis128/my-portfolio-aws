@@ -1,0 +1,72 @@
+name: Figma sync
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 2 * * MON" # weekly on Monday at 02:00 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: Sync Figma tokens and generate artifacts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate secrets
+        shell: bash
+        env:
+          FIGMA_API_KEY: ${{ secrets.FIGMA_API_KEY }}
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+        run: |
+          if [ -z "$FIGMA_API_KEY" ]; then echo "Missing FIGMA_API_KEY secret"; exit 1; fi
+          if [ -z "$FIGMA_FILE_KEY" ]; then echo "Missing FIGMA_FILE_KEY secret"; exit 1; fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Enable corepack and install dependencies
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+
+      - name: Run Figma sync (writes generated tokens)
+        env:
+          FIGMA_API_KEY: ${{ secrets.FIGMA_API_KEY }}
+          FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
+        run: pnpm run sync:figma
+
+      - name: Run ampx generate (outputs & forms)
+        env:
+          AWS_PROFILE: ${{ secrets.AWS_PROFILE }}
+        run: |
+          # Generate outputs and forms (explicit subcommands)
+          npx ampx generate outputs || true
+          npx ampx generate forms || true
+
+      - name: Create pull request if changes (commit generated files)
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(sync): update figma-generated tokens and artifacts"
+          title: "chore: Figma sync — update generated tokens and UI artifacts"
+          body: |
+            This automated PR includes updated generated design tokens and UI artifacts from the weekly Figma sync.
+
+            - Updated `src/ui-components/figmaTokens.generated.ts`
+            - Generated files from `ampx` (if any)
+
+            Please review the changes and merge if acceptable.
+          branch: "figma-sync-${{ github.run_number }}"
+          labels: automation,dep-update
+          # Only create the PR if there are changes
+          create-draft: false

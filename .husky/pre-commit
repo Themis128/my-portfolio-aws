@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run secret scan on staged files; prevents committing obvious secrets
+pnpm run check-secrets || exit 1
+
+# Optionally run other pre-commit checks (linting/test) - keep minimal to avoid blocking
+# pnpm lint --silent || exit 1
