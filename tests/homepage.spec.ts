@@ -1,6 +1,6 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, Page } from '@playwright/test';
 
-test('homepage loads correctly', async ({ page }) => {
+test('homepage loads correctly', async ({ page }: { page: Page }) => {
   // Navigate to the homepage
   await page.goto('/');
 
@@ -20,7 +20,7 @@ test('homepage loads correctly', async ({ page }) => {
   await expect(page.locator('text=About')).toBeVisible();
 });
 
-test('navigation works', async ({ page }) => {
+test('navigation works', async ({ page }: { page: Page }) => {
   await page.goto('/');
 
   // Click on Components link
@@ -39,7 +39,7 @@ test('navigation works', async ({ page }) => {
   await expect(page).toHaveURL(/.*community/);
 });
 
-test('responsive design', async ({ page }) => {
+test('responsive design', async ({ page }: { page: Page }) => {
   await page.goto('/');
 
   // Test mobile viewport
