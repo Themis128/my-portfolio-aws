@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@21st-extension/toolbar-next": "^0.5.14",
-    "@aws-amplify/backend": "^1.19.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^20",
     "@types/react": "^19",
