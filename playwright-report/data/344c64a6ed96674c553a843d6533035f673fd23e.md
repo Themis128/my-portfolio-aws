@@ -1,0 +1,155 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - heading "21st.dev" [level=1] [ref=e8]
+        - navigation [ref=e9]:
+          - link "Components" [ref=e10]:
+            - /url: /components
+          - link "Community" [ref=e11]:
+            - /url: /community
+          - link "Canvas" [ref=e12]:
+            - /url: /canvas
+          - link "About" [ref=e13]:
+            - /url: /about
+        - generic [ref=e14]:
+          - button "Sign In" [ref=e15]
+          - button "Get Started" [ref=e16]
+    - generic [ref=e18]:
+      - heading "Build faster with 21st.dev" [level=1] [ref=e19]
+      - paragraph [ref=e20]: Discover, share, and prototype with the largest collection of modern UI components. Built by developers, for developers.
+      - generic [ref=e21]:
+        - button "Explore Components" [ref=e22]
+        - button "Try Canvas" [ref=e23]
+    - generic [ref=e25]:
+      - heading "Browse by Category" [level=2] [ref=e26]
+      - generic [ref=e27]:
+        - link "Heroes 45 components" [ref=e28]:
+          - /url: /components/heroes
+          - generic [ref=e30]:
+            - heading "Heroes" [level=3] [ref=e31]
+            - paragraph [ref=e32]: 45 components
+        - link "Features 32 components" [ref=e33]:
+          - /url: /components/features
+          - generic [ref=e35]:
+            - heading "Features" [level=3] [ref=e36]
+            - paragraph [ref=e37]: 32 components
+        - link "AI Chat 28 components" [ref=e38]:
+          - /url: /components/ai-chat
+          - generic [ref=e40]:
+            - heading "AI Chat" [level=3] [ref=e41]
+            - paragraph [ref=e42]: 28 components
+        - link "Buttons 67 components" [ref=e43]:
+          - /url: /components/buttons
+          - generic [ref=e45]:
+            - heading "Buttons" [level=3] [ref=e46]
+            - paragraph [ref=e47]: 67 components
+        - link "Testimonials 23 components" [ref=e48]:
+          - /url: /components/testimonials
+          - generic [ref=e50]:
+            - heading "Testimonials" [level=3] [ref=e51]
+            - paragraph [ref=e52]: 23 components
+        - link "Pricing 18 components" [ref=e53]:
+          - /url: /components/pricing
+          - generic [ref=e55]:
+            - heading "Pricing" [level=3] [ref=e56]
+            - paragraph [ref=e57]: 18 components
+    - generic [ref=e59]:
+      - generic [ref=e60]:
+        - heading "Featured Components" [level=2] [ref=e61]
+        - link "View All" [ref=e62]:
+          - /url: /components
+          - button "View All" [ref=e63]
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e67]: Component Preview
+          - generic [ref=e68]:
+            - heading "Glowing Effect" [level=3] [ref=e69]
+            - paragraph [ref=e70]: by Aceternity UI
+            - generic [ref=e71]:
+              - text: Effects
+              - generic [ref=e72]: ♥ 1250
+        - generic [ref=e73]:
+          - generic [ref=e75]: Component Preview
+          - generic [ref=e76]:
+            - heading "Spline Scene" [level=3] [ref=e77]
+            - paragraph [ref=e78]: by Serafim
+            - generic [ref=e79]:
+              - text: 3D
+              - generic [ref=e80]: ♥ 890
+        - generic [ref=e81]:
+          - generic [ref=e83]: Component Preview
+          - generic [ref=e84]:
+            - heading "Timeline" [level=3] [ref=e85]
+            - paragraph [ref=e86]: by Aceternity UI
+            - generic [ref=e87]:
+              - text: Layout
+              - generic [ref=e88]: ♥ 2100
+        - generic [ref=e89]:
+          - generic [ref=e91]: Component Preview
+          - generic [ref=e92]:
+            - heading "Expandable Tabs" [level=3] [ref=e93]
+            - paragraph [ref=e94]: by Victor Welander
+            - generic [ref=e95]:
+              - text: Navigation
+              - generic [ref=e96]: ♥ 750
+    - generic [ref=e99]:
+      - heading "Prototype fast with Canvas" [level=2] [ref=e100]
+      - generic [ref=e101]:
+        - generic [ref=e102]:
+          - heading "Generate multiple versions at once" [level=3] [ref=e103]
+          - paragraph [ref=e104]: Create several design variations side by side and compare them instantly
+        - generic [ref=e105]:
+          - heading "AI finds references for you" [level=3] [ref=e106]
+          - paragraph [ref=e107]: AI searches through 21st components and real apps to find relevant design inspiration
+      - link "Try Canvas" [ref=e108]:
+        - /url: /canvas
+        - button "Try Canvas" [ref=e109]
+    - contentinfo [ref=e110]:
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - generic [ref=e113]:
+            - heading "21st.dev" [level=3] [ref=e114]
+            - paragraph [ref=e115]: The largest collection of modern UI components for developers.
+          - generic [ref=e116]:
+            - heading "Product" [level=4] [ref=e117]
+            - list [ref=e118]:
+              - listitem [ref=e119]:
+                - link "Components" [ref=e120]:
+                  - /url: /components
+              - listitem [ref=e121]:
+                - link "Canvas" [ref=e122]:
+                  - /url: /canvas
+              - listitem [ref=e123]:
+                - link "Community" [ref=e124]:
+                  - /url: /community
+          - generic [ref=e125]:
+            - heading "Company" [level=4] [ref=e126]
+            - list [ref=e127]:
+              - listitem [ref=e128]:
+                - link "About" [ref=e129]:
+                  - /url: /about
+              - listitem [ref=e130]:
+                - link "Blog" [ref=e131]:
+                  - /url: /blog
+              - listitem [ref=e132]:
+                - link "Careers" [ref=e133]:
+                  - /url: /careers
+          - generic [ref=e134]:
+            - heading "Support" [level=4] [ref=e135]
+            - list [ref=e136]:
+              - listitem [ref=e137]:
+                - link "Documentation" [ref=e138]:
+                  - /url: /docs
+              - listitem [ref=e139]:
+                - link "Help Center" [ref=e140]:
+                  - /url: /help
+              - listitem [ref=e141]:
+                - link "Contact" [ref=e142]:
+                  - /url: /contact
+        - paragraph [ref=e144]: © 2024 21st.dev. All rights reserved.
+  - alert [ref=e145]
+```
