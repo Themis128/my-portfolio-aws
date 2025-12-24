@@ -1,0 +1,38 @@
+name: Deploy to AWS Amplify
+
+on:
+  push:
+    branches:
+      - master # Change to your default branch if different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18" # Match your project's Node version
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Deploy to Amplify
+        uses: aws-actions/amplify-console@v1
+        with:
+          amplify_app_id: ${{ secrets.AMPLIFY_APP_ID }}
+          branch_name: master # Change to your branch
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
