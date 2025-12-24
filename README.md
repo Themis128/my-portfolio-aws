@@ -41,3 +41,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # Fifth build trigger - final attempt
 # Sixth build trigger - Node.js fix
 # Seventh build trigger - testing Amplify deployment
+# Eighth build trigger - checking deployment status
