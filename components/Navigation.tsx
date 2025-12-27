@@ -16,9 +16,29 @@ export default function Navigation() {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
+    let element;
+    
+    // Special handling for home navigation
+    if (sectionId === 'hero') {
+      element = document.getElementById('hero-anchor');
+      if (!element) {
+        // Fallback to hero section
+        element = document.getElementById('hero');
+      }
+    } else {
+      element = document.getElementById(sectionId);
+    }
+    
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Calculate offset for fixed navigation bar
+      const navbarHeight = 80; // Approximate height of navigation bar
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
     setIsMobileMenuOpen(false);
   };

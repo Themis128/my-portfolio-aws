@@ -13,7 +13,8 @@ export default function Home() {
   const personalData = getPersonalDataServer();
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="bg-white dark:bg-gray-900">
+      <div id="hero-anchor"></div>
       <Hero data={personalData} />
       <About data={personalData} />
       <Skills data={personalData} />

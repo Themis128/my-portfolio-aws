@@ -1,5 +1,6 @@
 "use client";
-import { Cloud, Code2, Cpu, Database, Network, Server, Shield, Sparkles, Zap, BarChart3, Smartphone, GitBranch, Lock, Settings, Brain, Globe } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Award, BarChart3, Brain, Calendar, Cloud, Code2, Cpu, Database, ExternalLink, GitBranch, Globe, Lock, Network, Server, Settings, Shield, Smartphone, Sparkles, Star, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { PersonalData } from '../lib/personal-data';
 
@@ -196,26 +197,77 @@ export default function Skills({ data }: SkillsProps) {
 
           {/* Certifications Highlight */}
           <div className="text-center mb-16">
-            <h3 className="text-2xl font-bold text-foreground mb-8">Professional Certifications</h3>
-            <div className="flex flex-wrap justify-center gap-4">
-              {data.certifications?.slice(0, 6).map((cert) => (
-                <div
-                  key={cert.id}
-                  className="group relative bg-background/60 backdrop-blur-sm border border-border/50 rounded-xl px-6 py-4 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden"
-                >
-                  {/* Background gradient on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <motion.div
+              className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <Award className="w-4 h-4" />
+              Professional Credentials
+            </motion.div>
+            <motion.h3
+              className="text-3xl font-bold text-foreground mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Industry Certifications
+            </motion.h3>
+            <div className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
+              {data.certifications?.slice(0, 6).map((cert, index) => {
+                const isRecent = new Date().getFullYear() - parseInt(cert.date) <= 2;
+                const colors = {
+                  'Amazon Web Services': 'from-orange-500/10 to-orange-600/10 hover:from-orange-500/20 hover:to-orange-600/20',
+                  'Cisco': 'from-blue-500/10 to-blue-600/10 hover:from-blue-500/20 hover:to-blue-600/20',
+                  'Microsoft': 'from-blue-500/10 to-indigo-600/10 hover:from-blue-500/20 hover:to-indigo-600/20',
+                }[cert.issuer] || 'from-primary/10 to-primary/20 hover:from-primary/20 hover:to-primary/30';
 
-                  <div className="relative z-10 text-center">
-                    <div className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
-                      {cert.name}
+                return (
+                  <motion.div
+                    key={cert.id}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    className={`group relative bg-gradient-to-br ${colors} backdrop-blur-sm border border-border/50 rounded-xl px-6 py-4 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden min-w-[280px]`}
+                  >
+                    {/* Background gradient on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+
+                    {/* Recent badge */}
+                    {isRecent && (
+                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                        <Star className="w-3 h-3 text-white" />
+                      </div>
+                    )}
+
+                    <div className="relative z-10 text-center">
+                      <div className="text-sm font-bold text-foreground group-hover:text-primary transition-colors mb-2">
+                        {cert.name}
+                      </div>
+                      <div className="text-xs text-muted-foreground mb-2">
+                        {cert.issuer}
+                      </div>
+                      <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                        <Calendar className="w-3 h-3" />
+                        {cert.date}
+                        {cert.url && (
+                          <ExternalLink
+                            className="w-3 h-3 ml-1 opacity-50 group-hover:opacity-100 transition-opacity cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.open(cert.url, '_blank');
+                            }}
+                          />
+                        )}
+                      </div>
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {cert.issuer} • {cert.date}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
 

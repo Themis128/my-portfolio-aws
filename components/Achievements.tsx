@@ -1,4 +1,6 @@
 "use client";
+import { Trophy, Award, BookOpen, Mic, Github, Star, Calendar, CheckCircle, Target, TrendingUp, Users, Clock } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { PersonalData } from '../lib/personal-data';
 
 interface AchievementsProps {
@@ -10,94 +12,280 @@ export default function Achievements({ data }: AchievementsProps) {
     return null;
   }
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  // Get achievement icon based on type
   const getAchievementIcon = (type: string) => {
+    const icons: Record<string, React.ReactElement> = {
+      'Award': <Trophy className="w-6 h-6 text-yellow-600" />,
+      'Publication': <BookOpen className="w-6 h-6 text-blue-600" />,
+      'Speaking': <Mic className="w-6 h-6 text-green-600" />,
+      'Open Source': <Github className="w-6 h-6 text-purple-600" />,
+    };
+    return icons[type] || <Award className="w-6 h-6 text-gray-600" />;
+  };
+
+  // Get achievement colors and styles
+  const getAchievementStyles = (type: string) => {
     switch (type) {
       case "Award":
-        return (
-          <svg className="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
-        );
+        return {
+          bg: "from-yellow-500/10 to-orange-500/10",
+          border: "border-yellow-500/20",
+          text: "text-yellow-700 dark:text-yellow-400",
+          badge: "bg-yellow-500",
+          accent: "from-yellow-500 to-orange-500"
+        };
       case "Publication":
-        return (
-          <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-          </svg>
-        );
+        return {
+          bg: "from-blue-500/10 to-cyan-500/10",
+          border: "border-blue-500/20",
+          text: "text-blue-700 dark:text-blue-400",
+          badge: "bg-blue-500",
+          accent: "from-blue-500 to-cyan-500"
+        };
       case "Speaking":
-        return (
-          <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-        );
+        return {
+          bg: "from-green-500/10 to-emerald-500/10",
+          border: "border-green-500/20",
+          text: "text-green-700 dark:text-green-400",
+          badge: "bg-green-500",
+          accent: "from-green-500 to-emerald-500"
+        };
       case "Open Source":
-        return (
-          <svg className="w-6 h-6 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 2.977.78.84 1.235 1.911 1.235 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-          </svg>
-        );
+        return {
+          bg: "from-purple-500/10 to-pink-500/10",
+          border: "border-purple-500/20",
+          text: "text-purple-700 dark:text-purple-400",
+          badge: "bg-purple-500",
+          accent: "from-purple-500 to-pink-500"
+        };
       default:
-        return (
-          <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-          </svg>
-        );
+        return {
+          bg: "from-gray-500/10 to-slate-500/10",
+          border: "border-gray-500/20",
+          text: "text-gray-700 dark:text-gray-400",
+          badge: "bg-gray-500",
+          accent: "from-gray-500 to-slate-500"
+        };
     }
   };
 
-  const getAchievementColor = (type: string) => {
-    switch (type) {
-      case "Award": return "border-yellow-500";
-      case "Publication": return "border-blue-500";
-      case "Speaking": return "border-green-500";
-      case "Open Source": return "border-purple-500";
-      default: return "border-gray-500";
+  // Check if achievement is recent (within last 3 years)
+  const isRecentAchievement = (date: string) => {
+    const currentYear = new Date().getFullYear();
+    const achievementYear = parseInt(date);
+    return currentYear - achievementYear <= 3;
+  };
+
+  // Get achievement impact level (based on description keywords)
+  const getAchievementImpact = (description: string) => {
+    const highImpactKeywords = ['90%', '100%', '30%', '20%', '15%'];
+    const mediumImpactKeywords = ['improvement', 'enhancement', 'reduction', 'efficiency'];
+
+    if (highImpactKeywords.some(keyword => description.includes(keyword))) {
+      return 'High Impact';
+    } else if (mediumImpactKeywords.some(keyword => description.includes(keyword))) {
+      return 'Significant Impact';
     }
+    return 'Notable Achievement';
   };
 
   return (
-    <section id="achievements" className="py-20 bg-gray-50 dark:bg-gray-800">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Achievements & Recognition
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            Awards, publications, speaking engagements, and open source contributions
-          </p>
-        </div>
+    <section id="achievements" className="relative py-24 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
+      <div className="absolute inset-0">
+        <div className="absolute top-20 right-32 w-64 h-64 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 left-32 w-48 h-48 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
+      </div>
 
-        <div className="max-w-4xl mx-auto space-y-8">
-          {data.achievements.map((achievement) => (
-            <div
-              key={achievement.id}
-              className={`bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg border-l-4 ${getAchievementColor(achievement.type)} hover:shadow-xl transition-shadow duration-300`}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center mb-2">
-                    {getAchievementIcon(achievement.type)}
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white ml-3">
-                      {achievement.title}
-                    </h3>
-                    <span className={`ml-4 px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300`}>
-                      {achievement.type}
-                    </span>
+      <div className="relative z-10 container mx-auto px-6">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <Trophy className="w-4 h-4" />
+            Achievements & Recognition
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-6">
+            Professional
+            <span className="block bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
+              Excellence
+            </span>
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Awards, certifications, and significant contributions that demonstrate commitment to excellence
+            and continuous professional development
+          </p>
+        </motion.div>
+
+        {/* Achievements Grid */}
+        <motion.div
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {data.achievements.map((achievement, index) => {
+            const styles = getAchievementStyles(achievement.type);
+            const isRecent = isRecentAchievement(achievement.date);
+            const impact = getAchievementImpact(achievement.description);
+
+            return (
+              <motion.div
+                key={achievement.id}
+                variants={itemVariants}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className={`group relative bg-gradient-to-br ${styles.bg} border ${styles.border} rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1 overflow-hidden`}
+              >
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-5">
+                  <div className="absolute top-4 right-4 w-16 h-16 rounded-full bg-primary/10" />
+                  <div className="absolute bottom-4 left-4 w-12 h-12 rounded-full bg-primary/10" />
+                </div>
+
+                {/* Recent Badge */}
+                {isRecent && (
+                  <div className="absolute top-4 right-4 z-10">
+                    <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium flex items-center gap-1">
+                      <Star className="w-3 h-3" />
+                      Recent
+                    </div>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
+                )}
+
+                <div className="relative z-10">
+                  {/* Header */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      {getAchievementIcon(achievement.type)}
+                      <div className="flex-1">
+                        <h3 className={`text-lg font-bold ${styles.text} group-hover:scale-105 transition-transform duration-300 line-clamp-2`}>
+                          {achievement.title}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-1">
+                          <div className={`w-2 h-2 rounded-full ${styles.badge}`} />
+                          <span className="text-sm text-muted-foreground font-medium">
+                            {achievement.type}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
                     {achievement.description}
                   </p>
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    <span>{achievement.date}</span>
+
+                  {/* Impact Badge */}
+                  <div className="mb-4">
+                    <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${styles.accent} text-white`}>
+                      <Target className="w-3 h-3" />
+                      {impact}
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground font-medium">
+                        {achievement.date}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <span className="text-xs text-muted-foreground">
+                        {isRecent ? 'Current' : 'Achieved'}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
+
+                {/* Hover Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        {/* Summary Stats */}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <div className="inline-flex items-center gap-4 bg-card border border-border rounded-2xl px-8 py-6 shadow-lg">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary mb-1">{data.achievements.length}</div>
+              <div className="text-sm text-muted-foreground">Total Achievements</div>
             </div>
-          ))}
-        </div>
+            <div className="w-px h-12 bg-border" />
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-500 mb-1">
+                {data.achievements.filter(achievement => isRecentAchievement(achievement.date)).length}
+              </div>
+              <div className="text-sm text-muted-foreground">Recent (2022+)</div>
+            </div>
+            <div className="w-px h-12 bg-border" />
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-500 mb-1">
+                {new Set(data.achievements.map(achievement => achievement.type)).size}
+              </div>
+              <div className="text-sm text-muted-foreground">Categories</div>
+            </div>
+            <div className="w-px h-12 bg-border" />
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-500 mb-1">
+                {Math.max(...data.achievements.map(a => parseInt(a.date))) - Math.min(...data.achievements.map(a => parseInt(a.date)))}
+              </div>
+              <div className="text-sm text-muted-foreground">Year Span</div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Call to Action */}
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <p className="text-muted-foreground mb-4">
+            Driven by excellence and continuous improvement in professional endeavors
+          </p>
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-full text-sm font-medium">
+            <TrendingUp className="w-4 h-4" />
+            Building a legacy of achievement and innovation
+          </div>
+        </motion.div>
       </div>
     </section>
   );

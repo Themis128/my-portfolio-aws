@@ -19,6 +19,7 @@ export interface PersonalData {
   languages?: Language[];
   interests?: string[];
   achievements?: Achievement[];
+  company?: Company;
 }
 
 export interface Experience {
@@ -71,12 +72,27 @@ export interface Achievement {
   type: "Award" | "Publication" | "Speaking" | "Open Source";
 }
 
+export interface Company {
+  name: string;
+  tagline: string;
+  description: string;
+  founded: string;
+  location: string;
+  website: string;
+  focus: string[];
+  services: string[];
+  technologies: string[];
+  mission: string;
+  vision: string;
+  values: string[];
+}
+
 export function getPersonalDataServer(): PersonalData {
   return {
     name: "Themistoklis Baltzakis",
-    title: "Systems and Network Engineer",
-    bio: "Systems and Network Engineer with over 15 years of extensive experience in IT support, cloud solutions, and Cisco infrastructure management. Dedicated Cloud and Virtualization Engineer with a proven track record in managing and optimizing Cisco infrastructure and networking systems. Expertise spans high-impact cloud management and support services, particularly with Azure Active Directory (AD) and Microsoft 365 (M365). Holds industry-recognized certifications including AWS Certified Cloud Practitioner and Cisco DevNet Associate. Adept at troubleshooting network incidents, conducting system upgrades, and delivering comprehensive end-user support, ensuring optimal network uptime and security.",
-    email: "baltzakis.themis@gmail.com",
+    title: "BCs Computer Science - MSc Data Analytics",
+    bio: "Data Analytics professional with a strong foundation in computer science and advanced data analysis techniques. Passionate about transforming complex data into actionable insights and driving data-driven decision making.",
+    email: "tbaltzakis@cloudless.gr",
     location: "Greece",
     phone: "+30 6977777838",
     website: "https://www.baltzakisthemis.com",
@@ -200,7 +216,7 @@ export function getPersonalDataServer(): PersonalData {
         technologies: ["Next.js", "TypeScript", "Tailwind CSS", "AWS Amplify"],
         url: "https://cloudless.gr",
         github: "https://github.com/themis128/my-portfolio-aws",
-        image: "/images/portfolio-screenshot.png",
+        image: "/images/projects/portfolio-screenshot.png",
         category: "Personal",
         featured: true
       },
@@ -211,7 +227,7 @@ export function getPersonalDataServer(): PersonalData {
         technologies: ["React", "Node.js", "Express", "MongoDB", "AWS Lambda", "S3"],
         url: "https://ecommerce-demo.cloudless.gr",
         github: "https://github.com/cloudless-gr/ecommerce-platform",
-        image: "/images/ecommerce-screenshot.png",
+        image: "/images/projects/ecommerce-screenshot.png",
         category: "Professional",
         featured: true
       },
@@ -222,7 +238,7 @@ export function getPersonalDataServer(): PersonalData {
         technologies: ["React", "Socket.io", "Node.js", "PostgreSQL", "Docker"],
         url: "https://tasks.cloudless.gr",
         github: "https://github.com/cloudless-gr/task-manager",
-        image: "/images/tasks-screenshot.png",
+        image: "/images/projects/tasks-screenshot.png",
         category: "Side Project",
         featured: false
       },
@@ -232,7 +248,7 @@ export function getPersonalDataServer(): PersonalData {
         description: "Advanced Model Context Protocol server that bridges Windows and Linux file systems. Implements intelligent path resolution algorithms to seamlessly access Windows D: drive paths from Linux environments using WSL. Features include automatic path translation, cross-platform compatibility, and robust error handling for enterprise-grade file operations.",
         technologies: ["Node.js", "TypeScript", "MCP SDK", "Cross-Platform Development", "WSL Integration", "Path Resolution Algorithms", "Error Handling"],
         github: "https://github.com/themis128/my-portfolio-aws/tree/main/mcp-server",
-        image: "/images/mcp-server-screenshot.png",
+        image: "/images/projects/mcp-server-screenshot.png",
         category: "Infrastructure",
         featured: true
       },
@@ -242,7 +258,7 @@ export function getPersonalDataServer(): PersonalData {
         description: "Comprehensive infrastructure automation solution using Terraform and AWS CDK. Implements Infrastructure as Code principles with automated deployment pipelines, monitoring, and scaling capabilities for cloud-native applications.",
         technologies: ["Terraform", "AWS CDK", "Docker", "Kubernetes", "GitHub Actions", "Prometheus", "Grafana"],
         github: "https://github.com/cloudless-gr/infrastructure-automation",
-        image: "/images/infrastructure-screenshot.png",
+        image: "/images/projects/infrastructure-screenshot.png",
         category: "Infrastructure",
         featured: false
       }
@@ -363,6 +379,59 @@ export function getPersonalDataServer(): PersonalData {
         date: "2024",
         type: "Award"
       }
-    ]
+    ],
+    company: {
+      name: "Cloudless.gr",
+      tagline: "Empowering Businesses with Serverless Solutions",
+      description: "Cloudless.gr is a leading cloud computing company specializing in serverless architecture and modern software solutions. We transform traditional IT infrastructure into scalable, cost-effective cloud-native applications that drive business growth and innovation.",
+      founded: "2023",
+      location: "Greece",
+      website: "https://www.cloudless.gr",
+      focus: [
+        "Serverless Architecture",
+        "Cloud Migration",
+        "Microservices",
+        "DevOps",
+        "Infrastructure as Code",
+        "Cloud Security"
+      ],
+      services: [
+        "Serverless Application Development",
+        "Cloud Infrastructure Design",
+        "AWS/Azure Migration Services",
+        "DevOps Implementation",
+        "Microservices Architecture",
+        "Cloud Cost Optimization",
+        "Infrastructure Automation",
+        "Container Orchestration",
+        "CI/CD Pipeline Setup",
+        "Cloud Security Assessment"
+      ],
+      technologies: [
+        "AWS Lambda",
+        "Azure Functions",
+        "Google Cloud Functions",
+        "Docker",
+        "Kubernetes",
+        "Terraform",
+        "AWS CDK",
+        "Serverless Framework",
+        "Node.js",
+        "Python",
+        "TypeScript",
+        "React",
+        "Next.js"
+      ],
+      mission: "To democratize cloud computing by making serverless technology accessible and affordable for businesses of all sizes, enabling them to focus on innovation rather than infrastructure management.",
+      vision: "To become the leading serverless solutions provider in Europe, setting the standard for cloud-native application development and helping businesses achieve digital transformation through cutting-edge technology.",
+      values: [
+        "Innovation First",
+        "Customer-Centric Approach",
+        "Technical Excellence",
+        "Continuous Learning",
+        "Sustainable Growth",
+        "Open Collaboration"
+      ]
+    }
   };
 }

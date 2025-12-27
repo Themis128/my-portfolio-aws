@@ -1,21 +1,21 @@
 import { Badge } from '@/components/badge';
 import { Card, CardContent } from '@/components/card';
-import Image from 'next/image';
 import { motion, useInView, useScroll, useSpring, useTransform } from 'framer-motion';
 import {
-    Award,
-    Briefcase,
-    Calendar,
-    CheckCircle,
-    Github,
-    Linkedin,
-    Mail,
-    MapPin,
-    Network,
-    Phone,
-    Server,
-    Terminal
+  Award,
+  Briefcase,
+  Calendar,
+  CheckCircle,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  Network,
+  Phone,
+  Server,
+  Terminal
 } from 'lucide-react';
+import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import { PersonalData } from '../lib/personal-data';
 
@@ -294,6 +294,7 @@ export default function ModernAbout({ data }: ModernAboutProps) {
   return (
     <section
       ref={sectionRef}
+      id="about"
       className="w-full min-h-screen py-24 px-4 bg-background text-foreground overflow-hidden relative"
     >
       <BGPattern variant="grid" mask="fade-edges" size={32} />
@@ -420,6 +421,77 @@ export default function ModernAbout({ data }: ModernAboutProps) {
                 {data.bio || 'Experienced professional with expertise in modern technologies and innovative solutions.'}
               </p>
             </div>
+
+            {data.company && (
+              <div>
+                <h3 className="text-xl font-semibold mb-4">Company</h3>
+                <Card className="border-border hover:border-primary/50 transition-all duration-300">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4 mb-4">
+                      <motion.div
+                        className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary"
+                        whileHover={{ rotate: [0, -10, 10, -5, 0], transition: { duration: 0.5 } }}
+                      >
+                        <Server className="w-6 h-6" />
+                      </motion.div>
+                      <div className="flex-1">
+                        <h4 className="text-lg font-semibold text-foreground mb-1">{data.company.name}</h4>
+                        <p className="text-primary font-medium text-sm mb-2">{data.company.tagline}</p>
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                          {data.company.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Founded</p>
+                        <p className="text-foreground font-medium">{data.company.founded}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Location</p>
+                        <p className="text-foreground font-medium">{data.company.location}</p>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">Focus Areas</p>
+                      <div className="flex flex-wrap gap-2">
+                        {data.company.focus.map((focus, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {focus}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="text-sm text-muted-foreground mb-2">Services</p>
+                      <div className="flex flex-wrap gap-2">
+                        {data.company.services.slice(0, 6).map((service, index) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {service}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <motion.a
+                        href={data.company.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Visit Website
+                      </motion.a>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
 
             <div>
               <h3 className="text-xl font-semibold mb-4">Skills & Expertise</h3>

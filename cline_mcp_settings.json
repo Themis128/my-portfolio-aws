@@ -1,0 +1,633 @@
+{
+  "version": "1.0.0",
+  "name": "Cline MCP",
+  "description": "Cline MCP server configuration for company branding and development tools",
+  "servers": {
+    "file-server": {
+      "name": "D: Drive File Server",
+      "description": "MCP server for accessing files and folders on D: drive with cross-platform path resolution",
+      "server_type": "stdio",
+      "command": "node mcp-server/index.js",
+      "working_directory": "./mcp-server",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "list_files",
+          "description": "List files and directories in a given path. Supports cross-platform paths (Windows D: drive paths will be resolved to appropriate Linux paths)",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "directory": {
+                "type": "string",
+                "description": "The directory path to list (supports Windows D: paths which will be resolved to Linux paths)"
+              }
+            },
+            "required": ["directory"]
+          }
+        },
+        {
+          "name": "read_file",
+          "description": "Read the contents of a file. Supports cross-platform paths",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "filePath": {
+                "type": "string",
+                "description": "The full path to the file to read (supports Windows D: paths which will be resolved to Linux paths)"
+              }
+            },
+            "required": ["filePath"]
+          }
+        },
+        {
+          "name": "search_files",
+          "description": "Search for files matching a pattern in a directory. Supports cross-platform paths",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "directory": {
+                "type": "string",
+                "description": "The directory to search in (supports Windows D: paths which will be resolved to Linux paths)"
+              },
+              "pattern": {
+                "type": "string",
+                "description": "The file pattern to search for (e.g., '*.txt')"
+              }
+            },
+            "required": ["directory", "pattern"]
+          }
+        },
+        {
+          "name": "extract_pdf_content",
+          "description": "Extract text content from a PDF file. Supports cross-platform paths and uses pdftotext for proper PDF parsing",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "pdfPath": {
+                "type": "string",
+                "description": "The full path to the PDF file to extract content from (supports Windows D: paths which will be resolved to Linux paths)"
+              },
+              "maxPages": {
+                "type": "number",
+                "description": "Maximum number of pages to extract (optional, extracts all if not specified)",
+                "minimum": 1
+              }
+            },
+            "required": ["pdfPath"]
+          }
+        }
+      ]
+    },
+    "auto-favicon": {
+      "name": "Auto Favicon Generator",
+      "description": "Generates complete favicon sets and website assets from your logo",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/auto-favicon",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "generate_favicon_set",
+          "description": "Creates favicon files in multiple sizes and formats from a logo image",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "inputImage": {
+                "type": "string",
+                "description": "Path to the input logo image file"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated favicon files"
+              },
+              "formats": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["png", "ico"]
+                },
+                "description": "Formats to generate (png, ico)"
+              },
+              "sizes": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "description": "Sizes to generate for favicons"
+              }
+            },
+            "required": ["inputImage", "outputDirectory"]
+          }
+        },
+        {
+          "name": "generate_website_assets",
+          "description": "Creates header, footer, mobile, and theme variants from a logo",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "logoPath": {
+                "type": "string",
+                "description": "Path to the input logo image file"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated website assets"
+              },
+              "variants": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["header", "footer", "mobile", "dark", "light"]
+                },
+                "description": "Types of website assets to generate"
+              }
+            },
+            "required": ["logoPath", "outputDirectory"]
+          }
+        }
+      ]
+    },
+    "image-gen": {
+      "name": "Image Generation Server",
+      "description": "Generates social media banners, print assets, and marketing materials",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/image-gen",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "generate_social_media_banners",
+          "description": "Creates banners for LinkedIn, Twitter, Facebook, Instagram, YouTube",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "logoPath": {
+                "type": "string",
+                "description": "Path to the input logo image file"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated social media banners"
+              },
+              "platforms": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["linkedin", "twitter", "facebook", "instagram", "youtube"]
+                },
+                "description": "Social media platforms to generate banners for"
+              },
+              "theme": {
+                "type": "string",
+                "description": "Theme for the banners (e.g., 'sky-gradient')"
+              }
+            },
+            "required": ["logoPath", "outputDirectory", "platforms"]
+          }
+        },
+        {
+          "name": "generate_print_assets",
+          "description": "Creates business cards, letterhead, brochures, flyers",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "logoPath": {
+                "type": "string",
+                "description": "Path to the input logo image file"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated print assets"
+              },
+              "assets": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["business-card", "letterhead", "brochure", "flyer"]
+                },
+                "description": "Types of print assets to generate"
+              },
+              "format": {
+                "type": "string",
+                "enum": ["pdf", "png"],
+                "description": "Output format for the print assets"
+              }
+            },
+            "required": ["logoPath", "outputDirectory", "assets"]
+          }
+        },
+        {
+          "name": "generate_marketing_assets",
+          "description": "Creates email headers, presentation templates, ads, thumbnails",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "logoPath": {
+                "type": "string",
+                "description": "Path to the input logo image file"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated marketing assets"
+              },
+              "assets": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["email-header", "presentation-template", "webinar-banner", "youtube-thumbnail"]
+                },
+                "description": "Types of marketing assets to generate"
+              },
+              "theme": {
+                "type": "string",
+                "description": "Theme for the marketing assets"
+              }
+            },
+            "required": ["logoPath", "outputDirectory", "assets"]
+          }
+        }
+      ]
+    },
+    "magicuidesign": {
+      "name": "Magic UI Design",
+      "description": "Generates Magic UI components and designs",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/magicuidesign",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "generate_magic_ui_components",
+          "description": "Generates Magic UI component designs and implementations",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "designSpecs": {
+                "type": "object",
+                "description": "Specifications for the Magic UI components"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated components"
+              }
+            },
+            "required": ["designSpecs", "outputDirectory"]
+          }
+        }
+      ]
+    },
+    "shadcn": {
+      "name": "Shadcn UI Components",
+      "description": "Generates shadcn/ui components",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/shadcn",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "generate_shadcn_components",
+          "description": "Generates shadcn/ui component implementations",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "componentType": {
+                "type": "string",
+                "description": "Type of shadcn/ui component to generate"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated components"
+              }
+            },
+            "required": ["componentType", "outputDirectory"]
+          }
+        }
+      ]
+    },
+    "tailwindcss": {
+      "name": "Tailwind Utilities",
+      "description": "Generates Tailwind CSS utilities and configurations",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/tailwindcss",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "generate_tailwind_utilities",
+          "description": "Generates custom Tailwind CSS utilities",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "utilities": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the utility class"
+                    },
+                    "css": {
+                      "type": "string",
+                      "description": "CSS properties for the utility"
+                    }
+                  }
+                }
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated utilities"
+              }
+            },
+            "required": ["utilities", "outputDirectory"]
+          }
+        }
+      ]
+    },
+    "flowbite": {
+      "name": "Flowbite + Figma-to-code",
+      "description": "Generates Flowbite components and Figma-to-code conversions",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/flowbite",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "generate_flowbite_components",
+          "description": "Generates Flowbite component implementations",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "componentType": {
+                "type": "string",
+                "description": "Type of Flowbite component to generate"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated components"
+              }
+            },
+            "required": ["componentType", "outputDirectory"]
+          }
+        },
+        {
+          "name": "convert_figma_to_code",
+          "description": "Converts Figma designs to code",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "figmaUrl": {
+                "type": "string",
+                "description": "URL to the Figma design"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated code"
+              },
+              "framework": {
+                "type": "string",
+                "enum": ["react", "vue", "angular", "html"],
+                "description": "Target framework for the generated code"
+              }
+            },
+            "required": ["figmaUrl", "outputDirectory", "framework"]
+          }
+        }
+      ]
+    },
+    "pdf-reader": {
+      "name": "PDF Extraction",
+      "description": "Extracts content from PDF files",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/pdf-reader",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "extract_pdf_content",
+          "description": "Extracts text and metadata from PDF files",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "pdfPath": {
+                "type": "string",
+                "description": "Path to the PDF file to extract content from"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the extracted content"
+              },
+              "options": {
+                "type": "object",
+                "properties": {
+                  "extractText": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Whether to extract text content"
+                  },
+                  "extractImages": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to extract images"
+                  },
+                  "extractMetadata": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Whether to extract metadata"
+                  }
+                }
+              }
+            },
+            "required": ["pdfPath", "outputDirectory"]
+          }
+        }
+      ]
+    },
+    "pickapicon200k": {
+      "name": "200K+ Iconify Icons",
+      "description": "Provides access to 200K+ Iconify icons",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/pickapicon200k",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "search_icons",
+          "description": "Searches for icons in the Iconify collection",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query for finding icons"
+              },
+              "limit": {
+                "type": "number",
+                "default": 10,
+                "description": "Maximum number of icons to return"
+              }
+            },
+            "required": ["query"]
+          }
+        },
+        {
+          "name": "get_icon_svg",
+          "description": "Gets the SVG content for a specific icon",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "iconName": {
+                "type": "string",
+                "description": "Name of the icon to retrieve"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the SVG file"
+              }
+            },
+            "required": ["iconName", "outputDirectory"]
+          }
+        }
+      ]
+    },
+    "icon-search": {
+      "name": "Bootstrap, Feather, Lucide Icons",
+      "description": "Searches and provides Bootstrap, Feather, and Lucide icons",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/icon-search",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "search_bootstrap_icons",
+          "description": "Searches for Bootstrap icons",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query for Bootstrap icons"
+              },
+              "limit": {
+                "type": "number",
+                "default": 10,
+                "description": "Maximum number of icons to return"
+              }
+            },
+            "required": ["query"]
+          }
+        },
+        {
+          "name": "search_feather_icons",
+          "description": "Searches for Feather icons",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query for Feather icons"
+              },
+              "limit": {
+                "type": "number",
+                "default": 10,
+                "description": "Maximum number of icons to return"
+              }
+            },
+            "required": ["query"]
+          }
+        },
+        {
+          "name": "search_lucide_icons",
+          "description": "Searches for Lucide icons",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query for Lucide icons"
+              },
+              "limit": {
+                "type": "number",
+                "default": 10,
+                "description": "Maximum number of icons to return"
+              }
+            },
+            "required": ["query"]
+          }
+        }
+      ]
+    },
+    "image-gen-ai": {
+      "name": "AI Logo Generation (Replicate)",
+      "description": "Generates logos using AI via Replicate",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/branding-servers/image-gen-ai",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "generate_ai_logo",
+          "description": "Generates logos using AI models",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "prompt": {
+                "type": "string",
+                "description": "Text prompt describing the desired logo"
+              },
+              "outputDirectory": {
+                "type": "string",
+                "description": "Directory to save the generated logo"
+              },
+              "model": {
+                "type": "string",
+                "enum": ["stable-diffusion", "dall-e", "midjourney"],
+                "description": "AI model to use for logo generation"
+              },
+              "options": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "type": "number",
+                    "default": 512,
+                    "description": "Width of the generated logo"
+                  },
+                  "height": {
+                    "type": "number",
+                    "default": 512,
+                    "description": "Height of the generated logo"
+                  },
+                  "style": {
+                    "type": "string",
+                    "description": "Style of the logo (e.g., 'minimal', 'vintage', 'modern')"
+                  }
+                }
+              }
+            },
+            "required": ["prompt", "outputDirectory", "model"]
+          }
+        }
+      ]
+    }
+  },
+  "branding": {
+    "company_name": "Cline",
+    "tagline": "AI-Powered Development Tools",
+    "primary_color": "#3B82F6",
+    "secondary_color": "#1D4ED8",
+    "logo_path": "public/logo.png",
+    "favicon_path": "public/favicon.ico",
+    "theme": {
+      "font_family": "Inter, system-ui, sans-serif",
+      "border_radius": "8px",
+      "shadow": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "transition": "all 0.2s ease-in-out"
+    }
+  },
+  "metadata": {
+    "created_at": "2025-12-27T16:27:00Z",
+    "version": "1.0.0",
+    "author": "Cline MCP",
+    "license": "MIT"
+  }
+}

@@ -1,4 +1,6 @@
 "use client";
+import { motion } from 'framer-motion';
+import { Clock, Github, Linkedin, Mail, MapPin, MessageSquare, Send } from 'lucide-react';
 import { useState } from 'react';
 import { PersonalData } from '../lib/personal-data';
 import { Input } from './input';
@@ -31,135 +33,263 @@ export default function Contact({ data }: ContactProps) {
     });
   };
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <section id="contact" className="py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
-      <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              Get In Touch
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8"></div>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Ready to bring your ideas to life? Let&apos;s collaborate and create something amazing together
-            </p>
+    <section id="contact" className="relative py-24 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
+      <div className="absolute inset-0">
+        <div className="absolute top-20 right-32 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 left-32 w-48 h-48 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-6">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+            <MessageSquare className="w-4 h-4" />
+            Get In Touch
           </div>
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-6">
+            Let&apos;s
+            <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Collaborate
+            </span>
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Ready to bring your ideas to life? Let&apos;s collaborate and create something amazing together
+          </p>
+        </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div className="space-y-8">
-              <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-                Let&apos;s Connect
-              </h3>
+        <motion.div
+          className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {/* Contact Information */}
+          <motion.div variants={itemVariants} className="space-y-6">
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold mb-4">Let&apos;s Connect</h3>
+              <p className="text-muted-foreground">
+                I&apos;m always interested in new opportunities and exciting projects.
+                Let&apos;s discuss how we can work together.
+              </p>
+            </div>
 
-              <div className="space-y-8">
-                <div className="group bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-white/20 dark:border-gray-700">
-                  <div className="flex items-center mb-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-6 shadow-lg">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Email</p>
-                      <p className="text-lg font-semibold text-gray-900 dark:text-white">{data.email}</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">I&apos;ll get back to you within 24 hours</p>
+            <motion.div
+              className="group bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                  <Mail className="w-6 h-6 text-white" />
                 </div>
-
-                <div className="group bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-white/20 dark:border-gray-700">
-                  <div className="flex items-center mb-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-6 shadow-lg">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Location</p>
-                      <p className="text-lg font-semibold text-gray-900 dark:text-white">{data.location}</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">Available for remote work</p>
-                </div>
-
-                <div className="group bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-white/20 dark:border-gray-700">
-                  <div className="flex items-center mb-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-6 shadow-lg">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Response Time</p>
-                      <p className="text-lg font-semibold text-gray-900 dark:text-white">Within 24 hours</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">Quick and reliable communication</p>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-lg mb-1">Email</h4>
+                  <p className="text-primary font-medium mb-2">{data.email}</p>
+                  <p className="text-sm text-muted-foreground">I&apos;ll get back to you within 24 hours</p>
                 </div>
               </div>
+            </motion.div>
+
+            <motion.div
+              className="group bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                  <MapPin className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-lg mb-1">Location</h4>
+                  <p className="text-primary font-medium mb-2">{data.location}</p>
+                  <p className="text-sm text-muted-foreground">Available for remote work worldwide</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="group bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                  <Clock className="w-6 h-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-lg mb-1">Response Time</h4>
+                  <p className="text-primary font-medium mb-2">Within 24 hours</p>
+                  <p className="text-sm text-muted-foreground">Quick and reliable communication</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Social Links */}
+            <motion.div
+              variants={itemVariants}
+              className="pt-6 border-t border-border/50"
+            >
+              <h4 className="font-semibold mb-4">Follow Me</h4>
+              <div className="flex gap-4">
+                {data.github && (
+                  <motion.a
+                    href={data.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+                    whileHover={{ rotate: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Github className="w-6 h-6 text-white" />
+                  </motion.a>
+                )}
+                {data.linkedin && (
+                  <motion.a
+                    href={data.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+                    whileHover={{ rotate: -5 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Linkedin className="w-6 h-6 text-white" />
+                  </motion.a>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Contact Form */}
+          <motion.div
+            variants={itemVariants}
+            className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-xl"
+          >
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold mb-2">Send Me a Message</h3>
+              <p className="text-muted-foreground">
+                Have a project in mind? Let&apos;s discuss the details and see how we can make it happen.
+              </p>
             </div>
 
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/20 dark:border-gray-700">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">Send Me a Message</h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                      Your Name
-                    </label>
-                    <Input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      placeholder="Enter your full name"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                      Your Email
-                    </label>
-                    <Input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                    Your Message
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <motion.div
+                  whileFocus={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <label htmlFor="name" className="block text-sm font-medium mb-2">
+                    Your Name
                   </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
+                  <Input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                     required
-                    rows={6}
-                    placeholder="Tell me about your project, goals, and how I can help you achieve them..."
+                    placeholder="Enter your full name"
+                    className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
                   />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 rounded-xl"
+                </motion.div>
+                <motion.div
+                  whileFocus={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                    Your Email
+                  </label>
+                  <Input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="your@email.com"
+                    className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
+                  />
+                </motion.div>
+              </div>
+
+              <motion.div
+                whileFocus={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                  Your Message
+                </label>
+                <Textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  rows={6}
+                  placeholder="Tell me about your project, goals, and how I can help you achieve them..."
+                  className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 resize-none"
+                />
+              </motion.div>
+
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl font-semibold"
+                >
+                  <Send className="w-5 h-5 mr-2" />
                   Send Message
                 </Button>
-              </form>
-            </div>
+              </motion.div>
+            </form>
+          </motion.div>
+        </motion.div>
+
+        {/* Call to Action */}
+        <motion.div
+          className="text-center mt-16"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <p className="text-muted-foreground mb-4">
+            Prefer to connect directly? Feel free to reach out through any of the channels above.
+          </p>
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-full text-sm font-medium">
+            <Mail className="w-4 h-4" />
+            Always open to new opportunities
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

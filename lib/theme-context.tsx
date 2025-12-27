@@ -13,14 +13,19 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    // Initialize theme on client-side only
-    if (typeof window === 'undefined') return 'light';
+  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<Theme>('light');
+
+  useEffect(() => {
+    setMounted(true);
     
+    // Initialize theme on client-side only
     const savedTheme = localStorage.getItem('theme') as Theme;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    return savedTheme || (prefersDark ? 'dark' : 'light');
-  });
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+    
+    setThemeState(initialTheme);
+  }, []);
 
   useEffect(() => {
     // Apply theme to document when theme changes
@@ -41,7 +46,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, mounted: true }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme, mounted }}>
       {children}
     </ThemeContext.Provider>
   );
