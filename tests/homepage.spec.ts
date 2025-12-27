@@ -7,12 +7,15 @@ test('homepage loads correctly', async ({ page }: { page: Page }) => {
   // Check if the page title contains the portfolio title
   await expect(page).toHaveTitle(/Themistoklis Baltzakis/);
 
-  // Check if the main hero heading is visible
-  await expect(page.locator('.group.relative.block').filter({ hasText: 'Themistoklis' })).toBeVisible();
+  // Check if the main hero heading is visible (name in h1)
+  await expect(page.locator('h1').filter({ hasText: 'Themistoklis' })).toBeVisible();
 
   // Check if the hero section has the correct title and bio
   await expect(page.locator('section').first()).toContainText('Systems & Network Engineer');
+  // Wait for the bio animation to complete and check for key parts
   await expect(page.locator('section').first()).toContainText('Data Analytics professional');
+  await expect(page.locator('section').first()).toContainText('computer science');
+  await expect(page.locator('section').first()).toContainText('data-driven decision making');
 
   // Check if navigation links are present
   await expect(page.locator('nav button').filter({ hasText: 'Home' })).toBeVisible();
@@ -25,6 +28,9 @@ test('homepage loads correctly', async ({ page }: { page: Page }) => {
 
 test('navigation works', async ({ page }: { page: Page }) => {
   await page.goto('/');
+
+  // Test desktop navigation
+  await page.setViewportSize({ width: 1024, height: 768 });
 
   // Check if About section is visible after clicking About in navigation
   await page.locator('nav button').filter({ hasText: 'About' }).click();
@@ -56,14 +62,14 @@ test('responsive design', async ({ page }: { page: Page }) => {
   // Check if mobile menu button is visible (hamburger menu)
   await expect(page.locator('button.md\\:hidden')).toBeVisible();
 
-  // Check if main content is visible
-  await expect(page.locator('.group.relative.block').filter({ hasText: 'Themistoklis' })).toBeVisible();
+  // Check if main content is visible (hero name)
+  await expect(page.locator('h1').filter({ hasText: 'Themistoklis' })).toBeVisible();
 
   // Test tablet viewport
   await page.setViewportSize({ width: 768, height: 1024 });
-  await expect(page.locator('.group.relative.block').filter({ hasText: 'Themistoklis' })).toBeVisible();
+  await expect(page.locator('h1').filter({ hasText: 'Themistoklis' })).toBeVisible();
 
   // Test desktop viewport
   await page.setViewportSize({ width: 1920, height: 1080 });
-  await expect(page.locator('.group.relative.block').filter({ hasText: 'Themistoklis' })).toBeVisible();
+  await expect(page.locator('h1').filter({ hasText: 'Themistoklis' })).toBeVisible();
 });

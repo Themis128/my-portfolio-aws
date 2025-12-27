@@ -1,6 +1,6 @@
 "use client";
-import { Globe, MessageCircle, Languages as LanguagesIcon, Star, Trophy, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { CheckCircle, Globe, Languages as LanguagesIcon, MessageCircle, Star } from 'lucide-react';
 import { PersonalData } from '../lib/personal-data';
 
 interface LanguagesProps {

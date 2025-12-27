@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { trackInteraction } from '../lib/analytics';
 import ThemeSwitcher from './ThemeSwitcher';
 
 export default function Navigation() {
@@ -16,6 +17,9 @@ export default function Navigation() {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
+    // Track navigation interaction
+    trackInteraction('navigation_click', 'navigation', sectionId);
+
     let element;
     
     // Special handling for home navigation

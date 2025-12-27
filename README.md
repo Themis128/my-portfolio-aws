@@ -35,11 +35,56 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Google Analytics
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project includes Google Analytics integration using Vercel Analytics and direct Google Analytics implementation for enhanced mobile app compatibility.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Configuration
+
+Create a `.env.local` file in the root directory with your Google Analytics measurement ID:
+
+```env
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-FT79QM66D3
+```
+
+Replace `G-XXXXXXXXXX` with your actual Google Analytics measurement ID.
+
+### Mobile App Setup
+
+To use the Google Analytics mobile app to track your portfolio analytics:
+
+1. **Install the Google Analytics app** on your mobile device from the App Store or Google Play Store
+2. **Sign in** with the same Google account that owns the Google Analytics property
+3. **Grant permissions** for the app to access your Google Analytics data
+4. **Select your property** - look for the property with measurement ID `G-FT79QM66D3`
+
+### What You Can Track with the Mobile App
+
+- **Real-time visitors**: See who's on your site right now
+- **Page views**: Track which pages are most popular
+- **Traffic sources**: See where your visitors come from
+- **Device breakdown**: Monitor mobile vs desktop traffic
+- **Top pages**: Identify your most visited content
+- **Goal completions**: Track contact form submissions and other conversions
+
+### Custom Event Tracking
+
+The analytics setup includes custom event tracking for:
+
+- Contact form submissions
+- Project views
+- Social media clicks
+- File downloads
+- User interactions
+
+### How it works
+
+- **Dual tracking**: Uses both Vercel Analytics and direct Google Analytics for comprehensive data
+- **Production only**: Analytics only loads in production builds, not during development
+- **Mobile optimized**: Enhanced tracking for mobile devices and apps
+- **Privacy compliant**: Uses Google's latest privacy-focused analytics
+
+For more information, see the [Vercel Analytics documentation](https://vercel.com/docs/analytics) and [Google Analytics Help](https://support.google.com/analytics).
 # Trigger build
 # Second build trigger
 # Third build trigger with Node.js fix

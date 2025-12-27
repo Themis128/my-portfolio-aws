@@ -1,6 +1,6 @@
 "use client";
-import { Trophy, Award, BookOpen, Mic, Github, Star, Calendar, CheckCircle, Target, TrendingUp, Users, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Award, BookOpen, Calendar, CheckCircle, Github, Mic, Star, Target, TrendingUp, Trophy } from 'lucide-react';
 import { PersonalData } from '../lib/personal-data';
 
 interface AchievementsProps {
@@ -148,7 +148,7 @@ export default function Achievements({ data }: AchievementsProps) {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {data.achievements.map((achievement, index) => {
+          {data.achievements.map((achievement) => {
             const styles = getAchievementStyles(achievement.type);
             const isRecent = isRecentAchievement(achievement.date);
             const impact = getAchievementImpact(achievement.description);

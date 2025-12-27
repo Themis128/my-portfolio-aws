@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
   experimental: {
     // reactCompiler: false, // Explicitly disable React Compiler
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'baltzakisthemis.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

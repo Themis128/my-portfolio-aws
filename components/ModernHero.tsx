@@ -1,308 +1,312 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Github, Globe, Linkedin, Sparkles, Zap } from "lucide-react";
-import React, { useCallback, useEffect, useRef } from "react";
+import { ArrowRight, Github, Globe, Linkedin, Sparkles, Network, Server, Cloud, Shield, type LucideIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
-function cn(...classes: (string | undefined | null | false)[]) {
-  return classes.filter(Boolean).join(" ");
+// Particle class for the background animation
+class Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  color: string;
+  alpha: number;
+
+  constructor(canvasWidth: number, canvasHeight: number) {
+    this.x = Math.random() * canvasWidth;
+    this.y = Math.random() * canvasHeight;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.size = Math.random() * 2 + 1;
+    this.color = Math.random() > 0.5 ? '#3b82f6' : '#06b6d4';
+    this.alpha = Math.random() * 0.5 + 0.2;
+  }
+
+  update(canvasWidth: number, canvasHeight: number) {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    // Wrap around edges
+    if (this.x < 0) this.x = canvasWidth;
+    if (this.x > canvasWidth) this.x = 0;
+    if (this.y < 0) this.y = canvasHeight;
+    if (this.y > canvasHeight) this.y = 0;
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
 }
 
 const ParticlesBackground = () => {
-  const initParticles = useCallback((isDark: boolean) => {
-    const oldCanvas = document.querySelector("#particles-js canvas");
-    if (oldCanvas) oldCanvas.remove();
-
-    // @ts-expect-error particles.js library types not available
-    if (window.pJSDom?.length > 0) {
-      // @ts-expect-error particles.js library types not available
-      window.pJSDom.forEach((p) => p.pJS.fn.vendors.destroypJS());
-      // @ts-expect-error particles.js library types not available
-      window.pJSDom = [];
-    }
-
-    const colors = isDark
-      ? {
-          particles: "#00f5ff",
-          lines: "#00d9ff",
-          accent: "#0096c7",
-        }
-      : {
-          particles: "#0277bd",
-          lines: "#0288d1",
-          accent: "#039be5",
-        };
-
-    // @ts-expect-error particles.js library types not available
-    window.particlesJS("particles-js", {
-      particles: {
-        number: { value: 120, density: { enable: true, value_area: 800 } },
-        color: { value: colors.particles },
-        shape: { type: "circle", stroke: { width: 0.5, color: colors.accent } },
-        opacity: {
-          value: 0.7,
-          random: true,
-          anim: { enable: true, speed: 1, opacity_min: 0.3 },
-        },
-        size: {
-          value: 3,
-          random: true,
-          anim: { enable: true, speed: 2, size_min: 1 },
-        },
-        line_linked: {
-          enable: true,
-          distance: 160,
-          color: colors.lines,
-          opacity: 0.4,
-          width: 1.2,
-        },
-        move: { enable: true, speed: 2, random: true, out_mode: "bounce" },
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { enable: true, mode: "grab" },
-          onclick: { enable: true, mode: "push" },
-          resize: true,
-        },
-        modes: {
-          grab: { distance: 220, line_linked: { opacity: 0.8 } },
-          push: { particles_nb: 4 },
-          repulse: { distance: 180, duration: 0.4 },
-        },
-      },
-      retina_detect: true,
-    });
-  }, []);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    const script = document.createElement("script");
-    script.src =
-      "https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js";
-    script.async = true;
-    document.body.appendChild(script);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    script.onload = () => {
-      const html = document.documentElement;
-      const detectDark = () =>
-        html.classList.contains("dark") ||
-        html.getAttribute("data-theme") === "dark";
-
-      initParticles(detectDark());
-
-      const observer = new MutationObserver(() =>
-        initParticles(detectDark())
-      );
-      observer.observe(html, {
-        attributes: true,
-        attributeFilter: ["class", "data-theme"],
-      });
+    // Set canvas size
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
 
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Create particles
+    const particles: Particle[] = [];
+    const particleCount = 100;
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle(canvas.width, canvas.height));
+    }
+
+    // Animation loop
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw connections
+      particles.forEach((particle, i) => {
+        particles.slice(i + 1).forEach(otherParticle => {
+          const dx = particle.x - otherParticle.x;
+          const dy = particle.y - otherParticle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 120) {
+            ctx.save();
+            ctx.globalAlpha = (120 - distance) / 120 * 0.2;
+            ctx.strokeStyle = particle.color;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(otherParticle.x, otherParticle.y);
+            ctx.stroke();
+            ctx.restore();
+          }
+        });
+      });
+
+      // Update and draw particles
+      particles.forEach(particle => {
+        particle.update(canvas.width, canvas.height);
+        particle.draw(ctx);
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+
     return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
+      window.removeEventListener('resize', resizeCanvas);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [initParticles]);
+  }, []);
 
   return (
-    <div
-      id="particles-js"
-      className="w-full h-full absolute top-0 left-0 transition-colors duration-500 bg-gradient-to-tr from-[#e3f2fd] via-[#90caf9] to-[#64b5f6] dark:from-[#000814] dark:via-[#003566] dark:to-[#0077b6]"
-    />
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20" />
+
+      {/* Particles canvas */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+        style={{ background: 'transparent' }}
+      />
+
+      {/* Animated shapes for extra effect */}
+      <motion.div
+        className="absolute top-20 left-10 w-32 h-32 bg-blue-200/20 dark:bg-blue-500/10 rounded-full blur-2xl"
+        animate={{
+          x: [0, 50, 0],
+          y: [0, -30, 0],
+          scale: [1, 1.2, 1],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div
+        className="absolute top-40 right-20 w-24 h-24 bg-purple-200/20 dark:bg-purple-500/10 rounded-full blur-2xl"
+        animate={{
+          x: [0, -40, 0],
+          y: [0, 25, 0],
+          scale: [1, 1.3, 1],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2
+        }}
+      />
+      <motion.div
+        className="absolute bottom-32 left-1/4 w-40 h-40 bg-indigo-200/15 dark:bg-indigo-500/8 rounded-full blur-3xl"
+        animate={{
+          scale: [1, 1.4, 1],
+          opacity: [0.2, 0.5, 0.2],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 4
+        }}
+      />
+
+      {/* Grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:50px_50px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
+    </div>
   );
 };
 
-interface AnimationConfig {
-  minDistance?: number;
-  maxDistance?: number;
-  duration?: number;
-  easing?: string;
-  shouldRandomizeInitialPosition?: boolean;
-}
-
-interface FloatingElementsProps {
-  children: React.ReactNode;
-  className?: string;
-  elementClassName?: string;
-  gridClassName?: string;
-  animationConfig?: AnimationConfig;
-}
-
-const defaultAnimationConfig: AnimationConfig = {
-  minDistance: 0,
-  maxDistance: 50,
-  duration: 3000,
-  easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-  shouldRandomizeInitialPosition: true,
-};
-
-const FloatingElements = ({
-  children,
-  className,
-  elementClassName,
-  gridClassName,
-  animationConfig = defaultAnimationConfig,
-}: FloatingElementsProps) => {
-  const animationFrameIds = useRef<number[]>([]);
-  const elements = useRef<HTMLElement[]>([]);
-  const startTimes = useRef<number[]>([]);
-  const currentPositions = useRef<{ x: number; y: number }[]>([]);
-  const targetPositions = useRef<{ x: number; y: number }[]>([]);
-
-  const config = { ...defaultAnimationConfig, ...animationConfig };
-
-  const animateRef = useRef<((timestamp: number) => void) | null>(null);
-
-  const generateRandomPosition = useCallback(() => {
-    const distance =
-      config.minDistance! +
-      Math.random() * (config.maxDistance! - config.minDistance!);
-    const angle = Math.random() * Math.PI * 2;
-    return {
-      x: Math.cos(angle) * distance,
-      y: Math.sin(angle) * distance,
-    };
-  }, [config.maxDistance, config.minDistance]);
-
-  useEffect(() => {
-    animateRef.current = (timestamp: number) => {
-      elements.current.forEach((element, index) => {
-        if (!startTimes.current[index]) {
-          startTimes.current[index] = timestamp;
-          currentPositions.current[index] = { x: 0, y: 0 };
-          targetPositions.current[index] = generateRandomPosition();
-        }
-
-        const elapsed = timestamp - startTimes.current[index];
-        const progress = Math.min(elapsed / config.duration!, 1);
-
-        if (progress === 1) {
-          currentPositions.current[index] = targetPositions.current[index];
-          targetPositions.current[index] = generateRandomPosition();
-          startTimes.current[index] = timestamp;
-          return;
-        }
-
-        const current = currentPositions.current[index];
-        const target = targetPositions.current[index];
-        const x = current.x + (target.x - current.x) * progress;
-        const y = current.y + (target.y - current.y) * progress;
-
-        element.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      });
-
-      const frameId = requestAnimationFrame(animateRef.current!);
-      animationFrameIds.current.push(frameId);
-    };
-  }, [config.duration, generateRandomPosition]);
-
-  useEffect(() => {
-    const elementsArray = Array.from(
-      document.querySelectorAll(".floating-element")
-    ) as HTMLElement[];
-
-    elements.current = elementsArray;
-    currentPositions.current = elementsArray.map(() => ({ x: 0, y: 0 }));
-    targetPositions.current = elementsArray.map(() => generateRandomPosition());
-
-    if (config.shouldRandomizeInitialPosition) {
-      elementsArray.forEach((element, index) => {
-        const initialPosition = generateRandomPosition();
-        currentPositions.current[index] = initialPosition;
-        element.style.transform = `translate3d(${initialPosition.x}px, ${initialPosition.y}px, 0)`;
-      });
-    }
-
-    if (animateRef.current) {
-      animationFrameIds.current.push(requestAnimationFrame(animateRef.current));
-    }
-
-    return () => {
-      animationFrameIds.current.forEach(cancelAnimationFrame);
-      animationFrameIds.current = [];
-    };
-  }, [config.shouldRandomizeInitialPosition, generateRandomPosition]);
-
+const FeatureCards = ({ features }: { features: Array<{ icon: LucideIcon; label: string }> }) => {
   return (
-    <div
-      className={cn(
-        "flex w-full max-w-4xl flex-col items-center justify-center space-y-16 overflow-hidden",
-        className
-      )}
+    <motion.div
+      className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.8 }}
     >
-      <div
-        className={cn(
-          "mx-auto grid w-full grid-cols-2 place-items-center gap-6 md:grid-cols-3 lg:grid-cols-4",
-          gridClassName
-        )}
-      >
-        {Array.isArray(children) ?
-          children.map((child, index) => (
-            <div
-              key={index}
-              className={cn(
-                "floating-element transition-transform",
-                elementClassName
-              )}
-              style={{ transitionTimingFunction: config.easing }}
-            >
-              {child}
+      {features.map((feature, index) => {
+        const Icon = feature.icon;
+        return (
+          <motion.div
+            key={index}
+            className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/50">
+              <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             </div>
-          ))
-        : <div
-            className={cn(
-              "floating-element transition-transform",
-              elementClassName
-            )}
-            style={{ transitionTimingFunction: config.easing }}
-          >
-            {children}
-          </div>
-        }
-      </div>
-    </div>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 text-center">
+              {feature.label}
+            </span>
+          </motion.div>
+        );
+      })}
+    </motion.div>
   );
 };
 
-const FlipText = ({ children }: { children: string }) => {
+const AnimatedName = ({ name }: { name: string }) => {
+  const [displayText, setDisplayText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+
+  useEffect(() => {
+    let index = 0;
+    const typeWriter = () => {
+      if (index < name.length) {
+        setDisplayText(name.slice(0, index + 1));
+        index++;
+        setTimeout(typeWriter, 100);
+      } else {
+        setIsTyping(false);
+      }
+    };
+
+    const timer = setTimeout(typeWriter, 500);
+    return () => clearTimeout(timer);
+  }, [name]);
+
   return (
-    <div
-      className="group relative block overflow-hidden whitespace-nowrap text-5xl md:text-7xl lg:text-8xl font-black uppercase text-primary"
-      style={{
-        lineHeight: 0.75,
-      }}
+    <motion.h1
+      className="text-5xl md:text-7xl lg:text-8xl font-black text-blue-600 dark:text-blue-400 mb-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
     >
-      <div className="flex">
-        {children.split("").map((letter, i) => (
-          <span
-            key={i}
-            className="inline-block transition-transform duration-300 ease-in-out group-hover:-translate-y-[110%]"
-            style={{
-              transitionDelay: `${i * 25}ms`,
-            }}
-          >
-            {letter}
-          </span>
-        ))}
-      </div>
-      <div className="absolute inset-0 flex">
-        {children.split("").map((letter, i) => (
-          <span
-            key={i}
-            className="inline-block translate-y-[110%] transition-transform duration-300 ease-in-out group-hover:translate-y-0"
-            style={{
-              transitionDelay: `${i * 25}ms`,
-            }}
-          >
-            {letter}
-          </span>
-        ))}
-      </div>
-    </div>
+      <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        {displayText}
+      </span>
+      {isTyping && (
+        <motion.span
+          className="inline-block w-1 h-12 md:h-16 lg:h-20 bg-blue-600 ml-1"
+          animate={{ opacity: [1, 0, 1] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+        />
+      )}
+      {!isTyping && (
+        <motion.span
+          className="inline-block ml-2"
+          animate={{
+            textShadow: [
+              "0 0 0px rgba(59, 130, 246, 0)",
+              "0 0 20px rgba(59, 130, 246, 0.5)",
+              "0 0 0px rgba(59, 130, 246, 0)"
+            ]
+          }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          ✨
+        </motion.span>
+      )}
+    </motion.h1>
+  );
+};
+
+const AnimatedBio = ({ bio }: { bio: string }) => {
+  const words = bio.split(' ');
+  const [visibleWords, setVisibleWords] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setVisibleWords(prev => {
+        if (prev < words.length) {
+          return prev + 1;
+        }
+        clearInterval(timer);
+        return prev;
+      });
+    }, 150);
+
+    return () => clearInterval(timer);
+  }, [words.length]);
+
+  return (
+    <motion.p
+      className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.6 }}
+    >
+      {words.map((word, index) => (
+        <motion.span
+          key={index}
+          className="inline-block mr-1"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{
+            opacity: index < visibleWords ? 1 : 0,
+            y: index < visibleWords ? 0 : 10
+          }}
+          transition={{
+            duration: 0.3,
+            delay: index * 0.05,
+            ease: "easeOut"
+          }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </motion.p>
   );
 };
 
@@ -325,41 +329,55 @@ interface ModernHeroProps {
 
 const ModernHeroSection = ({ data }: ModernHeroProps) => {
   const features = [
-    { icon: Sparkles, label: "Network Engineering" },
-    { icon: Zap, label: "Cloud Solutions" },
-    { icon: Sparkles, label: "Cisco Systems" },
-    { icon: Zap, label: "Azure AD" },
+    { icon: Network, label: "Network Engineering" },
+    { icon: Cloud, label: "Cloud Solutions" },
+    { icon: Server, label: "Cisco Systems" },
+    { icon: Shield, label: "Azure AD" },
   ];
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden">
+    <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <ParticlesBackground />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-20">
-        <div className="mx-auto max-w-6xl w-full">
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-primary shadow-lg">
-              <Sparkles className="h-4 w-4" />
-              <span>Systems & Network Engineer</span>
-            </div>
-          </div>
+        <div className="mx-auto max-w-6xl w-full text-center">
+          {/* Status Badge */}
+          <motion.div
+            className="inline-flex items-center gap-2 rounded-full border border-blue-200 dark:border-blue-800 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-blue-700 dark:text-blue-300 shadow-lg mb-8"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Sparkles className="h-4 w-4" />
+            <span>Systems & Network Engineer</span>
+          </motion.div>
 
-          <div className="text-center mb-6">
-            <FlipText>{data.name.split(' ')[0]}</FlipText>
-          </div>
+          {/* Name */}
+          <AnimatedName name={data.name.split(' ')[0]} />
 
-          <h2 className="text-center text-2xl md:text-4xl font-bold text-foreground mb-6">
+          {/* Title */}
+          <motion.h2
+            className="text-2xl md:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             {data.title}
-          </h2>
+          </motion.h2>
 
-          <p className="text-center text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12">
-            {data.bio}
-          </p>
+          {/* Bio */}
+          <AnimatedBio bio={data.bio} />
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+          {/* CTA Buttons */}
+          <motion.div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+          >
             <Button
               size="lg"
-              className="w-full sm:w-auto group relative overflow-hidden"
+              className="w-full sm:w-auto group relative overflow-hidden bg-blue-600 hover:bg-blue-700 text-white"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <span className="relative z-10 flex items-center gap-2">
@@ -370,78 +388,68 @@ const ModernHeroSection = ({ data }: ModernHeroProps) => {
             <Button
               size="lg"
               variant="outline"
-              className="w-full sm:w-auto border-primary/20 bg-background/80 backdrop-blur-sm hover:bg-primary/10"
+              className="w-full sm:w-auto border-blue-200 dark:border-blue-800 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-700 dark:text-blue-300"
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
             >
               Get In Touch
             </Button>
-          </div>
+          </motion.div>
 
-          <FloatingElements
-            className="mt-16"
-            gridClassName="gap-8"
-            elementClassName="transition-all duration-300"
+          {/* Feature Cards */}
+          <FeatureCards features={features} />
+
+          {/* Social Links */}
+          <motion.div
+            className="mt-20 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1.2 }}
           >
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div
-                  key={index}
-                  className="flex flex-col items-center justify-center gap-3 p-6 rounded-2xl bg-background/80 backdrop-blur-sm border border-primary/20 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
-                >
-                  <div className="p-3 rounded-full bg-primary/10">
-                    <Icon className="h-8 w-8 text-primary" />
-                  </div>
-                  <span className="text-sm font-medium text-foreground">
-                    {feature.label}
-                  </span>
-                </div>
-              );
-            })}
-          </FloatingElements>
-
-          <div className="mt-20 text-center">
-            <p className="text-muted-foreground mb-6">Connect with me</p>
-            <div className="flex flex-wrap items-center justify-center gap-8 opacity-60">
+            <p className="text-gray-500 dark:text-gray-400 mb-6">Connect with me</p>
+            <div className="flex flex-wrap items-center justify-center gap-6">
               {data.github && (
-                <a
+                <motion.a
                   href={data.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border text-foreground font-semibold hover:opacity-100 transition-opacity flex items-center gap-2"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 hover:shadow-md"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <Github className="h-4 w-4" />
                   GitHub
-                </a>
+                </motion.a>
               )}
               {data.linkedin && (
-                <a
+                <motion.a
                   href={data.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border text-foreground font-semibold hover:opacity-100 transition-opacity flex items-center gap-2"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 hover:shadow-md"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <Linkedin className="h-4 w-4" />
                   LinkedIn
-                </a>
+                </motion.a>
               )}
               {data.website && (
-                <a
+                <motion.a
                   href={data.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-lg bg-background/60 backdrop-blur-sm border border-border text-foreground font-semibold hover:opacity-100 transition-opacity flex items-center gap-2"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 hover:shadow-md"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   <Globe className="h-4 w-4" />
                   Portfolio
-                </a>
+                </motion.a>
               )}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background pointer-events-none" />
     </section>
   );
 };

@@ -13,13 +13,13 @@ export default function Certifications({ data }: CertificationsProps) {
   }
 
   // Group certifications by issuer for better organization
-  const groupedCertifications = data.certifications.reduce((acc, cert) => {
-    if (!acc[cert.issuer]) {
-      acc[cert.issuer] = [];
-    }
-    acc[cert.issuer].push(cert);
-    return acc;
-  }, {} as Record<string, typeof data.certifications>);
+  // const groupedCertifications = data.certifications.reduce((acc, cert) => {
+  //   if (!acc[cert.issuer]) {
+  //     acc[cert.issuer] = [];
+  //   }
+  //   acc[cert.issuer].push(cert);
+  //   return acc;
+  // }, {} as Record<string, typeof data.certifications>);
 
   // Get certification icon based on issuer
   const getCertificationIcon = (issuer: string) => {
@@ -112,7 +112,7 @@ export default function Certifications({ data }: CertificationsProps) {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {data.certifications.map((cert, index) => {
+          {data.certifications.map((cert) => {
             const colors = getCertificationColors(cert.issuer);
             const isRecent = isRecentCertification(cert.date);
 

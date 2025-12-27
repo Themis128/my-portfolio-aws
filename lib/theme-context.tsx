@@ -1,5 +1,5 @@
 "use client";
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useLayoutEffect, useState } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -16,15 +16,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
   const [theme, setThemeState] = useState<Theme>('light');
 
-  useEffect(() => {
-    setMounted(true);
-    
+  useLayoutEffect(() => {
     // Initialize theme on client-side only
     const savedTheme = localStorage.getItem('theme') as Theme;
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-    
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setThemeState(initialTheme);
+    // Set mounted after theme is initialized to prevent hydration mismatch
+    setMounted(true);
   }, []);
 
   useEffect(() => {
