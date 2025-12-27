@@ -10,20 +10,28 @@ test('homepage loads correctly', async ({ page }: { page: Page }) => {
   // Check if the main hero heading is visible (name in h1)
   await expect(page.locator('h1').filter({ hasText: 'Themistoklis' })).toBeVisible();
 
-  // Check if the hero section has the correct title and bio
+  // Check if the hero section has the correct title
   await expect(page.locator('section').first()).toContainText('Systems & Network Engineer');
-  // Wait for the bio animation to complete and check for key parts
-  await expect(page.locator('section').first()).toContainText('Data Analytics professional');
-  await expect(page.locator('section').first()).toContainText('computer science');
-  await expect(page.locator('section').first()).toContainText('data-driven decision making');
 
-  // Check if navigation links are present
-  await expect(page.locator('nav button').filter({ hasText: 'Home' })).toBeVisible();
-  await expect(page.locator('nav button').filter({ hasText: 'About' })).toBeVisible();
-  await expect(page.locator('nav button').filter({ hasText: 'Skills' })).toBeVisible();
-  await expect(page.locator('nav button').filter({ hasText: 'Experience' })).toBeVisible();
-  await expect(page.locator('nav button').filter({ hasText: 'Projects' })).toBeVisible();
-  await expect(page.locator('nav button').filter({ hasText: 'Contact' })).toBeVisible();
+  // Check for key elements that should be present
+  await expect(page.locator('section').first()).toContainText('BCs Computer Science');
+  await expect(page.locator('section').first()).toContainText('View My Work');
+  await expect(page.locator('section').first()).toContainText('Get In Touch');
+
+  // Check navigation based on viewport
+  const viewportSize = page.viewportSize();
+  if (viewportSize && viewportSize.width >= 768) {
+    // Desktop navigation
+    await expect(page.locator('nav button').filter({ hasText: 'Home' })).toBeVisible();
+    await expect(page.locator('nav button').filter({ hasText: 'About' })).toBeVisible();
+    await expect(page.locator('nav button').filter({ hasText: 'Skills' })).toBeVisible();
+    await expect(page.locator('nav button').filter({ hasText: 'Experience' })).toBeVisible();
+    await expect(page.locator('nav button').filter({ hasText: 'Projects' })).toBeVisible();
+    await expect(page.locator('nav button').filter({ hasText: 'Contact' })).toBeVisible();
+  } else {
+    // Mobile navigation - check for hamburger menu
+    await expect(page.locator('button.md\\:hidden')).toBeVisible();
+  }
 });
 
 test('navigation works', async ({ page }: { page: Page }) => {

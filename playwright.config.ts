@@ -51,6 +51,16 @@ export default defineConfig({
       use: { ...devices['iPhone 12'] },
     },
 
+    /* Backend API tests */
+    {
+      name: 'backend-api',
+      testDir: './tests',
+      testMatch: 'backend-api.spec.ts',
+      use: {
+        baseURL: 'http://localhost:3000',
+      },
+    },
+
     /* Test against branded browsers. */
     // {
     //   name: 'Microsoft Edge',
@@ -63,9 +73,9 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'pnpm dev',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: 'pnpm dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+  },
 });

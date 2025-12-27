@@ -6,11 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy:amplify": "node deploy-amplify.js",
+    "deploy:amplify:simple": "node deploy-amplify-simple.js"
   },
   "dependencies": {
     "@aws-amplify/api": "^6.3.21",
+    "@aws-sdk/client-amplify": "^3.958.0",
     "@aws-sdk/client-dynamodb": "^3.958.0",
+    "@aws-sdk/client-lambda": "^3.958.0",
+    "@aws-sdk/client-s3": "^3.958.0",
+    "@aws-sdk/client-ses": "^3.958.0",
+    "@aws-sdk/lib-storage": "^3.958.0",
+    "@aws-sdk/s3-request-presigner": "^3.958.0",
     "@aws-sdk/client-lambda": "^3.958.0",
     "@aws-sdk/client-s3": "^3.958.0",
     "@aws-sdk/client-ses": "^3.958.0",

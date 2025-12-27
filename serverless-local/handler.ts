@@ -18,12 +18,18 @@ interface ContactEvent {
 export const handler = async (event: ContactEvent) => {
   try {
     // Handle both Amplify and serverless-offline event formats
-    let body: any = event.body;
-    if (typeof body === 'string') {
-      body = JSON.parse(body);
+    let body: {
+      name?: string;
+      email?: string;
+      message?: string;
+    } = {};
+    if (typeof event.body === 'string') {
+      body = JSON.parse(event.body);
+    } else if (event.body) {
+      body = event.body;
     }
 
-    const { name, email, message } = body || {};
+    const { name, email, message } = body;
 
     if (!name || !email || !message) {
       return {
@@ -94,22 +100,22 @@ export const handler = async (event: ContactEvent) => {
       },
       Message: {
         Subject: {
-          Data: 'Thank you for your message - Cloudless.gr',
+          Data: 'Thank you for your message - Baltzakis Themis',
         },
         Body: {
           Text: {
             Data: `Dear ${name},
 
-Thank you for reaching out to us at Cloudless.gr!
+Thank you for reaching out to me!
 
-We have received your message and appreciate you taking the time to contact us. Our team will review your inquiry and get back to you within 24 hours.
+I have received your message and appreciate you taking the time to contact me. I will review your inquiry and get back to you within 24 hours.
 
 For your reference, here's a copy of your message:
 "${message}"
 
 Best regards,
-The Cloudless.gr Team
-www.cloudless.gr
+Themis Baltzakis
+www.baltzakisthemis.com
 
 ---
 This is an automated response. Please do not reply to this email.`,
@@ -120,7 +126,7 @@ This is an automated response. Please do not reply to this email.`,
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Message Received - Cloudless.gr</title>
+    <title>Message Received - Baltzakis Themis</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -128,9 +134,9 @@ This is an automated response. Please do not reply to this email.`,
 
         <p>Dear ${name},</p>
 
-        <p>Thank you for reaching out to us at <strong>Cloudless.gr</strong>!</p>
+        <p>Thank you for reaching out to me!</p>
 
-        <p>We have received your message and appreciate you taking the time to contact us. Our team will review your inquiry and get back to you within 24 hours.</p>
+        <p>I have received your message and appreciate you taking the time to contact me. I will review your inquiry and get back to you within 24 hours.</p>
 
         <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #2563eb; margin: 20px 0;">
             <strong>Your message:</strong><br>
@@ -138,8 +144,8 @@ This is an automated response. Please do not reply to this email.`,
         </div>
 
         <p>Best regards,<br>
-        <strong>The Cloudless.gr Team</strong><br>
-        <a href="https://www.cloudless.gr" style="color: #2563eb;">www.cloudless.gr</a></p>
+        <strong>Themis Baltzakis</strong><br>
+        <a href="https://www.baltzakisthemis.com" style="color: #2563eb;">www.baltzakisthemis.com</a></p>
 
         <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
         <p style="font-size: 12px; color: #666;">
@@ -186,7 +192,7 @@ This is an automated response. Please do not reply to this email.`,
                 short: false,
               },
             ],
-            footer: 'Cloudless.gr Contact Form',
+            footer: 'Baltzakis Themis Contact Form',
             ts: Math.floor(Date.now() / 1000),
           },
         ],

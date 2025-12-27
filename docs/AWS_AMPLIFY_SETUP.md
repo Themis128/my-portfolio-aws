@@ -1,6 +1,6 @@
-# AWS Amplify Deployment Guide
+# AWS Amplify Gen 2 Deployment Guide
 
-This guide covers deploying your Next.js portfolio to AWS Amplify with optimized settings for production.
+This guide covers deploying your Next.js portfolio with AWS Amplify Gen 2 backend to AWS Amplify with optimized settings for production.
 
 ## Prerequisites
 
@@ -8,6 +8,7 @@ This guide covers deploying your Next.js portfolio to AWS Amplify with optimized
 2. AWS CLI installed and configured
 3. Node.js and pnpm installed
 4. GitHub repository connected to AWS Amplify
+5. Amplify CLI installed (`npm install -g @aws-amplify/cli`)
 
 ## Step 1: Configure AWS CLI
 
@@ -17,26 +18,19 @@ aws configure
 
 Enter your AWS Access Key ID, Secret Access Key, default region (e.g., `eu-central-1`), and output format.
 
-## Step 2: Create Amplify App
+## Step 2: Initialize Amplify Project
 
-### Via AWS Console
-1. Go to [AWS Amplify Console](https://console.aws.amazon.com/amplify/)
-2. Click "Get Started" → "Connect app"
-3. Choose your Git provider (GitHub)
-4. Select your repository and branch
-5. Configure build settings (use the provided buildspec.yml)
-
-### Via AWS CLI
 ```bash
-aws amplify create-app \
-  --name "my-portfolio-aws" \
-  --repository "https://github.com/your-username/my-portfolio-aws" \
-  --platform "WEB"
+# Initialize Amplify in your project
+amplify init
+
+# Configure backend
+amplify configure project
 ```
 
 ## Step 3: Configure Build Settings
 
-Create or update `amplify.yml` in your project root:
+The `amplify.yml` file is already configured for both frontend and backend deployment:
 
 ```yaml
 version: 1
@@ -44,18 +38,30 @@ frontend:
   phases:
     preBuild:
       commands:
-        - pnpm install
+        - npm ci --cache .npm --prefer-offline
     build:
       commands:
-        - pnpm run build
+        - npm run build
   artifacts:
     baseDirectory: .next
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
       - .next/cache/**/*
+      - .npm/**/*
+backend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci --cache .npm --prefer-offline
+    build:
+      commands:
+        - npx ampx pipeline-deploy --outputs-format json --outputs-path amplify-outputs.json
+  artifacts:
+    baseDirectory: amplify
+    files:
+      - 'amplify-outputs.json'
 ```
 
 ## Step 4: Environment Variables
@@ -69,11 +75,83 @@ PNPM_VERSION=9.14.4
 NEXT_TELEMETRY_DISABLED=1
 ```
 
-### Runtime Variables (if needed)
+### Runtime Variables
 ```env
-NEXT_PUBLIC_APP_URL=https://your-domain.com
-NEXT_PUBLIC_API_URL=https://api.your-domain.com
+# Amplify automatically sets this based on your backend configuration
+AMPLIFY_REST_API_URL=https://your-api-id.execute-api.region.amazonaws.com/prod
 ```
+
+## Step 5: Deploy Backend
+
+```bash
+# Deploy backend resources
+amplify push
+
+# Or use the sandbox environment for development
+amplify sandbox
+```
+
+## Step 6: Create Amplify App
+
+### Via AWS Console
+1. Go to [AWS Amplify Console](https://console.aws.amazon.com/amplify/)
+2. Click "Get Started" → "Connect app"
+3. Choose your Git provider (GitHub)
+4. Select your repository and branch
+5. Amplify will detect the `amplify.yml` and backend configuration automatically
+
+### Via AWS CLI
+```bash
+aws amplify create-app \
+  --name "my-portfolio-aws" \
+  --repository "https://github.com/your-username/my-portfolio-aws" \
+  --platform "WEB" \
+  --enable-branch-auto-build true
+```
+
+## Step 8: Backend Configuration
+
+### REST API Setup
+Your backend includes:
+- **Contact Handler Function**: Processes contact form submissions
+- **REST API**: Exposes HTTP endpoints via API Gateway
+- **Email Integration**: Uses Amazon SES for email notifications
+- **Slack Integration**: Sends notifications to Slack channels
+
+### Environment Variables for Backend
+Set these in your Amplify backend environment:
+
+```env
+# Email Configuration
+FROM_EMAIL=noreply@yourdomain.com
+TO_EMAIL=your-email@yourdomain.com
+
+# Slack Configuration
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
+
+# AWS SES Configuration (automatically configured)
+AWS_REGION=eu-central-1
+```
+
+## Step 9: Testing Deployment
+
+### Local Testing
+```bash
+# Test backend locally
+amplify sandbox
+
+# Test frontend with local backend
+npm run dev
+```
+
+### Production Testing
+After deployment, test the contact form functionality:
+1. Visit your deployed site
+2. Fill out the contact form
+3. Verify email delivery and Slack notifications
+4. Check CloudWatch logs for any errors
+
+## Step 10: Monitoring and Analytics
 
 ## Step 5: Custom Domain Setup
 

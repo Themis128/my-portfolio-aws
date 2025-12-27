@@ -1,4 +1,4 @@
-const http = require('http');
+import http from 'http';
 
 const testData = JSON.stringify({
   name: 'Test User',
@@ -38,14 +38,14 @@ const req = http.request(options, (res) => {
       } else {
         console.log('❌ Test FAILED - Check response');
       }
-    } catch (e) {
+    } catch {
       console.log('📥 Raw Response:', body);
     }
   });
 });
 
-req.on('error', (e) => {
-  console.error('❌ Request failed:', e.message);
+req.on('error', () => {
+  console.error('❌ Request failed');
 });
 
 req.write(testData);

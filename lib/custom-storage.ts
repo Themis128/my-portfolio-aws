@@ -19,14 +19,14 @@ export const customStorage = {
   },
 
   // List images in the bucket (for future use)
-  async listImages(_prefix: string = 'images/'): Promise<string[]> {
+  async listImages(): Promise<string[]> {
     // This would require backend implementation for security
     // For now, return empty array
     return [];
   },
 
   // For future upload functionality - would need backend API
-  async uploadImage(_file: File, _key: string): Promise<string> {
+  async uploadImage(): Promise<string> {
     // This would require a backend API endpoint for secure uploads
     throw new Error('Upload functionality requires backend implementation');
   },

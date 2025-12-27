@@ -1,0 +1,91 @@
+[4mAMPLIFY[24m()                                                            [4mAMPLIFY[24m()
+
+[1mNAME[0m
+       amplify -
+
+[1mDESCRIPTION[0m
+       Amplify  enables  developers to develop and deploy cloud-powered mobile
+       and web apps. Amplify Hosting provides a continuous delivery and  host-
+       ing service for web applications. For more information, see the [4mAmplify[0m
+       [4mHosting[24m  [4mUser[24m  [4mGuide[24m  . The Amplify Framework is a comprehensive set of
+       SDKs, libraries, tools, and documentation for client  app  development.
+       For more information, see the [4mAmplify[24m [4mFramework.[0m
+
+[1mAVAILABLE COMMANDS[0m
+       +o create-app
+
+       +o create-backend-environment
+
+       +o create-branch
+
+       +o create-deployment
+
+       +o create-domain-association
+
+       +o create-webhook
+
+       +o delete-app
+
+       +o delete-backend-environment
+
+       +o delete-branch
+
+       +o delete-domain-association
+
+       +o delete-job
+
+       +o delete-webhook
+
+       +o generate-access-logs
+
+       +o get-app
+
+       +o get-artifact-url
+
+       +o get-backend-environment
+
+       +o get-branch
+
+       +o get-domain-association
+
+       +o get-job
+
+       +o get-webhook
+
+       +o help
+
+       +o list-apps
+
+       +o list-artifacts
+
+       +o list-backend-environments
+
+       +o list-branches
+
+       +o list-domain-associations
+
+       +o list-jobs
+
+       +o list-tags-for-resource
+
+       +o list-webhooks
+
+       +o start-deployment
+
+       +o start-job
+
+       +o stop-job
+
+       +o tag-resource
+
+       +o untag-resource
+
+       +o update-app
+
+       +o update-branch
+
+       +o update-domain-association
+
+       +o update-webhook
+
+                                                                     [4mAMPLIFY[24m()

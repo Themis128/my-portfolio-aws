@@ -1,7 +1,10 @@
 // Analytics utility for tracking custom events
-export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', eventName, parameters);
+export const trackEvent = (eventName: string, parameters?: Record<string, unknown>) => {
+  if (typeof window !== 'undefined') {
+    const windowWithGtag = window as { gtag?: (...args: unknown[]) => void };
+    if (windowWithGtag.gtag) {
+      windowWithGtag.gtag('event', eventName, parameters);
+    }
   }
 };
 
