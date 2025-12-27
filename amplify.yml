@@ -4,6 +4,8 @@ frontend:
     preBuild:
       commands:
         - npm install -g pnpm
+        - npm install -g @aws-amplify/cli
+        - npm install -g @aws-amplify/backend-cli
         - pnpm install --frozen-lockfile
     build:
       commands:
@@ -18,15 +20,10 @@ frontend:
       - node_modules/**/*
 backend:
   phases:
-    preBuild:
-      commands:
-        - npm install -g pnpm
-        - npm install -g @aws-amplify/cli
-        - pnpm install --frozen-lockfile
     build:
       commands:
-        - npx @aws-amplify/cli build
+        - npx ampx pipeline-deploy --outputs-format json --outputs-path amplify-outputs.json
   artifacts:
     baseDirectory: .
     files:
-      - 'amplify_outputs.json'
+      - 'amplify-outputs.json'
