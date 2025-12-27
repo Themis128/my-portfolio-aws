@@ -1,0 +1,4 @@
+model_name,type,target,version,mae,best,timestamp,path
+wine_quality_model,regressor,wine_quality_score,1,1.1980863240708444,True,2025-04-07 17:59:47,/home/tbaltzakis/prophet/forecast_outputs/models/wine_quality_model_v1.pkl
+yield_model,regressor,yield,1,0.0010883677455674,True,2025-04-07 18:18:36,/home/tbaltzakis/prophet/forecast_outputs/models/yield_model_v1.pkl
+quality_model,regressor,quality,1,0.5100455871682676,True,2025-04-07 18:24:33,/home/tbaltzakis/prophet/forecast_outputs/models/quality_model_v1.pkl

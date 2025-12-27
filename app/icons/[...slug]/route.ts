@@ -14,7 +14,7 @@ export async function GET(request: NextRequest, context: { params: { slug: strin
       const svg = fs.readFileSync(filePath, 'utf8');
       return new NextResponse(svg, { status: 200, headers: { 'Content-Type': 'image/svg+xml' } });
     }
-  } catch (err) {
+  } catch {
     // ignore and fall through to placeholder
   }
 

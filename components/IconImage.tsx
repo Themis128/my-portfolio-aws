@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 
 interface IconImageProps {
@@ -40,12 +41,13 @@ export default function IconImage({ slug, alt = '', className, style }: IconImag
 
   if (index < candidates.length) {
     return (
-      // eslint-disable-next-line jsx-a11y/alt-text
-      <img
+      <Image
         src={candidates[index]}
         alt={alt}
         className={className}
         style={style}
+        width={24}
+        height={24}
         onError={handleError}
       />
     );

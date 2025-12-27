@@ -26,49 +26,48 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
       return suppressedPatterns.some((p) => (p instanceof RegExp ? p.test(first) : first.includes(p)));
     }
 
-    console.error = (...args: any[]) => {
+    console.error = (...args: Parameters<typeof console.error>) => {
       try {
         const first = args[0];
         if (shouldSuppress(first)) return;
-      } catch (e) {
+      } catch {
         // ignore
       }
-      return origConsoleError.apply(console, args as any);
+      return origConsoleError.apply(console, args);
     };
 
-    console.warn = (...args: any[]) => {
+    console.warn = (...args: Parameters<typeof console.warn>) => {
       try {
         const first = args[0];
         if (shouldSuppress(first)) return;
-      } catch (e) {
+      } catch {
         // ignore
       }
-      return origConsoleWarn.apply(console, args as any);
+      return origConsoleWarn.apply(console, args);
     };
 
-    console.log = (...args: any[]) => {
+    console.log = (...args: Parameters<typeof console.log>) => {
       try {
         const first = args[0];
         if (shouldSuppress(first)) return;
-      } catch (e) {
+      } catch {
         // ignore
       }
-      return origConsoleLog.apply(console, args as any);
+      return origConsoleLog.apply(console, args);
     };
 
-    console.info = (...args: any[]) => {
+    console.info = (...args: Parameters<typeof console.info>) => {
       try {
         const first = args[0];
         if (shouldSuppress(first)) return;
-      } catch (e) {
+      } catch {
         // ignore
       }
-      return origConsoleInfo.apply(console, args as any);
+      return origConsoleInfo.apply(console, args);
     };
 
-    // eslint-disable-next-line no-console
     console.info('[dev] Module-level console filter applied (early): suppressing noisy dev messages');
-  } catch (e) {
+  } catch {
     // swallow
   }
 }
@@ -103,44 +102,44 @@ export default function DevConsoleFilter() {
       return suppressedPatterns.some((p) => (p instanceof RegExp ? p.test(first) : first.includes(p)));
     }
 
-    console.error = (...args: any[]) => {
+    console.error = (...args: Parameters<typeof console.error>) => {
       try {
         const first = args[0];
         if (shouldSuppress(first)) return;
-      } catch (e) {
+      } catch {
         // ignore
       }
-      return origConsoleError.apply(console, args as any);
+      return origConsoleError.apply(console, args);
     };
 
-    console.warn = (...args: any[]) => {
+    console.warn = (...args: Parameters<typeof console.warn>) => {
       try {
         const first = args[0];
         if (shouldSuppress(first)) return;
-      } catch (e) {
+      } catch {
         // ignore
       }
-      return origConsoleWarn.apply(console, args as any);
+      return origConsoleWarn.apply(console, args);
     };
 
-    console.log = (...args: any[]) => {
+    console.log = (...args: Parameters<typeof console.log>) => {
       try {
         const first = args[0];
         if (shouldSuppress(first)) return;
-      } catch (e) {
+      } catch {
         // ignore
       }
-      return origConsoleLog.apply(console, args as any);
+      return origConsoleLog.apply(console, args);
     };
 
-    console.info = (...args: any[]) => {
+    console.info = (...args: Parameters<typeof console.info>) => {
       try {
         const first = args[0];
         if (shouldSuppress(first)) return;
-      } catch (e) {
+      } catch {
         // ignore
       }
-      return origConsoleInfo.apply(console, args as any);
+      return origConsoleInfo.apply(console, args);
     };
 
     return () => {

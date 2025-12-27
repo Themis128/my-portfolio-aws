@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Themis Baltzakis - Full-Stack Developer & Cloud Solutions Expert',
-  description: 'Lead Engineer at Cloudless.gr specializing in modern web technologies and cloud-native solutions.',
+  title: 'Themistoklis Baltzakis - Systems and Network Engineer',
+  description: 'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
 };
 
 export default function RootLayout({

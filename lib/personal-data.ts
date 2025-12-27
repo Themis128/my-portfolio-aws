@@ -73,65 +73,123 @@ export interface Achievement {
 
 export function getPersonalDataServer(): PersonalData {
   return {
-    name: "Themis Baltzakis",
-    title: "Lead Engineer & Cloud Solutions Expert",
-    bio: "Experienced software engineer with 8+ years in full-stack development and cloud infrastructure. Specialized in modern web technologies, cloud-native solutions, and cross-platform development. Proven track record of leading teams and delivering scalable, high-performance applications.",
-    email: "tbaltzakis@cloudless.gr",
+    name: "Themistoklis Baltzakis",
+    title: "Systems and Network Engineer",
+    bio: "Systems and Network Engineer with over 15 years of extensive experience in IT support, cloud solutions, and Cisco infrastructure management. Dedicated Cloud and Virtualization Engineer with a proven track record in managing and optimizing Cisco infrastructure and networking systems. Expertise spans high-impact cloud management and support services, particularly with Azure Active Directory (AD) and Microsoft 365 (M365). Holds industry-recognized certifications including AWS Certified Cloud Practitioner and Cisco DevNet Associate. Adept at troubleshooting network incidents, conducting system upgrades, and delivering comprehensive end-user support, ensuring optimal network uptime and security.",
+    email: "baltzakis.themis@gmail.com",
     location: "Greece",
     phone: "+30 6977777838",
-    website: "https://cloudless.gr",
-    linkedin: "https://linkedin.com/in/themis-baltzakis",
-    github: "https://github.com/themis128",
+    website: "https://www.baltzakisthemis.com",
+    linkedin: "https://www.linkedin.com/in/baltzakisthemis",
+    github: "https://github.com/Themis128",
     credly: "https://www.credly.com/users/themistoklis-baltzakis/edit#credly",
-    profilePicture: "/images/profile-picture.jpg",
+    profilePicture: "/images/20250604_231405~4-EDIT.jpg",
     skills: [
-      "React", "Next.js", "TypeScript", "Node.js", "AWS", "Python", 
-      "Docker", "Kubernetes", "GraphQL", "REST APIs", "MongoDB", "PostgreSQL",
-      "Terraform", "CI/CD", "Microservices", "Serverless", "Cross-Platform Development",
-      "MCP Protocol", "WSL Integration", "Infrastructure as Code", "DevOps"
+      "Cisco Systems",
+      "Azure Active Directory",
+      "Microsoft 365",
+      "AWS Cloud Practitioner",
+      "Network Security",
+      "Microsoft Intune",
+      "ServiceNow",
+      "CyberArk PAM",
+      "Windows Server",
+      "TCP/IP",
+      "DNS/DHCP",
+      "Virtualization",
+      "Cloud Migration",
+      "Project Management",
+      "DevNet Associate",
+      "Network Troubleshooting",
+      "Android App Development",
+      "Data Analytics",
+      "Big Data",
+      "Problem Solving",
+      "Data Visualization",
+      "Scikit-Learn",
+      "Python",
+      "Pandas"
     ],
     experience: [
       {
         id: "1",
-        title: "Lead Engineer",
-        company: "Cloudless.gr",
-        period: "2020 - Present",
-        description: "Lead Engineer responsible for architecting and implementing cloud-native solutions using AWS, Docker, and Kubernetes. Managed a team of 5 developers, established CI/CD pipelines, and implemented Infrastructure as Code practices. Spearheaded migration of legacy applications to microservices architecture, resulting in 40% improvement in system performance and scalability."
+        title: "Cisco Vise Engineer",
+        company: "Estarta Solutions",
+        period: "Recent - Present",
+        description: "Resolved over 90% of Cisco infrastructure issues in data centers, ensuring 100% SLA compliance and uninterrupted operations. Streamlined the return merchandise authorization (RMA) process by efficiently creating and tracking labor and parts RMAs, enhancing logistics communication efficiency by 30%. Proactively monitored delivery statuses and resolved logistics challenges, minimizing downtime and boosting service reliability."
       },
       {
         id: "2",
-        title: "Senior Full-Stack Developer",
-        company: "TechCorp Solutions",
-        period: "2018 - 2020",
-        description: "Developed enterprise web applications using React, Node.js, and AWS services. Implemented microservices architecture and automated deployment pipelines using GitHub Actions. Led the development of a real-time analytics dashboard that improved client decision-making processes by 30%."
+        title: "IT Consultant",
+        company: "Cosmos Business Systems",
+        period: "Recent - Present",
+        description: "Specialized in managing and troubleshooting Azure Active Directory services, with focus on secure identity and access management. Maintained robust security protocols in Azure AD, including user provisioning, group management, and implementing access control through RBAC and conditional access policies. Delivered comprehensive support for Microsoft 365 services, resolving end-user issues related to M365 applications. Specialized in mobile device management (MDM) and mobile application management (MAM) using Microsoft Intune."
       },
       {
         id: "3",
-        title: "Frontend Developer",
-        company: "StartupXYZ",
-        period: "2016 - 2018",
-        description: "Built responsive web applications with React and Redux. Collaborated with UX/UI designers to create intuitive user interfaces. Implemented performance optimizations that reduced page load times by 50% and improved user engagement metrics."
+        title: "IT Consultant",
+        company: "CPI SA (outsourced @ Nielsen Hellas)",
+        period: "March 2023",
+        description: "Provided strategic guidance to organizations, aligning technology initiatives with business goals. Managed and maintained Active Directory environments, including user account provisioning, group management, and access control. Utilized ServiceNow to manage and track IT service requests, incidents, and inventory. Ensured robust Privileged Access Management (PAM) using CyberArk, securing credentials through Vault Management."
       },
       {
         id: "4",
-        title: "Software Engineering Intern",
-        company: "InnovateTech",
-        period: "2015 - 2016",
-        description: "Assisted in developing web applications using modern JavaScript frameworks. Contributed to code reviews and implemented unit testing practices. Gained hands-on experience with Agile development methodologies and version control systems."
+        title: "Technical Engineer",
+        company: "Printec Hellas",
+        period: "January 2022 - September 2022",
+        description: "Specialized use of Windows and Cisco Systems, servers, switches, routers, hubs, firewalls, LAN, WAN, TCP/IP, DNS, DHCP. Installed and upgraded hardware-based networks, network services, and equipment. Performed troubleshooting analysis of network, servers, workstations, and associated systems. Diagnosed and troubleshot technical issues, including account setup and network configuration."
+      },
+      {
+        id: "5",
+        title: "TechExpert",
+        company: "Germanos",
+        period: "February 2007 - October 2021",
+        description: "Developed software fine-tuning (Android, iOS) and hardware repairs of cell phones and tablets. Offered services in repairing desktops and laptops of various brands. Asked customers targeted questions to quickly understand problems and provided prompt feedback. Maintained strong relationships with clients and achieved goals while promoting company products."
+      },
+      {
+        id: "6",
+        title: "IT Department",
+        company: "Ε. Ο. Φ. | INFORM",
+        period: "2000 - 2006",
+        description: "Spearheaded the management of IT infrastructure to ensure seamless operations, achieving a 15% improvement in system uptime for over 500 users. Partnered with cross-functional teams to deploy innovative technology solutions, driving a 20% enhancement in organizational productivity. Delivered technical support and comprehensive training to staff, leading to a 30% reduction in support ticket resolution time."
       }
     ],
     education: [
       {
         id: "1",
-        degree: "Bachelor of Computer Science",
-        school: "University of Athens",
-        year: "2016"
+        degree: "Master's Degree in Data Analytics and Technologies",
+        school: "The University of Bolton",
+        year: "2024 - Present"
       },
       {
         id: "2",
-        degree: "AWS Certified Solutions Architect - Associate",
-        school: "Amazon Web Services",
-        year: "2020"
+        degree: "Bachelor of Computer Science (BCS)",
+        school: "Hellenic Open University",
+        year: "2014 - 2022"
+      },
+      {
+        id: "3",
+        degree: "Cisco CCNA in Computer Systems Networking and Telecommunications",
+        school: "Cisco Networking Academy",
+        year: "2021 - 2022"
+      },
+      {
+        id: "4",
+        degree: "Associate Degree in DevNet",
+        school: "Cisco Networking Academy",
+        year: "2023 - 2024"
+      },
+      {
+        id: "5",
+        degree: "Android App Development",
+        school: "skg.education",
+        year: "Completed"
+      },
+      {
+        id: "6",
+        degree: "Cisco Incubator 12.0 EMEA in Customer Experience and CCNA",
+        school: "Cisco Networking Academy",
+        year: "2024 - 2025"
       }
     ],
     projects: [
@@ -192,83 +250,43 @@ export function getPersonalDataServer(): PersonalData {
     certifications: [
       {
         id: "1",
-        name: "AWS Certified Solutions Architect - Associate",
+        name: "AWS Certified Cloud Practitioner",
         issuer: "Amazon Web Services",
-        date: "March 2020",
-        credentialId: "AWS-ASA-2020-12345",
-        url: "https://www.credly.com/badges/12345678-1234-1234-1234-123456789012/public_url"
+        date: "2023",
+        credentialId: "AWS-CP-2023",
+        url: "https://www.credly.com/badges/aws-certified-cloud-practitioner"
       },
       {
         id: "2",
-        name: "AWS Certified Developer - Associate",
-        issuer: "Amazon Web Services",
-        date: "June 2021",
-        credentialId: "AWS-DEV-2021-67890",
-        url: "https://www.credly.com/badges/23456789-2345-2345-2345-234567890123/public_url"
+        name: "Cisco DevNet Associate",
+        issuer: "Cisco",
+        date: "2024",
+        credentialId: "DEVNET-ASSOC-2024",
+        url: "https://www.credly.com/badges/cisco-devnet-associate"
       },
       {
         id: "3",
-        name: "Docker Certified Associate",
-        issuer: "Docker",
-        date: "September 2020",
-        credentialId: "DOCKER-CA-2020-54321",
-        url: "https://www.credly.com/badges/34567890-3456-3456-3456-345678901234/public_url"
+        name: "Cisco Certified Network Associate (CCNA)",
+        issuer: "Cisco",
+        date: "2022",
+        credentialId: "CCNA-2022",
+        url: "https://www.credly.com/badges/cisco-ccna"
       },
       {
         id: "4",
-        name: "Microsoft Azure Fundamentals",
+        name: "Microsoft 365 Certified: Enterprise Administrator Expert",
         issuer: "Microsoft",
-        date: "January 2019",
-        credentialId: "AZ-900-2019-67890",
-        url: "https://www.credly.com/badges/45678901-4567-4567-4567-456789012345/public_url"
+        date: "2023",
+        credentialId: "MS-100-MS-101-2023",
+        url: "https://www.credly.com/badges/microsoft-365-enterprise-administrator"
       },
       {
         id: "5",
-        name: "Google Cloud Professional Cloud Architect",
-        issuer: "Google Cloud",
-        date: "November 2022",
-        credentialId: "GCP-PCA-2022-13579",
-        url: "https://www.credly.com/badges/56789012-5678-5678-5678-567890123456/public_url"
-      },
-      {
-        id: "6",
-        name: "HashiCorp Certified: Terraform Associate",
-        issuer: "HashiCorp",
-        date: "April 2021",
-        credentialId: "HCTA-2021-98765",
-        url: "https://www.credly.com/badges/67890123-6789-6789-6789-678901234567/public_url"
-      },
-      {
-        id: "7",
-        name: "Kubernetes Application Developer (CKAD)",
-        issuer: "Cloud Native Computing Foundation",
-        date: "August 2021",
-        credentialId: "CKAD-2021-54321",
-        url: "https://www.credly.com/badges/78901234-7890-7890-7890-789012345678/public_url"
-      },
-      {
-        id: "8",
-        name: "Certified Scrum Master (CSM)",
-        issuer: "Scrum Alliance",
-        date: "February 2020",
-        credentialId: "CSM-2020-11223",
-        url: "https://www.credly.com/badges/89012345-8901-8901-8901-890123456789/public_url"
-      },
-      {
-        id: "9",
-        name: "Cisco Certified Network Associate (CCNA)",
-        issuer: "Cisco",
-        date: "May 2018",
-        credentialId: "CCNA-2018-11111",
-        url: "https://www.credly.com/badges/90123456-9012-9012-9012-901234567890/public_url"
-      },
-      {
-        id: "10",
-        name: "Cisco DevNet Associate",
-        issuer: "Cisco",
-        date: "July 2021",
-        credentialId: "DEVNET-ASSOC-2021-33333",
-        url: "https://www.credly.com/badges/12345678-1234-1234-1234-123456789013/public_url"
+        name: "Microsoft Certified: Azure Administrator Associate",
+        issuer: "Microsoft",
+        date: "2023",
+        credentialId: "AZ-104-2023",
+        url: "https://www.credly.com/badges/microsoft-certified-azure-administrator-associate"
       }
     ],
     languages: [
@@ -281,64 +299,69 @@ export function getPersonalDataServer(): PersonalData {
         id: "2",
         name: "English",
         proficiency: "Fluent"
-      },
-      {
-        id: "3",
-        name: "German",
-        proficiency: "Intermediate"
       }
     ],
     interests: [
+      "Network Engineering",
       "Cloud Computing",
-      "DevOps Practices",
-      "Open Source Contributions",
-      "Technology Blogging",
-      "Mentoring Junior Developers",
-      "Photography",
-      "Traveling"
+      "Cisco Technologies",
+      "Azure Active Directory",
+      "Microsoft 365",
+      "Data Analytics",
+      "Android Development",
+      "IT Infrastructure Management",
+      "Cybersecurity",
+      "Professional Development"
     ],
     achievements: [
       {
         id: "1",
-        title: "Best Developer Award 2022",
-        description: "Recognized for outstanding contributions to the company's technical projects and team leadership.",
-        date: "December 2022",
+        title: "Cisco Infrastructure Excellence",
+        description: "Resolved over 90% of Cisco infrastructure issues in data centers, ensuring 100% SLA compliance and uninterrupted operations.",
+        date: "2024",
         type: "Award"
       },
       {
         id: "2",
-        title: "Published Article: 'Modern React Patterns'",
-        description: "Technical article published on Medium with 10K+ reads about modern React development patterns.",
-        date: "March 2021",
-        type: "Publication"
+        title: "RMA Process Optimization",
+        description: "Streamlined the return merchandise authorization (RMA) process, enhancing logistics communication efficiency by 30%.",
+        date: "2024",
+        type: "Award"
       },
       {
         id: "3",
-        title: "Speaker at DevConf 2020",
-        description: "Presented on 'Building Scalable Applications with AWS' at the annual developer conference.",
-        date: "October 2020",
-        type: "Speaking"
+        title: "IT Infrastructure Improvement",
+        description: "Achieved a 15% improvement in system uptime for over 500 users through effective IT infrastructure management.",
+        date: "2006",
+        type: "Award"
       },
       {
         id: "4",
-        title: "Open Source Contributor - React Ecosystem",
-        description: "Contributed to popular React open-source projects, including performance optimizations and bug fixes that improved library stability for thousands of developers.",
-        date: "Ongoing",
-        type: "Open Source"
+        title: "Organizational Productivity Enhancement",
+        description: "Drove a 20% enhancement in organizational productivity through deployment of innovative technology solutions.",
+        date: "2006",
+        type: "Award"
       },
       {
         id: "5",
-        title: "Cloud Migration Success Story",
-        description: "Led successful migration of legacy monolithic application to cloud-native microservices architecture, reducing infrastructure costs by 35% and improving system reliability.",
-        date: "June 2021",
+        title: "Support Ticket Resolution Excellence",
+        description: "Led to a 30% reduction in support ticket resolution time through comprehensive training and technical support delivery.",
+        date: "2006",
         type: "Award"
       },
       {
         id: "6",
-        title: "Technical Blog Series: 'DevOps Best Practices'",
-        description: "Wrote comprehensive blog series on DevOps practices that gained industry recognition and was featured in multiple tech publications.",
-        date: "2021-2022",
-        type: "Publication"
+        title: "AWS Certified Cloud Practitioner",
+        description: "Earned AWS Certified Cloud Practitioner certification, demonstrating knowledge of AWS Cloud concepts, services, and terminology.",
+        date: "2023",
+        type: "Award"
+      },
+      {
+        id: "7",
+        title: "Cisco DevNet Associate",
+        description: "Achieved Cisco DevNet Associate certification, showcasing skills in software development and design for Cisco platforms.",
+        date: "2024",
+        type: "Award"
       }
     ]
   };

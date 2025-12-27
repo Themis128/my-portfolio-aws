@@ -1,6 +1,6 @@
 "use client";
 import { PersonalData } from '../lib/personal-data';
-import { Button } from './button';
+import { Button } from "./ui/button";
 
 interface HeroProps {
   data: PersonalData;

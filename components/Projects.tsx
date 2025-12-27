@@ -1,7 +1,7 @@
 "use client";
 import { PersonalData } from '../lib/personal-data';
-import { Button } from './button';
 import IconImage from './IconImage';
+import { Button } from "./ui/button";
 
 interface ProjectsProps {
   data: PersonalData;
@@ -46,7 +46,6 @@ export default function Projects({ data }: ProjectsProps) {
                   <div className="flex flex-wrap gap-3 mb-6">
                     {project.technologies.map((tech) => {
                       const slug = tech.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                      const iconPath = `/icons/${slug}.svg`;
                       return (
                         <span
                           key={tech}

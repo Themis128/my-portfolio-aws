@@ -18,10 +18,9 @@ function resolvePath(inputPath) {
   // Handle Windows D: drive paths
   if (inputPath.startsWith('D:')) {
     // Convert D:\path\to\file to /mnt/d/path/to/file (common WSL mount point)
-    // or try other common mount points
     const relativePath = inputPath.substring(2).replace(/\\/g, '/');
     
-    // Try common WSL mount points
+    // Try common WSL mount points, but don't validate existence to avoid hangs
     const possiblePaths = [
       `/mnt/d${relativePath}`,
       `/d${relativePath}`,
@@ -29,20 +28,10 @@ function resolvePath(inputPath) {
       `${os.homedir()}/d-drive${relativePath}`
     ];
     
-    for (const possiblePath of possiblePaths) {
-      try {
-        if (fs.existsSync(possiblePath)) {
-          console.log(`Resolved ${inputPath} to ${possiblePath}`);
-          return possiblePath;
-        }
-      } catch (error) {
-        // Continue to next path
-      }
-    }
-    
-    // If no existing path found, return the most common WSL path
-    console.log(`Warning: ${inputPath} not found, using default WSL path`);
-    return `/mnt/d${relativePath}`;
+    // For now, just return the most common WSL path without validation
+    // Validation will happen when the actual file operation is attempted
+    console.log(`Resolved Windows path ${inputPath} to ${possiblePaths[0]}`);
+    return possiblePaths[0];
   }
   
   return inputPath;
@@ -62,7 +51,7 @@ const server = new Server(
 );
 
 // Define tools for file operations
-server.setRequestHandler(ListToolsRequestSchema, async (_request, _channel) => {
+server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
@@ -134,7 +123,7 @@ server.setRequestHandler(ListToolsRequestSchema, async (_request, _channel) => {
   };
 });
 
-server.setRequestHandler(CallToolRequestSchema, async (request, _channel) => {
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
   
   switch (name) {
@@ -231,20 +220,20 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _channel) => {
     case "extract_pdf_content":
       try {
         const resolvedPath = resolvePath(args.pdfPath);
-        
+
         // Check if pdftotext is available
         let command = `pdftotext`;
         if (args.maxPages) {
           command += ` -l ${args.maxPages}`;
         }
         command += ` "${resolvedPath}" -`;
-        
+
         const { stdout, stderr } = await execAsync(command);
-        
+
         if (stderr && !stdout) {
           throw new Error(`PDF extraction failed: ${stderr}`);
         }
-        
+
         return {
           content: [
             {
@@ -260,8 +249,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _channel) => {
           ],
         };
       } catch (error) {
+        const resolvedPath = resolvePath(args.pdfPath); // Define resolvedPath here for error handling
+
         // Try alternative method if pdftotext is not available
-        if (error.message.includes("command not found") || error.message.includes("pdftotext")) {
+        if ((error.message && (error.message.includes("command not found") || error.message.includes("pdftotext"))) ||
+            (error.code === 127)) { // 127 = command not found
           try {
             // Try using strings command as fallback for text extraction
             const { stdout } = await execAsync(`strings "${resolvedPath}" | head -1000`);
@@ -287,7 +279,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _channel) => {
                   text: JSON.stringify({
                     originalPath: args.pdfPath,
                     resolvedPath: resolvedPath,
-                    error: `Error extracting PDF content: ${error.message}. Fallback also failed: ${fallbackError.message}`,
+                    error: `Error extracting PDF content: ${error.message || error}. Fallback also failed: ${fallbackError.message || fallbackError}`,
                     extractionMethod: "failed",
                   }),
                 },
@@ -295,7 +287,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _channel) => {
             };
           }
         }
-        
+
         return {
           content: [
             {
@@ -303,7 +295,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _channel) => {
               text: JSON.stringify({
                 originalPath: args.pdfPath,
                 resolvedPath: resolvedPath,
-                error: `Error extracting PDF content: ${error.message}`,
+                error: `Error extracting PDF content: ${error.message || error}`,
                 extractionMethod: "failed",
               }),
             },

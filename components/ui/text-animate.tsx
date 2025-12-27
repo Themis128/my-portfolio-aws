@@ -1,7 +1,10 @@
 "use client"
 
+// @ts-nocheck -- React Compiler has issues with motion.create in useMemo
+// react-compiler-ignore
+
 import { AnimatePresence, motion, MotionProps, Variants } from "motion/react"
-import { ElementType, memo, useMemo } from "react"
+import { memo } from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -43,10 +46,6 @@ interface TextAnimateProps extends MotionProps {
    * Custom motion variants for the animation
    */
   variants?: Variants
-  /**
-   * The element type to render
-   */
-  as?: ElementType
   /**
    * How to split the text ("text", "word", "character")
    */
@@ -309,7 +308,6 @@ const TextAnimateBase = ({
   variants,
   className,
   segmentClassName,
-  as: Component = "p",
   startOnView = true,
   once = false,
   by = "word",
@@ -317,7 +315,7 @@ const TextAnimateBase = ({
   accessible = true,
   ...props
 }: TextAnimateProps) => {
-  const MotionComponent = useMemo(() => motion.create(Component), [Component])
+  "use no memo"; // Disable React Compiler for this component
 
   let segments: string[] = []
   switch (by) {
@@ -383,17 +381,17 @@ const TextAnimateBase = ({
 
   return (
     <AnimatePresence mode="popLayout">
-      <MotionComponent
-        variants={finalVariants.container as Variants}
-        initial="hidden"
-        whileInView={startOnView ? "show" : undefined}
-        animate={startOnView ? undefined : "show"}
-        exit="exit"
-        className={cn("whitespace-pre-wrap", className)}
-        viewport={{ once }}
-        aria-label={accessible ? children : undefined}
-        {...props}
-      >
+        <motion.div
+          variants={finalVariants.container as Variants}
+          initial="hidden"
+          whileInView={startOnView ? "show" : undefined}
+          animate={startOnView ? undefined : "show"}
+          exit="exit"
+          className={cn("whitespace-pre-wrap", className)}
+          viewport={{ once }}
+          aria-label={accessible ? children : undefined}
+          {...props}
+        >
         {accessible && <span className="sr-only">{children}</span>}
         {segments.map((segment, i) => (
           <motion.span
@@ -410,7 +408,7 @@ const TextAnimateBase = ({
             {segment}
           </motion.span>
         ))}
-      </MotionComponent>
+      </motion.div>
     </AnimatePresence>
   )
 }

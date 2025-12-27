@@ -1,9 +1,9 @@
 "use client";
 import { useState } from 'react';
 import { PersonalData } from '../lib/personal-data';
-import { Button } from './button';
 import { Input } from './input';
 import { Textarea } from './textarea';
+import { Button } from "./ui/button";
 
 interface ContactProps {
   data: PersonalData;

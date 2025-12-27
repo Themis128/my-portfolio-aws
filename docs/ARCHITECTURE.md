@@ -1,6 +1,264 @@
-# 21st Extension Architecture
+# My Portfolio AWS Architecture
 
-21st Extension is a browser toolbar that connects frontend UI with AI agents in code editors. The project provides visual code interaction through a web interface.
+My Portfolio AWS is a modern, cloud-native personal portfolio website built with Next.js and deployed on AWS. The project showcases professional experience, skills, and projects with a focus on cloud technologies and modern web development practices.
+
+## System Overview
+
+The system consists of several main components interacting with each other:
+
+```
+┌─────────────────┐    HTTP/HTTPS    ┌─────────────────┐
+│  Browser        │◄───────────────►│  AWS Amplify    │
+│  (Portfolio)    │   Static Hosting │  (Frontend)     │
+└─────────────────┘                  └─────────────────┘
+        │                                        │
+        │                                        │ CloudFront CDN
+        ▼                                        ▼
+┌─────────────────┐                     ┌─────────────────┐
+│  Next.js App     │                     │  AWS S3         │
+│  (SSR/SSG)       │                     │  (Assets)       │
+└─────────────────┘                     └─────────────────┘
+        │                                        │
+        │                                        │ Route 53 DNS
+        ▼                                        ▼
+┌─────────────────┐                     ┌─────────────────┐
+│  TypeScript     │                     │  AWS Certificate│
+│  (TypeScript)   │                     │  Manager        │
+└─────────────────┘                     └─────────────────┘
+```
+
+## Project Structure
+
+The project is organized as a monorepo using:
+- **pnpm workspaces** - dependency management
+- **Turbo** - build system and caching
+- **TypeScript** - primary development language
+- **Next.js** - React framework with server-side rendering
+
+### Main Directories
+
+```
+my-portfolio-aws/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Home page
+│   └── icons/             # Dynamic icon routes
+├── components/            # React components
+│   ├── ui/               # ShadCN UI components
+│   ├── ModernAboutNew.tsx # Enhanced about section
+│   ├── Projects.tsx      # Featured projects
+│   └── ThemeSwitcher.tsx # Dark/light theme toggle
+├── lib/                  # Shared utilities
+│   ├── personal-data.ts  # Professional data
+│   ├── theme-context.tsx # Theme management
+│   └── utils.ts          # Helper functions
+├── public/               # Static assets
+│   ├── images/           # Project photos
+│   └── icons/            # Technology icons
+├── styles/               # Global styles
+│   └── globals.css       # Tailwind imports
+├── config/               # Configuration files
+│   ├── biome.jsonc       # Biome linter config
+│   └── extensions.json   # VS Code extensions
+├── mcp-server/           # Model Context Protocol server
+│   ├── index.js          # MCP server implementation
+│   └── pdf-extractor.js  # PDF content extraction
+└── docs/                 # Documentation
+    ├── ARCHITECTURE.md   # This file
+    └── AWS_AMPLIFY_SETUP.md
+```
+
+## System Components
+
+### 1. Frontend Application (`app/`)
+
+**Purpose**: Modern React application built with Next.js App Router, providing a responsive portfolio interface.
+
+**Key Features**:
+- **Server-Side Rendering (SSR)** - Fast initial page loads
+- **Static Site Generation (SSG)** - Optimized performance
+- **TypeScript** - Type-safe development
+- **Responsive Design** - Mobile-first approach
+- **Dark/Light Theme** - User preference support
+
+**Architecture**:
+```
+Next.js App Router
+├── app/layout.tsx        # Root layout with theme provider
+├── app/page.tsx          # Main page with all sections
+├── app/icons/[...slug]/  # Dynamic icon serving
+└── app/globals.css       # Global styles and Tailwind
+```
+
+### 2. UI Components (`components/`)
+
+**Purpose**: Reusable React components built with ShadCN UI and custom implementations.
+
+**Key Components**:
+- **ModernAboutNew.tsx** - Enhanced about section with animations
+- **Projects.tsx** - Featured projects display
+- **ThemeSwitcher.tsx** - Theme toggle functionality
+- **Navigation.tsx** - Responsive navigation menu
+- **Hero.tsx** - Hero section with call-to-action
+
+**Technology Stack**:
+- **ShadCN UI** - Component library
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Smooth animations
+- **Lucide Icons** - Modern icon set
+
+### 3. Data Management (`lib/`)
+
+**Purpose**: Centralized data management and utility functions.
+
+**Key Features**:
+- **Personal Data** - Professional information and portfolio content
+- **Theme Context** - Global theme state management
+- **Utility Functions** - Helper functions for formatting and processing
+
+**Data Structure**:
+```typescript
+interface PersonalData {
+  name: string;
+  title: string;
+  bio: string;
+  skills: string[];
+  experience: Experience[];
+  projects: Project[];
+  // ... other professional data
+}
+```
+
+### 4. MCP Server (`mcp-server/`)
+
+**Purpose**: Model Context Protocol server for AI integration and file processing.
+
+**Key Features**:
+- **PDF Content Extraction** - Extract text from PDF files
+- **Cross-Platform File Access** - Bridge Windows and Linux file systems
+- **AI Integration** - Support for MCP-compatible AI tools
+- **Path Resolution** - Intelligent file path handling
+
+**Architecture**:
+```
+MCP Server
+├── index.js              # Main server implementation
+├── pdf-extractor.js      # PDF processing utilities
+├── extract-cv-content.js # CV-specific extraction
+└── test-mcp-server.js    # Server testing
+```
+
+### 5. Cloud Infrastructure
+
+**Purpose**: AWS-based hosting and content delivery.
+
+**AWS Services**:
+- **AWS Amplify** - Frontend hosting and CI/CD
+- **Amazon S3** - Static asset storage
+- **CloudFront** - Global content delivery network
+- **Route 53** - DNS management
+- **AWS Certificate Manager** - SSL/TLS certificates
+
+**Deployment Features**:
+- **Automatic Deployment** - Git-triggered builds
+- **Custom Domain** - Professional domain configuration
+- **HTTPS** - Secure connections
+- **Global CDN** - Fast content delivery worldwide
+
+## Development Workflow
+
+### 1. Local Development
+```
+1. Clone repository
+2. Install dependencies: pnpm install
+3. Start development server: npm run dev
+4. Hot reload for instant feedback
+5. TypeScript checking and linting
+```
+
+### 2. Code Quality
+- **ESLint** - JavaScript/TypeScript linting
+- **Biome** - Fast linter and formatter
+- **TypeScript** - Type checking
+- **Prettier** - Code formatting
+- **Husky** - Git hooks for pre-commit checks
+
+### 3. Build and Deployment
+```
+1. Build application: npm run build
+2. Deploy to AWS Amplify: Automatic via Git push
+3. CDN distribution via CloudFront
+4. SSL certificate management
+```
+
+## Technology Stack
+
+### Frontend
+- **Next.js 16** - React framework with App Router
+- **TypeScript** - Type-safe JavaScript
+- **Tailwind CSS** - Utility-first CSS
+- **ShadCN UI** - Component library
+- **Framer Motion** - Animations
+- **Lucide React** - Icons
+
+### Development Tools
+- **pnpm** - Package manager
+- **Turbo** - Build system
+- **ESLint** - Linting
+- **Biome** - Fast linter/formatter
+- **Husky** - Git hooks
+- **Playwright** - E2E testing
+
+### Cloud Services
+- **AWS Amplify** - Frontend hosting
+- **Amazon S3** - Asset storage
+- **CloudFront** - CDN
+- **Route 53** - DNS
+- **AWS Certificate Manager** - SSL/TLS
+
+## Performance Optimizations
+
+### 1. Next.js Features
+- **Server-Side Rendering** - Fast initial loads
+- **Static Site Generation** - Optimized for content
+- **Image Optimization** - Automatic image optimization
+- **Code Splitting** - Bundle optimization
+
+### 2. Frontend Optimizations
+- **Lazy Loading** - Component-level code splitting
+- **Image Optimization** - WebP format with fallbacks
+- **CSS-in-JS** - Scoped styles with Tailwind
+- **Bundle Analysis** - Size monitoring
+
+### 3. Cloud Optimizations
+- **CDN Caching** - Global content delivery
+- **Compression** - Gzip/Brotli compression
+- **SSL/TLS** - Secure, fast connections
+- **Auto-scaling** - Handle traffic spikes
+
+## Security Features
+
+- **HTTPS** - All connections encrypted
+- **Content Security Policy** - XSS protection
+- **Input Validation** - Form and data validation
+- **Secure Headers** - Security headers configuration
+- **Dependency Scanning** - Regular security updates
+
+## Accessibility
+
+- **Semantic HTML** - Proper HTML structure
+- **ARIA Labels** - Screen reader support
+- **Keyboard Navigation** - Full keyboard accessibility
+- **Color Contrast** - WCAG compliant colors
+- **Responsive Design** - Mobile-friendly interface
+
+## Future Enhancements
+
+- **Blog Section** - Content management system
+- **Contact Form** - Backend API integration
+- **Analytics** - User behavior tracking
+- **Multilingual** - Internationalization support
+- **Progressive Web App** - Offline capabilities
 
 ## System Overview
 
@@ -253,4 +511,4 @@ export const ReactPlugin: ToolbarPlugin = {
 - **Телеметрия** - анонимные метрики использования
 - **Error Handling** - централизованная обработка ошибок
 - **Логирование** - подробные логи для отладки
-- **Analytics Service** - отслеживание ключевых событий 
+- **Analytics Service** - отслеживание ключевых событий

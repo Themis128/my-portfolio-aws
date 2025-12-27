@@ -5,16 +5,16 @@ test('homepage loads correctly', async ({ page }: { page: Page }) => {
   await page.goto('/');
 
   // Check if the page title contains the portfolio title
-  await expect(page).toHaveTitle(/Themis Baltzakis/);
+  await expect(page).toHaveTitle(/Themistoklis Baltzakis/);
 
   // Check if the main hero heading is visible
-  await expect(page.locator('h1').filter({ hasText: 'Hi, I\'m Themis' })).toBeVisible();
+  await expect(page.locator('h1').filter({ hasText: 'Hi, I\'m Themistoklis' })).toBeVisible();
 
-  // Check if the hero section has rotating role text
-  await expect(page.locator('#hero')).toContainText('Full-Stack Developer');
+  // Check if the hero section has the correct title and bio
+  await expect(page.locator('#hero')).toContainText('Systems and Network Engineer');
   await expect(page.locator('#hero')).toContainText('Cloud Solutions Expert');
-  await expect(page.locator('#hero')).toContainText('React Specialist');
-  await expect(page.locator('#hero')).toContainText('AWS Architect');
+  await expect(page.locator('#hero')).toContainText('Cisco infrastructure');
+  await expect(page.locator('#hero')).toContainText('Azure Active Directory');
 
   // Check if navigation links are present
   await expect(page.locator('nav button').filter({ hasText: 'Home' })).toBeVisible();
@@ -59,13 +59,13 @@ test('responsive design', async ({ page }: { page: Page }) => {
   await expect(page.locator('button.md\\:hidden')).toBeVisible();
 
   // Check if main content is visible
-  await expect(page.locator('h1')).toBeVisible();
+  await expect(page.locator('h1').filter({ hasText: 'Hi, I\'m Themistoklis' })).toBeVisible();
 
   // Test tablet viewport
   await page.setViewportSize({ width: 768, height: 1024 });
-  await expect(page.locator('h1')).toBeVisible();
+  await expect(page.locator('h1').filter({ hasText: 'Hi, I\'m Themistoklis' })).toBeVisible();
 
   // Test desktop viewport
   await page.setViewportSize({ width: 1920, height: 1080 });
-  await expect(page.locator('h1')).toBeVisible();
+  await expect(page.locator('h1').filter({ hasText: 'Hi, I\'m Themistoklis' })).toBeVisible();
 });

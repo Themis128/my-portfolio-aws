@@ -10,10 +10,13 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.13.2",
+    "@radix-ui/react-avatar": "^1.1.11",
+    "@radix-ui/react-slot": "^1.2.4",
     "@types/jspdf": "^2.0.0",
     "aws-amplify": "^6.15.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.23.26",
     "jspdf": "^3.0.4",
     "lucide-react": "^0.562.0",
     "motion": "^12.23.26",

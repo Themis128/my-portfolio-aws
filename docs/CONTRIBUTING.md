@@ -1,145 +1,374 @@
-# Contributing to 21st.dev Extension
+# Contributing to My Portfolio AWS
 
-Welcome! This document provides an in-depth overview of the structure and architecture of the 21st.dev Extension project. Understanding this layout will help you quickly find your way around the codebase and identify where to contribute.
+Welcome! This document provides guidelines for contributing to the My Portfolio AWS project. This modern, cloud-native portfolio website showcases professional experience and projects built with Next.js and deployed on AWS.
 
----
+## Project Overview
 
-## Project Structure & Architecture
+My Portfolio AWS is a personal portfolio website that demonstrates:
+- Modern web development practices with Next.js 16
+- TypeScript for type-safe development
+- AWS cloud deployment with Amplify
+- Modern UI/UX with ShadCN UI and Tailwind CSS
+- AI integration through MCP (Model Context Protocol) server
 
-21st.dev Extension is organized as a **monorepo** using [pnpm workspaces](https://pnpm.io/workspaces) and [turborepo](https://turbo.build/). The repository is divided into several key areas:
+## Project Structure
 
-### 1. Applications (`apps/`)
+```
+my-portfolio-aws/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx         # Root layout with theme provider
+│   ├── page.tsx           # Main page with all sections
+│   └── icons/[...slug]/   # Dynamic icon routes
+├── components/            # React components
+│   ├── ui/               # ShadCN UI components
+│   ├── ModernAboutNew.tsx # Enhanced about section
+│   ├── Projects.tsx      # Featured projects display
+│   └── ThemeSwitcher.tsx # Dark/light theme toggle
+├── lib/                  # Shared utilities
+│   ├── personal-data.ts  # Professional data
+│   ├── theme-context.tsx # Theme management
+│   └── utils.ts          # Helper functions
+├── public/               # Static assets
+│   ├── images/           # Project photos
+│   └── icons/            # Technology icons
+├── styles/               # Global styles
+│   └── globals.css       # Tailwind imports
+├── config/               # Configuration files
+│   ├── biome.jsonc       # Biome linter config
+│   └── extensions.json   # VS Code extensions
+├── mcp-server/           # Model Context Protocol server
+│   ├── index.js          # MCP server implementation
+│   └── pdf-extractor.js  # PDF content extraction
+└── docs/                 # Documentation
+    ├── ARCHITECTURE.md   # System architecture
+    └── AWS_AMPLIFY_SETUP.md
+```
 
-* **website/**
+## Development Setup
 
-  * The main web application, serving as the landing page and documentation site.
-  * Contains all website-specific code, including routes, components, and documentation pages.
-* **vscode-extension/**
+### Prerequisites
 
-  * The official VSCode (and Cursor) extension.
-  * Integrates the 21st.dev Toolbar with code editors, enabling communication between the browser and your local AI agent.
-  * Contains extension source code, packaging scripts, and related assets.
+- Node.js 20+
+- pnpm 9.14.4+
+- AWS CLI (for deployment)
 
-### 2. Packages (`packages/`)
-
-* **toolbar/**
-
-  * This directory now serves as a monorepo for framework-specific toolbar packages. It houses the core logic and UI components, along with adapters for various frontend frameworks.
-    * **core/** (`@toolbar/core`)
-        * The fundamental browser toolbar package, providing the core UI and logic for DOM element selection, prompt sending, and plugin support.
-        * Contains the main React components, hooks, utilities, and configuration for the toolbar's core functionality.
-    * **next/** (`@toolbar/next`)
-        * The specific package for integrating the 21st.dev Toolbar with Next.js applications.
-    * **vue/** (`@toolbar/vue`)
-        * The specific package for integrating the 21st.dev Toolbar with Vue.js applications.
-    * **react/** (`@toolbar/react`)
-        * The specific package for integrating the 21st.dev Toolbar with React applications (outside of Next.js, or for generic React usage).
-* **ui/**
-
-  * Shared React component library.
-  * Houses reusable UI elements (buttons, dialogs, forms, charts, etc.) used across apps and packages.
-* **srpc/**
-
-  * Handles typed RPC (remote procedure call) communication between the toolbar, extension, and other services.
-* **websocket-client-sdk/**
-
-  * SDK for WebSocket client communication, used for real-time features.
-* **extension-toolbar-srpc-contract/** & **extension-websocket-contract/**
-
-  * Define contracts and interfaces for communication between the extension, toolbar, and WebSocket services.
-* **typescript-config/**
-
-  * Shared TypeScript configuration files for consistent type-checking and build settings across the monorepo.
-
-### 3. Examples (`examples/`)
-
-* Contains example integrations for popular frameworks:
-
-  * **next-example/** (Next.js)
-  * **svelte-kit-example/** (SvelteKit)
-  * **nuxt-example/** (Nuxt)
-* These serve as reference implementations for integrating the 21st.dev Toolbar into different frontend stacks.
-
-### 4. Playgrounds (`playgrounds/`)
-
-* Experimental or sandbox environments for development and testing.
-* Useful for trying out new features or debugging in isolation.
-
-### 5. Root-level Configuration & Tooling
-
-* **pnpm-workspace.yaml**: Declares workspace packages for pnpm.
-* **turbo.json**: Turborepo configuration for task running and caching.
-* **biome.jsonc**, **lefthook.yml**, **commitlint.config.js**: Linting, formatting, and commit hook configuration.
-* **README.md**: Project overview and high-level documentation.
-
----
-
-## How the Parts Interact
-
-* The framework-specific **toolbar packages** (e.g., `@toolbar/next`, `@toolbar/react`, `@toolbar/vue`) are injected into frontend apps. They leverage `@toolbar/core` to provide the UI for selecting DOM elements and sending prompts.
-* The **VSCode extension** receives data from the active toolbar instance and communicates with your local AI agent (e.g., Cursor IDE).
-* **Contracts** in `packages/extension-toolbar-srpc-contract` and `packages/extension-websocket-contract` ensure type-safe communication between the extension, the toolbar components, and any backend services.
-* The **UI library** is shared across the website, `@toolbar/core`, and potentially other packages for a consistent look and feel.
-* **Examples** and **playgrounds** help demonstrate and test integrations in various environments using the appropriate framework-specific toolbar package.
-
-This structure is designed for modularity, reusability, and ease of contribution. Each package and app is self-contained, with clear responsibilities and minimal coupling.
-
----
-
-## Local Development
-
-To set up the repo:
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/your-username/my-portfolio-aws.git
+cd my-portfolio-aws
+
+# Install dependencies
 pnpm install
-pnpm dev  # runs the website and playgrounds
+
+# Start development server
+npm run dev
 ```
 
-Useful commands:
+### Available Scripts
 
-* `pnpm dev` — start all dev servers
-* `pnpm build` — build all packages
-* `pnpm lint` — run linters and type checks
-* `pnpm test` — run tests across packages
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run linting
+- `npm run typecheck` - Run TypeScript checking
+- `npm run format` - Format code with Biome
 
----
+## Code Style Guidelines
 
-## Changesets and Versioning
+### TypeScript
 
-We use [Changesets](https://github.com/changesets/changesets) to manage versions and changelogs. For any change that affects users, you must include a changeset:
+- Use strict TypeScript configuration
+- Prefer explicit types over `any`
+- Use interfaces for object shapes
+- Implement proper error handling
+
+### React Components
+
+- Use functional components with hooks
+- Follow component naming conventions (PascalCase)
+- Keep components focused and reusable
+- Use TypeScript for props interfaces
+
+### Styling
+
+- Use Tailwind CSS for styling
+- Follow design system patterns
+- Maintain responsive design principles
+- Use semantic HTML elements
+
+### File Organization
+
+- Group related components in feature directories
+- Use index files for clean imports
+- Separate concerns (components, utilities, types)
+- Follow consistent naming conventions
+
+## Contributing Process
+
+### 1. Fork and Clone
 
 ```bash
-pnpm changeset
+# Fork the repository on GitHub
+# Clone your fork
+git clone https://github.com/your-username/my-portfolio-aws.git
+cd my-portfolio-aws
 ```
 
-This will guide you through:
-1. Selecting the packages you've modified
-2. Choosing the appropriate semver increment (patch, minor, or major)
-3. Writing a description of your changes
-
-Your PR will fail CI checks if it doesn't include a changeset when making changes to published packages. For documentation-only changes or fixes that don't affect package functionality, you can create an empty changeset:
+### 2. Create a Branch
 
 ```bash
-pnpm changeset --empty
+# Create a new branch for your feature
+git checkout -b feature/your-feature-name
 ```
 
-**Note:** Changes without a changeset cannot be merged to the main branch.
+### 3. Make Changes
 
----
+- Follow the code style guidelines
+- Write clear, descriptive commit messages
+- Test your changes locally
 
-## Contribution Guidelines
+### 4. Test and Lint
 
-* Follow our code style (enforced by Biome, Lefthook, and Commitlint).
-* Write clear and descriptive commit messages.
-* Open a GitHub issue or draft PR before making large changes.
-* Add tests if you're adding new functionality (or explain why not).
-* Prefer small, scoped pull requests over large ones.
-* Include a changeset for any change affecting published packages.
+```bash
+# Run linting and type checking
+npm run lint
+npm run typecheck
 
----
+# Run tests (if applicable)
+npm test
+```
 
-## Need Help?
+### 5. Commit Changes
 
-* 💬 Join our [Discord](https://discord.gg/gkdGsDYaKA) to ask questions and get support.
-* 🐛 Found a bug? Open a [GitHub Issue](https://github.com/stagewise-io/stagewise/issues).
-* 💡 Have a feature idea? Let's discuss it in [GitHub Discussions](#).
+```bash
+# Stage your changes
+git add .
+
+# Commit with a descriptive message
+git commit -m "feat: add new feature description"
+
+# Push to your fork
+git push origin feature/your-feature-name
+```
+
+### 6. Create Pull Request
+
+- Go to GitHub and create a pull request
+- Describe your changes in detail
+- Reference any related issues
+
+## Code Quality Standards
+
+### Linting and Formatting
+
+- **Biome**: Fast linter and formatter
+- **ESLint**: JavaScript/TypeScript linting
+- **Prettier**: Code formatting (disabled in favor of Biome)
+
+### Type Checking
+
+- **TypeScript**: Strict type checking
+- **TypeScript Compiler**: No type errors allowed
+- **TypeScript ESLint**: Additional type-aware linting
+
+### Git Hooks
+
+- **Husky**: Pre-commit hooks
+- **Lint-staged**: Run linting on staged files
+- **Commitlint**: Enforce commit message format
+
+## Testing
+
+### Unit Tests
+
+- Use Jest for unit testing
+- Test utility functions and components
+- Aim for high test coverage
+
+### Integration Tests
+
+- Use Playwright for E2E testing
+- Test critical user flows
+- Verify cross-browser compatibility
+
+### Manual Testing
+
+- Test on different screen sizes
+- Verify accessibility features
+- Check performance metrics
+
+## Deployment
+
+### Local Development
+
+```bash
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm run start
+```
+
+### AWS Amplify Deployment
+
+1. Connect your GitHub repository to AWS Amplify
+2. Configure build settings using `amplify.yml`
+3. Set environment variables
+4. Deploy to production
+
+### Environment Variables
+
+```env
+# Build-time variables
+NODE_VERSION=20
+PNPM_VERSION=9.14.4
+NEXT_TELEMETRY_DISABLED=1
+
+# Runtime variables (if needed)
+NEXT_PUBLIC_APP_URL=https://your-domain.com
+```
+
+## Security Guidelines
+
+### Input Validation
+
+- Validate all user inputs
+- Use proper sanitization
+- Implement CSRF protection
+
+### Authentication
+
+- Use secure authentication methods
+- Implement proper session management
+- Follow OAuth best practices
+
+### Data Protection
+
+- Encrypt sensitive data
+- Use HTTPS for all communications
+- Implement proper CORS policies
+
+## Performance Optimization
+
+### Bundle Size
+
+- Use code splitting
+- Implement lazy loading
+- Optimize images and assets
+
+### Runtime Performance
+
+- Minimize re-renders
+- Use memoization appropriately
+- Optimize state management
+
+### SEO and Accessibility
+
+- Implement proper meta tags
+- Use semantic HTML
+- Ensure keyboard navigation
+- Add ARIA labels
+
+## Documentation
+
+### Code Documentation
+
+- Use JSDoc for complex functions
+- Add inline comments for complex logic
+- Document public APIs
+
+### Project Documentation
+
+- Update README.md for major changes
+- Add to architecture documentation
+- Document deployment procedures
+
+### API Documentation
+
+- Document any public APIs
+- Include usage examples
+- Maintain up-to-date documentation
+
+## Issue Reporting
+
+### Bug Reports
+
+When reporting bugs, please include:
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+- Browser and OS information
+- Console error messages
+
+### Feature Requests
+
+For feature requests:
+- Describe the feature clearly
+- Explain the use case
+- Suggest implementation approach
+- Consider existing architecture
+
+## Code Review Process
+
+### Review Criteria
+
+- Code follows established patterns
+- Changes are well-tested
+- Documentation is updated
+- Performance impact is considered
+- Security implications are addressed
+
+### Review Process
+
+1. Submit pull request with clear description
+2. Address reviewer feedback
+3. Ensure all CI checks pass
+4. Merge after approval
+
+## Getting Help
+
+### Documentation
+
+- [Architecture Documentation](docs/ARCHITECTURE.md)
+- [AWS Amplify Setup](docs/AWS_AMPLIFY_SETUP.md)
+- [API Documentation](docs/API.md) (if applicable)
+
+### Community
+
+- Create GitHub issues for questions
+- Use GitHub Discussions for general topics
+- Check existing issues and PRs
+
+### Development Support
+
+- Use TypeScript for better development experience
+- Leverage VS Code extensions for productivity
+- Follow established patterns and conventions
+
+## Contributing Checklist
+
+- [ ] I have read and followed the code style guidelines
+- [ ] My changes are well-tested
+- [ ] I have updated documentation if needed
+- [ ] I have run linting and type checking
+- [ ] I have tested my changes locally
+- [ ] I have written clear commit messages
+- [ ] I have followed the pull request process
+
+## License
+
+By contributing to this project, you agree that your contributions will be licensed under the same license as the project.
+
+## Questions?
+
+If you have questions about contributing:
+- Check the existing documentation
+- Search through issues and discussions
+- Create a new issue for specific questions
+
+Thank you for contributing to My Portfolio AWS!

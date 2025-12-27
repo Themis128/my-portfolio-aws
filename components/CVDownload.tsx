@@ -1,7 +1,7 @@
 "use client";
 import jsPDF from 'jspdf';
 import { PersonalData } from '../lib/personal-data';
-import { Button } from './button';
+import { Button } from "./ui/button";
 
 interface CVDownloadProps {
   data: PersonalData;
@@ -28,7 +28,7 @@ export default function CVDownload({ data }: CVDownloadProps) {
       ctx.clearRect(0, 0, width, height);
       ctx.drawImage(img, 0, 0, width, height);
       return canvas.toDataURL('image/png');
-    } catch (err) {
+    } catch {
       return '';
     }
   };
@@ -38,7 +38,7 @@ export default function CVDownload({ data }: CVDownloadProps) {
       const res = await fetch(path);
       if (!res.ok) return '';
       return await res.text();
-    } catch (err) {
+    } catch {
       return '';
     }
   };

@@ -1,234 +1,302 @@
-# AWS Amplify Setup Guide
+# AWS Amplify Deployment Guide
 
-This guide will help you set up AWS Amplify as the backend for your Next.js application.
+This guide covers deploying your Next.js portfolio to AWS Amplify with optimized settings for production.
 
 ## Prerequisites
 
 1. AWS Account with appropriate permissions
 2. AWS CLI installed and configured
 3. Node.js and pnpm installed
+4. GitHub repository connected to AWS Amplify
 
-## Step 1: Install AWS Amplify CLI
-
-```bash
-npm install -g @aws-amplify/cli
-```
-
-## Step 2: Configure AWS CLI
+## Step 1: Configure AWS CLI
 
 ```bash
 aws configure
 ```
 
-Enter your AWS Access Key ID, Secret Access Key, default region, and output format.
+Enter your AWS Access Key ID, Secret Access Key, default region (e.g., `eu-central-1`), and output format.
 
-## Step 3: Initialize Amplify Project
+## Step 2: Create Amplify App
 
+### Via AWS Console
+1. Go to [AWS Amplify Console](https://console.aws.amazon.com/amplify/)
+2. Click "Get Started" → "Connect app"
+3. Choose your Git provider (GitHub)
+4. Select your repository and branch
+5. Configure build settings (use the provided buildspec.yml)
+
+### Via AWS CLI
 ```bash
-amplify init
+aws amplify create-app \
+  --name "my-portfolio-aws" \
+  --repository "https://github.com/your-username/my-portfolio-aws" \
+  --platform "WEB"
 ```
 
-Follow the prompts to set up your project:
-- Enter a name for the project
-- Choose your default editor
-- Choose the type of app you're building (javascript)
-- Choose the framework (nextjs)
-- Source Directory Path: `src`
-- Distribution Directory Path: `dist`
-- Build Command: `npm run-script build`
-- Start Command: `npm run-script start`
+## Step 3: Configure Build Settings
 
-## Step 4: Add Authentication (Cognito)
+Create or update `amplify.yml` in your project root:
 
-```bash
-amplify add auth
+```yaml
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - pnpm install
+    build:
+      commands:
+        - pnpm run build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .next/cache/**/*
 ```
 
-Choose the default configuration or customize as needed.
+## Step 4: Environment Variables
 
-## Step 5: Add API (AppSync GraphQL)
+Configure these environment variables in AWS Amplify Console:
 
-```bash
-amplify add api
-```
-
-Choose GraphQL and follow the prompts to create your schema.
-
-## Step 6: Add Storage (S3)
-
-```bash
-amplify add storage
-```
-
-Choose content and configure access permissions.
-
-## Step 7: Push to AWS
-
-```bash
-amplify push
-```
-
-This will create all the AWS resources and update your configuration files.
-
-## Step 8: Update Configuration
-
-After running `amplify push`, your `amplifyconfiguration.json` will be automatically updated with the correct AWS resource IDs.
-
-## Usage
-
-### Authentication
-
-```typescript
-import { Auth } from 'aws-amplify';
-
-// Sign up
-const user = await Auth.signUp({
-  username: 'email@example.com',
-  password: 'password123',
-  attributes: {
-    email: 'email@example.com'
-  }
-});
-
-// Sign in
-const user = await Auth.signIn('email@example.com', 'password123');
-
-// Sign out
-await Auth.signOut();
-```
-
-### API (GraphQL)
-
-```typescript
-import { API, graphqlOperation } from 'aws-amplify';
-import { listPosts } from './graphql/queries';
-import { createPost } from './graphql/mutations';
-
-// Query data
-const posts = await API.graphql(graphqlOperation(listPosts));
-
-// Mutate data
-const newPost = await API.graphql(graphqlOperation(createPost, {
-  input: { title: 'My Post', content: 'Post content' }
-}));
-```
-
-### Storage (S3)
-
-```typescript
-import { Storage } from 'aws-amplify';
-
-// Upload file
-await Storage.put('filename.txt', file);
-
-// Get file
-const file = await Storage.get('filename.txt');
-
-// List files
-const files = await Storage.list('');
-```
-
-## Environment Variables
-
-Create a `.env.local` file in your project root:
-
+### Build-time Variables
 ```env
-NEXT_PUBLIC_AWS_PROJECT_REGION=us-east-1
-NEXT_PUBLIC_AWS_COGNITO_REGION=us-east-1
-NEXT_PUBLIC_AWS_USER_POOLS_ID=us-east-1_xxxxxxxxx
-NEXT_PUBLIC_AWS_USER_POOLS_WEB_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxx
-NEXT_PUBLIC_AWS_APPSYNC_GRAPHQL_ENDPOINT=https://your-api-id.appsync-api.us-east-1.amazonaws.com/graphql
-NEXT_PUBLIC_AWS_APPSYNC_REGION=us-east-1
-NEXT_PUBLIC_AWS_APPSYNC_AUTHENTICATION_TYPE=AMAZON_COGNITO_USER_POOLS
+NODE_VERSION=20
+PNPM_VERSION=9.14.4
+NEXT_TELEMETRY_DISABLED=1
 ```
 
-## Next.js Integration
+### Runtime Variables (if needed)
+```env
+NEXT_PUBLIC_APP_URL=https://your-domain.com
+NEXT_PUBLIC_API_URL=https://api.your-domain.com
+```
 
-### 1. Update Layout
+## Step 5: Custom Domain Setup
 
-Wrap your app with the AuthWrapper in `app/layout.tsx`:
+### 1. Configure Custom Domain
+1. In Amplify Console, go to your app
+2. Click "Domain management" → "Add domain"
+3. Enter your custom domain (e.g., `your-domain.com`)
+4. Follow DNS verification steps
 
-```tsx
-import AuthWrapper from '../src/components/AuthWrapper';
+### 2. SSL Certificate
+- Amplify automatically provisions SSL certificates via AWS Certificate Manager
+- Ensure your domain is verified before proceeding
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body>
-        <AuthWrapper>
-          {children}
-        </AuthWrapper>
-      </body>
-    </html>
-  );
+## Step 6: Advanced Configuration
+
+### 1. Custom Headers
+Add security headers in `next.config.ts`:
+
+```typescript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  turbopack: {
+    root: __dirname,
+  },
+  experimental: {
+    reactCompiler: false,
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+        ],
+      },
+    ];
+  },
+};
+
+module.exports = nextConfig;
+```
+
+### 2. Image Optimization
+Configure image domains in `next.config.ts`:
+
+```typescript
+const nextConfig = {
+  // ... other config
+  images: {
+    domains: ['images.unsplash.com', 'your-cdn-domain.com'],
+    formats: ['image/webp', 'image/avif'],
+  },
+};
+```
+
+## Step 7: Performance Optimization
+
+### 1. Enable Caching
+Configure cache settings in Amplify Console:
+- **Build cache**: Enable for faster builds
+- **Browser cache**: Set appropriate TTL values
+
+### 2. CDN Configuration
+- Amplify automatically uses CloudFront for global content delivery
+- Configure cache invalidation for deployments
+
+### 3. Bundle Optimization
+Ensure your `next.config.ts` includes:
+
+```typescript
+const nextConfig = {
+  // ... other config
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
+  swcMinify: true,
+};
+```
+
+## Step 8: Monitoring and Analytics
+
+### 1. Enable Monitoring
+- Set up CloudWatch alarms for performance metrics
+- Configure custom metrics for user engagement
+
+### 2. Error Tracking
+- Integrate with AWS X-Ray for request tracing
+- Set up error reporting with CloudWatch Logs
+
+## Step 9: CI/CD Pipeline
+
+### 1. Branch Management
+Configure branch-specific settings:
+- **Main branch**: Production deployment
+- **Develop branch**: Staging environment
+- **Feature branches**: Preview deployments
+
+### 2. Build Triggers
+- Automatic builds on git push
+- Manual build triggers for specific scenarios
+- Webhook configuration for external triggers
+
+## Step 10: Security Configuration
+
+### 1. IAM Permissions
+Ensure your Amplify service role has minimal required permissions:
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": "arn:aws:s3:::your-amplify-app-*/*"
+    }
+  ]
 }
 ```
 
-### 2. Use in Components
+### 2. WAF Integration
+- Set up AWS WAF for DDoS protection
+- Configure rate limiting rules
+- Add bot protection
 
-```tsx
-'use client';
+## Deployment Commands
 
-import { useAuthenticator } from '@aws-amplify/ui-react';
-
-export default function Dashboard() {
-  const { user, signOut } = useAuthenticator();
-
-  return (
-    <div>
-      <h1>Welcome, {user?.username}!</h1>
-      <button onClick={signOut}>Sign Out</button>
-    </div>
-  );
-}
-```
-
-## Deployment
-
-### 1. Deploy to AWS Amplify Console
-
+### Manual Deployment
 ```bash
-amplify add hosting
-amplify publish
+# Trigger build and deploy
+aws amplify start-deployment --app-id your-app-id --branch-name main
 ```
 
-### 2. Deploy to Vercel
+### Status Check
+```bash
+# Check deployment status
+aws amplify get-app --app-id your-app-id
+```
 
-1. Connect your GitHub repository to Vercel
-2. Set environment variables in Vercel dashboard
-3. Deploy
+### Rollback
+```bash
+# Rollback to previous version
+aws amplify create-deployment --app-id your-app-id --branch-name main
+```
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **CORS errors**: Ensure your S3 bucket CORS configuration allows your domain
-2. **Authentication errors**: Check your Cognito user pool settings
-3. **API errors**: Verify your GraphQL schema and resolvers
+1. **Build Failures**:
+   - Check Node.js version compatibility
+   - Verify pnpm installation
+   - Review build logs in Amplify Console
 
-### Useful Commands
+2. **Environment Variables**:
+   - Ensure all required variables are set
+   - Check variable names match code references
+   - Verify sensitive variables are properly secured
+
+3. **Custom Domain Issues**:
+   - Verify DNS records are correctly configured
+   - Check SSL certificate status
+   - Ensure domain is not blocked by regional restrictions
+
+4. **Performance Issues**:
+   - Review bundle size with `next build --profile`
+   - Check image optimization settings
+   - Verify CDN configuration
+
+### Debug Commands
 
 ```bash
-# Check Amplify status
-amplify status
+# Get app details
+aws amplify get-app --app-id your-app-id
 
-# View logs
-amplify console
+# List branches
+aws amplify list-branches --app-id your-app-id
 
-# Remove resources
-amplify delete
+# Get build logs
+aws amplify get-job --app-id your-app-id --branch-name main --job-id job-id
 ```
 
-## Security Best Practices
+## Cost Optimization
 
-1. Use environment variables for sensitive configuration
-2. Implement proper IAM roles and policies
-3. Enable MFA for Cognito users
-4. Use HTTPS for all API endpoints
-5. Regularly rotate API keys and secrets
+### 1. Resource Monitoring
+- Set up AWS Budgets alerts
+- Monitor Amplify usage metrics
+- Review CloudFront costs
+
+### 2. Optimization Strategies
+- Use appropriate instance sizes for builds
+- Configure build timeouts appropriately
+- Implement efficient caching strategies
+
+## Best Practices
+
+1. **Environment Separation**: Use separate Amplify apps for staging and production
+2. **Backup Strategy**: Regularly backup your application configuration
+3. **Security**: Regularly rotate API keys and review IAM permissions
+4. **Monitoring**: Set up comprehensive monitoring and alerting
+5. **Documentation**: Keep deployment procedures documented and updated
 
 ## Resources
 
-- [AWS Amplify Documentation](https://docs.amplify.aws/)
-- [Next.js with Amplify Tutorial](https://docs.amplify.aws/start/q/integration/next/)
-- [AWS Amplify CLI Reference](https://docs.amplify.aws/cli/)
+- [AWS Amplify Documentation](https://docs.aws.amazon.com/amplify/)
+- [Next.js Deployment Guide](https://nextjs.org/docs/deployment)
+- [AWS Amplify CLI Reference](https://docs.aws.amazon.com/cli/latest/reference/amplify/)
