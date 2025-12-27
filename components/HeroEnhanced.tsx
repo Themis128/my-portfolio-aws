@@ -2,6 +2,10 @@
 import { useEffect, useState } from 'react';
 import { PersonalData } from '../lib/personal-data';
 import { Button } from './button';
+import CVDownload from './CVDownload';
+import { NumberTicker } from './ui/number-ticker';
+import { TextAnimate } from './ui/text-animate';
+import { WordRotate } from './ui/word-rotate';
 
 interface HeroProps {
   data: PersonalData;
@@ -16,12 +20,14 @@ export default function Hero({ data }: HeroProps) {
     "AWS Architect"
   ];
 
+  const greetingText = `Hi, I'm ${data.name.split(' ')[0]}`;
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentRole((prev) => (prev + 1) % roles.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [roles.length]);
 
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 relative overflow-hidden">
@@ -30,28 +36,68 @@ export default function Hero({ data }: HeroProps) {
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
         <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-blue-300/20 to-purple-300/20 rounded-full blur-2xl animate-pulse animation-delay-4000"></div>
+
+        {/* Tech circuit pattern overlay */}
+        <div className="absolute inset-0 opacity-10 dark:opacity-20">
+          <svg className="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="circuit" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                <rect width="20" height="20" fill="none"/>
+                <circle cx="10" cy="10" r="1" fill="currentColor" className="text-blue-600"/>
+                <line x1="10" y1="10" x2="20" y2="10" stroke="currentColor" strokeWidth="0.5" className="text-blue-400"/>
+                <line x1="10" y1="10" x2="10" y2="0" stroke="currentColor" strokeWidth="0.5" className="text-blue-400"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#circuit)"/>
+          </svg>
+        </div>
       </div>
 
       <div className="container mx-auto px-6 py-20 relative z-10">
         <div className="text-center max-w-6xl mx-auto">
           <div className="mb-12">
-            {/* Profile image placeholder */}
-            <div className="w-40 h-40 mx-auto mb-10 rounded-full bg-gradient-to-br from-blue-500 via-purple-600 to-pink-600 flex items-center justify-center text-white text-5xl font-bold shadow-2xl shadow-blue-500/20">
-              {data.name.split(' ').map(n => n[0]).join('')}
+            {/* Profile image placeholder with tech glow */}
+            <div className="relative">
+              <div className="w-40 h-40 mx-auto mb-10 rounded-full bg-gradient-to-br from-blue-500 via-purple-600 to-pink-600 flex items-center justify-center text-white text-5xl font-bold shadow-2xl shadow-blue-500/20 relative overflow-hidden">
+                {/* Animated tech rings */}
+                <div className="absolute inset-0 rounded-full border-2 border-white/20 animate-ping"></div>
+                <div className="absolute inset-2 rounded-full border border-white/30 animate-pulse"></div>
+                <div className="absolute inset-4 rounded-full border border-white/40"></div>
+                <span className="relative z-10">{data.name.split(' ').map(n => n[0]).join('')}</span>
+              </div>
+
+              {/* Floating tech elements */}
+              <div className="absolute -top-4 -right-4 w-8 h-8 bg-blue-500 rounded-full animate-bounce opacity-75">
+                <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">JS</span>
+                </div>
+              </div>
+              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-purple-500 rounded-full animate-bounce opacity-75 animation-delay-1000">
+                <div className="w-full h-full bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">⚛</span>
+                </div>
+              </div>
             </div>
 
             <h1 className="text-6xl md:text-8xl font-bold text-gray-900 dark:text-white mb-8 leading-tight tracking-tight">
-              Hi, I'm{" "}
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient-x">
-                {data.name.split(' ')[0]}
-              </span>
+              <TextAnimate
+                animation="blurIn"
+                by="word"
+                className="neon-text font-mono"
+                startOnView={true}
+              >
+                {greetingText}
+              </TextAnimate>
+              <span className="block mx-auto neon-underline" aria-hidden="true" />
             </h1>
 
             <div className="text-2xl md:text-4xl text-gray-600 dark:text-gray-300 mb-8 h-16 flex items-center justify-center">
-              <span className="inline-block font-medium">
-                {roles[currentRole]}
-                <span className="animate-pulse text-blue-600 dark:text-blue-400">|</span>
-              </span>
+              <WordRotate
+                words={["Full-Stack Developer", "Cloud Solutions Expert", "React Specialist", "AWS Architect"]}
+                duration={3000}
+                className="font-medium inline-block"
+              />
+              <span className="animate-pulse text-blue-600 dark:text-blue-400">|</span>
             </div>
 
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto mb-16 leading-relaxed">
@@ -75,6 +121,9 @@ export default function Hero({ data }: HeroProps) {
             >
               Get In Touch
             </Button>
+            <div className="flex justify-center">
+              <CVDownload data={data} />
+            </div>
           </div>
 
           <div className="flex justify-center space-x-6 mb-16">
@@ -108,27 +157,31 @@ export default function Hero({ data }: HeroProps) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
             <div className="text-center group">
               <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                5+
+                <NumberTicker value={5} className="group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                +
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Years Experience</div>
             </div>
             <div className="text-center group">
               <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                50+
+                <NumberTicker value={50} className="group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                +
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Projects Completed</div>
             </div>
             <div className="text-center group">
               <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                20+
+                <NumberTicker value={20} className="group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                +
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Happy Clients</div>
             </div>
             <div className="text-center group">
               <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                24/7
+                <NumberTicker value={24} className="group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                /
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Support</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">7 Support</div>
             </div>
           </div>
         </div>

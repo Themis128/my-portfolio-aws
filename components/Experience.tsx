@@ -16,7 +16,7 @@ export default function Experience({ data }: ExperienceProps) {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8"></div>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Journey through my career and the impactful projects I've contributed to
+              Journey through my career and the impactful projects I&apos;ve contributed to
             </p>
           </div>
 

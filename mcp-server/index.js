@@ -1,10 +1,9 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import fs from "fs";
-import path from "path";
-import os from "os";
 import { exec } from "child_process";
+import fs from "fs";
+import os from "os";
 import { promisify } from "util";
 
 const execAsync = promisify(exec);
@@ -63,7 +62,7 @@ const server = new Server(
 );
 
 // Define tools for file operations
-server.setRequestHandler(ListToolsRequestSchema, async (request, _channel) => {
+server.setRequestHandler(ListToolsRequestSchema, async (_request, _channel) => {
   return {
     tools: [
       {

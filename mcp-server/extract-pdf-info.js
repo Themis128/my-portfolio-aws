@@ -1,5 +1,4 @@
 import { spawn } from 'child_process';
-import fs from 'fs';
 
 async function extractPDFInfo() {
   console.log('Starting PDF extraction process...');

@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { Button } from './button';
+import { useEffect, useState } from 'react';
+import ThemeSwitcher from './ThemeSwitcher';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -40,7 +40,7 @@ export default function Navigation() {
     }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mono-accent">
             TB
           </div>
 
@@ -50,12 +50,13 @@ export default function Navigation() {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 font-medium relative group"
+                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 font-medium relative group font-mono nav-accent"
               >
                 {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
               </button>
             ))}
+            <div className="w-px h-8 bg-gray-200 dark:bg-gray-700"></div>
+            <ThemeSwitcher />
           </div>
 
           {/* Mobile Menu Button */}

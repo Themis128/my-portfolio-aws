@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { PersonalData } from '../lib/personal-data';
 import { Button } from './button';
+import { Input } from './input';
+import { Textarea } from './textarea';
 
 interface ContactProps {
   data: PersonalData;
@@ -39,14 +41,14 @@ export default function Contact({ data }: ContactProps) {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8"></div>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Ready to bring your ideas to life? Let's collaborate and create something amazing together
+              Ready to bring your ideas to life? Let&apos;s collaborate and create something amazing together
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div className="space-y-8">
               <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-                Let's Connect
+                Let&apos;s Connect
               </h3>
 
               <div className="space-y-8">
@@ -62,7 +64,7 @@ export default function Contact({ data }: ContactProps) {
                       <p className="text-lg font-semibold text-gray-900 dark:text-white">{data.email}</p>
                     </div>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">I'll get back to you within 24 hours</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">I&apos;ll get back to you within 24 hours</p>
                 </div>
 
                 <div className="group bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-white/20 dark:border-gray-700">
@@ -106,14 +108,13 @@ export default function Contact({ data }: ContactProps) {
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                       Your Name
                     </label>
-                    <input
+                    <Input
                       type="text"
                       id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-300"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -121,14 +122,13 @@ export default function Contact({ data }: ContactProps) {
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                       Your Email
                     </label>
-                    <input
+                    <Input
                       type="email"
                       id="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all duration-300"
                       placeholder="your@email.com"
                     />
                   </div>
@@ -138,14 +138,13 @@ export default function Contact({ data }: ContactProps) {
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                     Your Message
                   </label>
-                  <textarea
+                  <Textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none transition-all duration-300"
                     placeholder="Tell me about your project, goals, and how I can help you achieve them..."
                   />
                 </div>

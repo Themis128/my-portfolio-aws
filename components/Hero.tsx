@@ -13,7 +13,7 @@ export default function Hero({ data }: HeroProps) {
         <div className="text-center max-w-4xl mx-auto">
           <div className="mb-8">
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-6">
-              Hi, I'm{" "}
+              Hi, I&apos;m{" "}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 {data.name}
               </span>

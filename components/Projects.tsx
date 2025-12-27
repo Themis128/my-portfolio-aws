@@ -1,6 +1,7 @@
 "use client";
 import { PersonalData } from '../lib/personal-data';
 import { Button } from './button';
+import IconImage from './IconImage';
 
 interface ProjectsProps {
   data: PersonalData;
@@ -22,7 +23,7 @@ export default function Projects({ data }: ProjectsProps) {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {data.projects.map((project, index) => (
+            {data.projects.map((project) => (
               <div
                 key={project.id}
                 className="group bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-white/20 dark:border-gray-700"
@@ -43,14 +44,19 @@ export default function Projects({ data }: ProjectsProps) {
                   </p>
 
                   <div className="flex flex-wrap gap-3 mb-6">
-                    {project.technologies.map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className="px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-800 dark:text-blue-200 text-sm font-medium rounded-full border border-blue-200/50 dark:border-blue-800/30"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                    {project.technologies.map((tech) => {
+                      const slug = tech.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                      const iconPath = `/icons/${slug}.svg`;
+                      return (
+                        <span
+                          key={tech}
+                          className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-slate-100 to-white/60 dark:from-gray-800/60 dark:to-gray-800/40 text-sm font-medium rounded-full border border-white/20 dark:border-gray-700"
+                        >
+                          <IconImage slug={slug} alt={`${tech} logo`} className="w-4 h-4" />
+                          {tech}
+                        </span>
+                      );
+                    })}
                   </div>
 
                   {project.url && (
