@@ -1,8 +1,6 @@
 import React from 'react';
 
-interface ScrollAreaProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export const ScrollArea: React.FC<ScrollAreaProps> = ({
+export const ScrollArea: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className = '',
   ...props
 }) => <div className={`relative overflow-auto ${className}`} {...props} />;

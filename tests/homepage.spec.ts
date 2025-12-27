@@ -1,42 +1,52 @@
-import { expect, test, Page } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 
 test('homepage loads correctly', async ({ page }: { page: Page }) => {
   // Navigate to the homepage
   await page.goto('/');
 
-  // Check if the page title contains "21st.dev"
-  await expect(page).toHaveTitle(/21st\.dev/);
+  // Check if the page title contains the portfolio title
+  await expect(page).toHaveTitle(/Themis Baltzakis/);
 
-  // Check if the main heading is visible
-  await expect(page.locator('h1').filter({ hasText: 'Build faster with' })).toBeVisible();
+  // Check if the main hero heading is visible
+  await expect(page.locator('h1').filter({ hasText: 'Hi, I\'m Themis' })).toBeVisible();
 
-  // Check if the hero section text is present
-  await expect(page.locator('text=Discover, share, and prototype with the largest collection of modern UI components')).toBeVisible();
+  // Check if the hero section has rotating role text
+  await expect(page.locator('#hero')).toContainText('Full-Stack Developer');
+  await expect(page.locator('#hero')).toContainText('Cloud Solutions Expert');
+  await expect(page.locator('#hero')).toContainText('React Specialist');
+  await expect(page.locator('#hero')).toContainText('AWS Architect');
 
   // Check if navigation links are present
-  await expect(page.locator('text=Components')).toBeVisible();
-  await expect(page.locator('text=Community')).toBeVisible();
-  await expect(page.locator('text=Canvas')).toBeVisible();
-  await expect(page.locator('text=About')).toBeVisible();
+  await expect(page.locator('nav button').filter({ hasText: 'Home' })).toBeVisible();
+  await expect(page.locator('nav button').filter({ hasText: 'About' })).toBeVisible();
+  await expect(page.locator('nav button').filter({ hasText: 'Skills' })).toBeVisible();
+  await expect(page.locator('nav button').filter({ hasText: 'Experience' })).toBeVisible();
+  await expect(page.locator('nav button').filter({ hasText: 'Projects' })).toBeVisible();
+  await expect(page.locator('nav button').filter({ hasText: 'Contact' })).toBeVisible();
 });
 
 test('navigation works', async ({ page }: { page: Page }) => {
   await page.goto('/');
 
-  // Click on Components link
-  await page.locator('text=Components').click();
+  // Check if About section is visible after clicking About in navigation
+  await page.locator('nav button').filter({ hasText: 'About' }).click();
+  await expect(page.locator('#about')).toBeInViewport();
 
-  // Should navigate to components page
-  await expect(page).toHaveURL(/.*components/);
+  // Check if Skills section is visible after clicking Skills
+  await page.locator('nav button').filter({ hasText: 'Skills' }).click();
+  await expect(page.locator('#skills')).toBeInViewport();
 
-  // Go back to home
-  await page.goto('/');
+  // Check if Experience section is visible after clicking Experience
+  await page.locator('nav button').filter({ hasText: 'Experience' }).click();
+  await expect(page.locator('#experience')).toBeInViewport();
 
-  // Click on Community link
-  await page.locator('text=Community').click();
+  // Check if Projects section is visible after clicking Projects
+  await page.locator('nav button').filter({ hasText: 'Projects' }).click();
+  await expect(page.locator('#projects')).toBeInViewport();
 
-  // Should navigate to community page
-  await expect(page).toHaveURL(/.*community/);
+  // Check if Contact section is visible after clicking Contact
+  await page.locator('nav button').filter({ hasText: 'Contact' }).click();
+  await expect(page.locator('#contact')).toBeInViewport();
 });
 
 test('responsive design', async ({ page }: { page: Page }) => {
@@ -45,7 +55,10 @@ test('responsive design', async ({ page }: { page: Page }) => {
   // Test mobile viewport
   await page.setViewportSize({ width: 375, height: 667 });
 
-  // Check if mobile menu or responsive elements work
+  // Check if mobile menu button is visible (hamburger menu)
+  await expect(page.locator('button.md\\:hidden')).toBeVisible();
+
+  // Check if main content is visible
   await expect(page.locator('h1')).toBeVisible();
 
   // Test tablet viewport

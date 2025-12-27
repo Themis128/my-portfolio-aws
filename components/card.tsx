@@ -1,15 +1,13 @@
 import React from 'react';
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export const Card: React.FC<CardProps> = ({ className = '', ...props }) => (
+export const Card: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className = '', ...props }) => (
   <div
     className={`rounded-lg border bg-card text-card-foreground shadow-sm ${className}`}
     {...props}
   />
 );
 
-export const CardHeader: React.FC<CardProps> = ({
+export const CardHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className = '',
   ...props
 }) => (
@@ -32,7 +30,7 @@ export const CardDescription: React.FC<
   <p className={`text-sm text-muted-foreground ${className}`} {...props} />
 );
 
-export const CardContent: React.FC<CardProps> = ({
+export const CardContent: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className = '',
   ...props
 }) => <div className={`p-6 pt-0 ${className}`} {...props} />;

@@ -1,9 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export const Avatar: React.FC<AvatarProps> = ({ className = '', ...props }) => (
+export const Avatar: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className = '', ...props }) => (
   <div
     className={`relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full ${className}`}
     {...props}
@@ -23,7 +21,7 @@ export const AvatarImage: React.FC<{
   />
 );
 
-export const AvatarFallback: React.FC<AvatarProps> = ({
+export const AvatarFallback: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className = '',
   ...props
 }) => (
