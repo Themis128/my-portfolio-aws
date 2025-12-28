@@ -167,7 +167,7 @@ This is an automated response. Please do not reply to this email.`,
       console.warn('SLACK_WEBHOOK_URL not set, skipping Slack notification');
     } else {
       const slackPayload = {
-        channel: '#contact-form',
+        channel: '#personal-website',
         username: 'Contact Form Bot',
         icon_emoji: ':email:',
         attachments: [

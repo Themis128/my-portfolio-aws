@@ -117,45 +117,55 @@ This is an automated response. Please do not reply to this email.`,
     await sesClient.send(new SendEmailCommand(emailParams));
 
     // Send to Slack webhook
-    const slackPayload = {
-      channel: '#contact-form',
-      username: 'Contact Form Bot',
-      icon_emoji: ':email:',
-      attachments: [
-        {
-          fallback: `New contact form submission from ${name}`,
-          color: '#36a64f',
-          title: 'New Contact Form Submission',
-          fields: [
-            {
-              title: 'Name',
-              value: name,
-              short: true,
-            },
-            {
-              title: 'Email',
-              value: email,
-              short: true,
-            },
-            {
-              title: 'Message',
-              value: message,
-              short: false,
-            },
-          ],
-          footer: 'Baltzakis Themis Contact Form',
-          ts: Math.floor(Date.now() / 1000),
-        },
-      ],
-    };
+    const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
+    if (!slackWebhookUrl) {
+      console.warn('SLACK_WEBHOOK_URL not set, skipping Slack notification');
+    } else {
+      const slackPayload = {
+        channel: '#personal-website',
+        username: 'Contact Form Bot',
+        icon_emoji: ':email:',
+        attachments: [
+          {
+            fallback: `New contact form submission from ${name}`,
+            color: '#36a64f',
+            title: 'New Contact Form Submission',
+            fields: [
+              {
+                title: 'Name',
+                value: name,
+                short: true,
+              },
+              {
+                title: 'Email',
+                value: email,
+                short: true,
+              },
+              {
+                title: 'Message',
+                value: message,
+                short: false,
+              },
+            ],
+            footer: 'Baltzakis Themis Contact Form',
+            ts: Math.floor(Date.now() / 1000),
+          },
+        ],
+      };
 
-    await fetch('https://hooks.slack.com/services/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', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(slackPayload),
-    });
+      try {
+        await fetch(slackWebhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(slackPayload),
+        });
+        console.log('Slack notification sent successfully');
+      } catch (slackError) {
+        console.error('Error sending Slack notification:', slackError);
+      }
+    }
 
     return {
       statusCode: 200,
