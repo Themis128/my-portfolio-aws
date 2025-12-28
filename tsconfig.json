@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "baseUrl": ".",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -19,7 +20,21 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@21st-extension/extension-toolbar-srpc-contract": [
+        "21st-extension-main/21st-extension-main/packages/extension-toolbar-srpc-contract/dist"
+      ],
+      "@21st-extension/extension-toolbar-srpc-contract/*": [
+        "21st-extension-main/21st-extension-main/packages/extension-toolbar-srpc-contract/src/*",
+        "21st-extension-main/21st-extension-main/packages/extension-toolbar-srpc-contract/dist/*"
+      ],
+      "@21st-extension/srpc": [
+        "21st-extension-main/21st-extension-main/packages/srpc/dist"
+      ],
+      "@21st-extension/srpc/*": [
+        "21st-extension-main/21st-extension-main/packages/srpc/src/*",
+        "21st-extension-main/21st-extension-main/packages/srpc/dist/*"
+      ]
     }
   },
   "include": [
@@ -30,5 +45,12 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "amplify/**", ".amplify/**", "serverless-local/**"]
+  "exclude": [
+    "node_modules",
+    "amplify/**",
+    ".amplify/**",
+    "serverless-local/**",
+    "21st-extension-main/21st-extension-main/apps/vscode-extension/**",
+    "21st-extension-main/21st-extension-main/**"
+  ]
 }

@@ -1,0 +1,325 @@
+{
+  "events": {
+    "extension_activated": {
+      "classification": "EndUserPseudonymizedInformation",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when the extension is activated",
+      "properties": {
+        "ide": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "The IDE being used (VS Code, etc.)"
+        }
+      }
+    },
+    "toolbar_connected": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when the toolbar in web app dev mode connects to the extension"
+    },
+    "opened_web_app_workspace": {
+      "classification": "EndUserPseudonymizedInformation",
+      "purpose": "PerformanceAndHealth",
+      "comment": "Tracks when the user opens a workspace with web apps"
+    },
+    "toolbar_auto_setup_started": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when the automatic toolbar setup process is initiated"
+    },
+    "toolbar_setup_completed": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when the toolbar setup is completed successfully"
+    },
+    "toolbar_setup_failed": {
+      "classification": "CallstackOrException",
+      "purpose": "PerformanceAndHealth",
+      "comment": "Tracks when the toolbar setup fails",
+      "properties": {
+        "error": {
+          "classification": "CallstackOrException",
+          "purpose": "PerformanceAndHealth",
+          "comment": "The error message (scrubbed of PII)"
+        }
+      }
+    },
+    "agent_prompt_triggered": {
+      "classification": "EndUserPseudonymizedInformation",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when an agent prompt is triggered by the user"
+    },
+    "activation_error": {
+      "classification": "CallstackOrException",
+      "purpose": "PerformanceAndHealth",
+      "comment": "Tracks when the extension activation fails",
+      "properties": {
+        "error": {
+          "classification": "CallstackOrException",
+          "purpose": "PerformanceAndHealth",
+          "comment": "The error message (scrubbed of PII)"
+        }
+      }
+    },
+    "extension_deactivated": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when the extension is deactivated"
+    },
+    "telemetry_disabled": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user disables telemetry collection. This helps understand opt-out rates and is tracked once when the setting changes before telemetry is actually disabled."
+    },
+    "telemetry_enabled": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user re-enables telemetry collection after previously disabling it."
+    },
+    "getting_started_panel_shown": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when the getting started panel is automatically shown to first-time users"
+    },
+    "getting_started_panel_manual_show": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user manually opens the getting started panel via command"
+    },
+    "interacted_with_getting_started_panel": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user interacts with the getting started panel"
+    },
+    "dismissed_getting_started_panel": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user dismisses the getting started panel"
+    },
+    "clicked_setup_toolbar_in_getting_started_panel": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user clicks the setup toolbar button in the getting started panel"
+    },
+    "clicked_open_docs_in_getting_started_panel": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user clicks the open docs button in the getting started panel"
+    },
+    "post_setup_feedback": {
+      "classification": "EndUserPseudonymizedInformation",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks user feedback after toolbar setup completion",
+      "properties": {
+        "type": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "The type of feedback provided by the user"
+        },
+        "text": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "The feedback text provided by the user"
+        }
+      }
+    },
+    "show_toolbar_update_notification": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a new toolbar version is available"
+    },
+    "toolbar_update_notification_auto_update": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user clicks the update button in the toolbar update notification"
+    },
+    "toolbar_update_notification_ignored": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user clicks the ignore button in the toolbar update notification"
+    },
+    "toolbar_update_notification_dismissed": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user dismisses the toolbar update notification"
+    },
+    "toolbar_auto_update_prompt_sent": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a prompt for auto-updating the toolbar is sent"
+    },
+    "show_toolbar_integration_notification": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user is shown a recommendation to integrate stagewise into their app"
+    },
+    "toolbar_integration_notification_ignore": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user ignores the toolbar integration notification"
+    },
+    "toolbar_integration_notification_dismissed": {
+      "classification": "SystemMetaData",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user dismisses the toolbar integration notification"
+    },
+    "magic_chat_triggered": {
+      "classification": "EndUserPseudonymizedInformation",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when Magic Chat is triggered by the user",
+      "properties": {
+        "sessionId": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "IDE session identifier"
+        },
+        "text": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "User input text"
+        },
+        "prompt": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "Final processed prompt sent to Magic Chat"
+        },
+        "domSelectedElementsCount": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Number of DOM elements selected"
+        },
+        "selectedComponents": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Array of selected UI components with id and name"
+        }
+      }
+    },
+    "components_search_triggered": {
+      "classification": "EndUserPseudonymizedInformation",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when component search is triggered via Tab key",
+      "properties": {
+        "sessionId": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "IDE session identifier"
+        },
+        "searchQuery": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "Search query text (may contain user intent)"
+        },
+        "searchQueryLength": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Length of search query"
+        },
+        "searchIntent": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Detected search intent"
+        },
+        "selectedDomElementsCount": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Number of DOM elements selected"
+        },
+        "selectedComponents": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Array of selected UI components with id and name"
+        }
+      }
+    },
+    "component_selected": {
+      "classification": "EndUserPseudonymizedInformation",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when a user selects a UI component from search results",
+      "properties": {
+        "sessionId": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "IDE session identifier"
+        },
+        "demoId": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Unique identifier of the selected component demo"
+        },
+        "demoName": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Name of the selected component demo"
+        },
+        "componentName": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Name of the selected component"
+        },
+        "componentDescription": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Description of the selected component"
+        },
+        "searchQuery": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "Search query that led to component selection"
+        },
+        "searchQueryLength": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Length of search query"
+        }
+      }
+    },
+    "agent_prompt_triggered_with_component": {
+      "classification": "EndUserPseudonymizedInformation",
+      "purpose": "FeatureInsight",
+      "comment": "Tracks when an agent prompt is triggered with UI components selected",
+      "properties": {
+        "sessionId": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "IDE session identifier"
+        },
+        "promptText": {
+          "classification": "EndUserPseudonymizedInformation",
+          "purpose": "FeatureInsight",
+          "comment": "The prompt text entered by the user"
+        },
+        "componentCount": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Number of components selected"
+        },
+        "componentIds": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Array of component IDs"
+        },
+        "selectedDomElementsCount": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Number of DOM elements selected"
+        },
+        "hasRuntimeError": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "Whether a runtime error was included"
+        },
+        "runtimeError": {
+          "classification": "CallstackOrException",
+          "purpose": "PerformanceAndHealth",
+          "comment": "Runtime error message if included"
+        },
+        "promptAction": {
+          "classification": "SystemMetaData",
+          "purpose": "FeatureInsight",
+          "comment": "The action taken with the prompt (send, copy, or both)"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="igBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="igCloudMain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="70%" stop-color="#e8f4fc"/>
+      <stop offset="100%" stop-color="#d0e8f5"/>
+    </linearGradient>
+    <linearGradient id="igCloudTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f0f9ff"/>
+    </linearGradient>
+    <filter id="igShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dy="6"/>
+      <feFlood flood-color="#0c4a6e" flood-opacity="0.35"/>
+      <feComposite in2="offsetBlur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <circle cx="160" cy="160" r="160" fill="url(#igBg)"/>
+  
+  <!-- Cloud -->
+  <g filter="url(#igShadow)" transform="translate(55, 75) scale(2.4)">
+    <ellipse cx="42" cy="48" rx="32" ry="16" fill="url(#igCloudMain)"/>
+    <ellipse cx="22" cy="42" rx="20" ry="18" fill="url(#igCloudMain)"/>
+    <ellipse cx="62" cy="44" rx="22" ry="16" fill="url(#igCloudMain)"/>
+    <ellipse cx="35" cy="36" rx="24" ry="20" fill="url(#igCloudTop)"/>
+    <ellipse cx="55" cy="34" rx="22" ry="18" fill="url(#igCloudTop)"/>
+    <ellipse cx="48" cy="26" rx="18" ry="16" fill="url(#igCloudTop)"/>
+    <ellipse cx="38" cy="22" rx="14" ry="10" fill="#ffffff"/>
+    <ellipse cx="54" cy="20" rx="10" ry="8" fill="#ffffff"/>
+    <ellipse cx="42" cy="18" rx="8" ry="5" fill="#ffffff"/>
+  </g>
+</svg>

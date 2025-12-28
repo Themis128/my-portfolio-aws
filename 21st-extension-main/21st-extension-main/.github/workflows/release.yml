@@ -1,0 +1,126 @@
+name: Monorepo Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+  POSTHOG_HOST: ${{ vars.POSTHOG_HOST }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # To push commits and tags
+      pull-requests: write # To create PRs (though commit: is used here)
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed for commit history checks
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.10.0 
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build All Packages
+        run: pnpm build
+
+      - name: Version Packages, Format, Publish to npm, and Create GitHub Releases
+        id: changesets # Add an ID here
+        uses: changesets/action@v1.5.2
+        with:
+          # Assumes you have the version-and-format script in your root package.json
+          version: pnpm run version-and-format 
+          publish: pnpm changeset publish
+          commit: "chore: release packages [skip ci]" # This commits the changes
+          title: "Release: New Package Versions"
+          createGitHubReleases: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_ACCESS_TOKEN }} # Ensure secret name is correct
+
+      - name: Check for VSCode Extension Version and Release if Not Released
+        # This step checks if the current version from package.json is already released
+        run: |
+          # Read the current version from package.json
+          cd $GITHUB_WORKSPACE  
+          VERSION=$(pnpm --filter 21st-extension exec node -p "require('./package.json').version")
+
+          if [ -z "$VERSION" ]; then
+            echo "Error: Could not read version from apps/vscode-extension/package.json"
+            exit 1 # Exit with error
+          fi
+
+          echo "Current VSCode extension version: $VERSION"
+          TAG_NAME="21st-extension@$VERSION"
+          
+          # Check if this version tag already exists
+          if git tag -l | grep -q "^$TAG_NAME$"; then
+            echo "Version $VERSION is already released (tag $TAG_NAME exists). Skipping VSCode extension release."
+            echo "VSCODE_EXTENSION_CHANGED=false" >> $GITHUB_ENV
+            exit 0 # Exit successfully, no release needed
+          fi
+
+          echo "Version $VERSION is not yet released (tag $TAG_NAME does not exist). Proceeding with VSCode extension release."
+          echo "VSCODE_EXTENSION_CHANGED=true" >> $GITHUB_ENV
+
+          # Store version for subsequent steps
+          echo "VSCODE_EXTENSION_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VSIX_FILENAME=21st-extension-$VERSION.vsix" >> $GITHUB_ENV
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Package VSCode Extension
+        if: env.VSCODE_EXTENSION_CHANGED == 'true'
+        run: |
+          cd apps/vscode-extension 
+          pnpm exec vsce package --out ${{ env.VSIX_FILENAME }} --no-dependencies
+
+      - name: Publish to Visual Studio Marketplace
+        if: env.VSCODE_EXTENSION_CHANGED == 'true'
+        run: |
+          cd apps/vscode-extension
+          pnpm exec vsce publish --packagePath ${{ env.VSIX_FILENAME }} --pat ${{ secrets.VSCE_PAT }} --no-dependencies
+
+      - name: Publish to Open VSX Registry
+        if: env.VSCODE_EXTENSION_CHANGED == 'true'
+        run: |
+          cd apps/vscode-extension
+          pnpm exec ovsx publish ${{ env.VSIX_FILENAME }} -p ${{ secrets.OPEN_VSX_ACCESS_TOKEN }}
+
+      - name: Create Git Tag for VSCode Extension
+        if: env.VSCODE_EXTENSION_CHANGED == 'true'
+        run: |
+          RELEASE_COMMIT_SHA=$(git rev-parse HEAD)
+          git tag ${{ env.TAG_NAME }} $RELEASE_COMMIT_SHA
+          git push origin ${{ env.TAG_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release for VSCode Extension
+        if: env.VSCODE_EXTENSION_CHANGED == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          name: Release ${{ env.TAG_NAME }}
+          body: "Release of VSCode Extension version ${{ env.VSCODE_EXTENSION_VERSION }}. See CHANGELOG.md for details."
+          draft: false
+          prerelease: false
+          files: apps/vscode-extension/${{ env.VSIX_FILENAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

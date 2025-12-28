@@ -1,0 +1,44 @@
+<svg viewBox="0 0 820 312" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fbBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="fbCloudMain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+    <linearGradient id="fbCloudTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <filter id="fbGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+      <feFlood flood-color="#38bdf8" flood-opacity="0.25"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <rect width="820" height="312" fill="url(#fbBg)"/>
+  
+  <!-- Cloud logo -->
+  <g filter="url(#fbGlow)" transform="translate(280, 60) scale(2.2)">
+    <ellipse cx="42" cy="46" rx="32" ry="16" fill="url(#fbCloudMain)"/>
+    <ellipse cx="22" cy="40" rx="20" ry="18" fill="url(#fbCloudMain)"/>
+    <ellipse cx="62" cy="42" rx="22" ry="16" fill="url(#fbCloudMain)"/>
+    <ellipse cx="35" cy="34" rx="24" ry="20" fill="url(#fbCloudTop)"/>
+    <ellipse cx="55" cy="32" rx="22" ry="18" fill="url(#fbCloudTop)"/>
+    <ellipse cx="48" cy="24" rx="18" ry="16" fill="url(#fbCloudTop)"/>
+    <ellipse cx="38" cy="20" rx="14" ry="10" fill="#ffffff"/>
+    <ellipse cx="54" cy="18" rx="10" ry="8" fill="#ffffff"/>
+    <ellipse cx="42" cy="16" rx="8" ry="5" fill="#ffffff"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="410" y="250" font-family="'Plus Jakarta Sans', sans-serif" font-size="42" font-weight="700" fill="#ffffff" text-anchor="middle">cloudless<tspan fill="#38bdf8" font-weight="600">.gr</tspan></text>
+  <text x="410" y="285" font-family="'Plus Jakarta Sans', sans-serif" font-size="14" fill="#94a3b8" text-anchor="middle" letter-spacing="1.5">DIGITAL AGENCY</text>
+</svg>

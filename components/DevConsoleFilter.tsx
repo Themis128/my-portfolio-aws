@@ -19,6 +19,8 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
       /\[HMR\] connected/i,
       /Added non-passive event listener to a scroll-blocking 'wheel' event/i,
       /⬆️⬆️⬆️ Those two errors are expected!/i,
+      /No IDE windows found/i,
+      /Unable to add filesystem/i,
     ];
 
     function shouldSuppress(first: unknown) {
@@ -95,6 +97,8 @@ export default function DevConsoleFilter() {
       /\[HMR\] connected/i,
       /Added non-passive event listener to a scroll-blocking 'wheel' event/i,
       /⬆️⬆️⬆️ Those two errors are expected!/i,
+      /No IDE windows found/i,
+      /Unable to add filesystem/i,
     ];
 
     function shouldSuppress(first: unknown) {

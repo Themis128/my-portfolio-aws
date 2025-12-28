@@ -1,0 +1,73 @@
+/* ================================================
+   Cloudless.gr Brand Color System
+   ================================================ */
+
+:root {
+  /* Primary Brand Colors */
+  --cloudless-primary: #0284c7;
+  --cloudless-primary-light: #38bdf8;
+  --cloudless-primary-dark: #0369a1;
+  --cloudless-primary-darker: #0c4a6e;
+  
+  /* Sky Blue Scale */
+  --cloudless-sky-50: #f0f9ff;
+  --cloudless-sky-100: #e0f2fe;
+  --cloudless-sky-200: #bae6fd;
+  --cloudless-sky-300: #7dd3fc;
+  --cloudless-sky-400: #38bdf8;
+  --cloudless-sky-500: #0ea5e9;
+  --cloudless-sky-600: #0284c7;
+  --cloudless-sky-700: #0369a1;
+  --cloudless-sky-800: #075985;
+  --cloudless-sky-900: #0c4a6e;
+  --cloudless-sky-950: #082f49;
+  
+  /* Neutral Slate Scale */
+  --cloudless-slate-50: #f8fafc;
+  --cloudless-slate-100: #f1f5f9;
+  --cloudless-slate-200: #e2e8f0;
+  --cloudless-slate-300: #cbd5e1;
+  --cloudless-slate-400: #94a3b8;
+  --cloudless-slate-500: #64748b;
+  --cloudless-slate-600: #475569;
+  --cloudless-slate-700: #334155;
+  --cloudless-slate-800: #1e293b;
+  --cloudless-slate-900: #0f172a;
+  --cloudless-slate-950: #020617;
+  
+  /* Cloud Colors (for logo/graphics) */
+  --cloudless-cloud-white: #ffffff;
+  --cloudless-cloud-light: #f0f9ff;
+  --cloudless-cloud-base: #e0f2fe;
+  --cloudless-cloud-mid: #bae6fd;
+  --cloudless-cloud-shadow: #94a3b8;
+  
+  /* Semantic Colors */
+  --cloudless-success: #10b981;
+  --cloudless-warning: #f59e0b;
+  --cloudless-error: #ef4444;
+  --cloudless-info: #0ea5e9;
+  
+  /* Gradients */
+  --cloudless-gradient-primary: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+  --cloudless-gradient-dark: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  --cloudless-gradient-light: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cloudless-bg: var(--cloudless-slate-900);
+    --cloudless-text: var(--cloudless-slate-100);
+    --cloudless-text-muted: var(--cloudless-slate-400);
+  }
+}
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+  :root {
+    --cloudless-bg: var(--cloudless-slate-50);
+    --cloudless-text: var(--cloudless-slate-800);
+    --cloudless-text-muted: var(--cloudless-slate-500);
+  }
+}

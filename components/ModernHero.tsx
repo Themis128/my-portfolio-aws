@@ -341,6 +341,20 @@ const ModernHeroSection = ({ data }: ModernHeroProps) => {
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-20">
         <div className="mx-auto max-w-6xl w-full text-center">
+          {/* Cloudless Logo */}
+          <motion.div
+            className="mb-8 flex justify-center"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <img
+              src="/cloudless-logo.svg"
+              alt="Cloudless.gr Logo"
+              className="h-16 w-auto"
+            />
+          </motion.div>
+
           {/* Status Badge */}
           <motion.div
             className="inline-flex items-center gap-2 rounded-full border border-blue-200 dark:border-blue-800 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-blue-700 dark:text-blue-300 shadow-lg mb-8"

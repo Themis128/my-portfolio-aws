@@ -1,0 +1,76 @@
+<svg viewBox="0 0 1584 396" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="linkedinBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="linkedinAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#0284c7" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Cloud gradients -->
+    <linearGradient id="lnCloudMain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f1f5f9"/>
+      <stop offset="40%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
+    </linearGradient>
+    <linearGradient id="lnCloudTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#cbd5e1"/>
+    </linearGradient>
+    <filter id="lnGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#38bdf8" flood-opacity="0.3"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1584" height="396" fill="url(#linkedinBg)"/>
+  
+  <!-- Accent line -->
+  <rect x="0" y="380" width="1584" height="4" fill="url(#linkedinAccent)"/>
+  
+  <!-- Decorative clouds (left) -->
+  <g transform="translate(-50, 80) scale(1.5)" opacity="0.15" filter="url(#lnGlow)">
+    <ellipse cx="42" cy="48" rx="32" ry="16" fill="url(#lnCloudMain)"/>
+    <ellipse cx="35" cy="36" rx="24" ry="20" fill="url(#lnCloudTop)"/>
+    <ellipse cx="55" cy="34" rx="22" ry="18" fill="url(#lnCloudTop)"/>
+    <ellipse cx="48" cy="26" rx="18" ry="16" fill="#ffffff"/>
+  </g>
+  
+  <!-- Decorative clouds (right) -->
+  <g transform="translate(1350, 120) scale(2)" opacity="0.1" filter="url(#lnGlow)">
+    <ellipse cx="42" cy="48" rx="32" ry="16" fill="url(#lnCloudMain)"/>
+    <ellipse cx="35" cy="36" rx="24" ry="20" fill="url(#lnCloudTop)"/>
+    <ellipse cx="55" cy="34" rx="22" ry="18" fill="url(#lnCloudTop)"/>
+    <ellipse cx="48" cy="26" rx="18" ry="16" fill="#ffffff"/>
+  </g>
+  
+  <!-- Main cloud logo -->
+  <g filter="url(#lnGlow)" transform="translate(550, 100) scale(2.5)">
+    <ellipse cx="42" cy="46" rx="32" ry="16" fill="url(#lnCloudMain)"/>
+    <ellipse cx="22" cy="40" rx="20" ry="18" fill="url(#lnCloudMain)"/>
+    <ellipse cx="62" cy="42" rx="22" ry="16" fill="url(#lnCloudMain)"/>
+    <ellipse cx="35" cy="34" rx="24" ry="20" fill="url(#lnCloudTop)"/>
+    <ellipse cx="55" cy="32" rx="22" ry="18" fill="url(#lnCloudTop)"/>
+    <ellipse cx="28" cy="28" rx="16" ry="14" fill="url(#lnCloudTop)"/>
+    <ellipse cx="48" cy="24" rx="18" ry="16" fill="url(#lnCloudTop)"/>
+    <ellipse cx="38" cy="20" rx="14" ry="10" fill="#ffffff" opacity="0.95"/>
+    <ellipse cx="54" cy="18" rx="10" ry="8" fill="#ffffff" opacity="0.9"/>
+    <ellipse cx="42" cy="16" rx="8" ry="5" fill="#ffffff"/>
+  </g>
+  
+  <!-- Company name -->
+  <text x="792" y="320" font-family="'Plus Jakarta Sans', 'Segoe UI', sans-serif" font-size="48" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="-1">cloudless<tspan fill="#38bdf8" font-weight="600">.gr</tspan></text>
+  
+  <!-- Tagline -->
+  <text x="792" y="360" font-family="'Plus Jakarta Sans', 'Segoe UI', sans-serif" font-size="18" font-weight="400" fill="#94a3b8" text-anchor="middle" letter-spacing="2">DIGITAL TRANSFORMATION • CLOUD • WEB • DATA</text>
+</svg>

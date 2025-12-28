@@ -1,0 +1,86 @@
+// You should have received a copy of the GNU Affero General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+import { contract } from '@21st-extension/extension-toolbar-srpc-contract';
+import {
+  createSRPCClientBridge,
+  type ZodClient,
+} from '@21st-extension/srpc/client';
+import type { ComponentChildren } from 'preact';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'preact/compat';
+import { useVSCode } from './use-vscode';
+
+interface SRPCBridgeContextValue {
+  bridge: ZodClient<typeof contract> | null;
+  isConnecting: boolean;
+  error: Error | null;
+}
+
+const SRPCBridgeContext = createContext<SRPCBridgeContextValue>({
+  bridge: null,
+  isConnecting: false,
+  error: null,
+});
+
+export function SRPCBridgeProvider({
+  children,
+}: {
+  children: ComponentChildren;
+}) {
+  const [state, setState] = useState<SRPCBridgeContextValue>({
+    bridge: null,
+    isConnecting: true,
+    error: null,
+  });
+
+  const { selectedSession } = useVSCode();
+  const bridgeRef = useRef<ZodClient<typeof contract> | null>(null);
+
+  const initializeBridge = useCallback(async (port: number) => {
+    if (bridgeRef.current) await bridgeRef.current.close();
+
+    try {
+      const bridge = createSRPCClientBridge(`ws://localhost:${port}`, contract);
+      await bridge.connect();
+      bridgeRef.current = bridge;
+
+      setState({
+        bridge,
+        isConnecting: false,
+        error: null,
+      });
+    } catch (error) {
+      bridgeRef.current = null;
+      setState({
+        bridge: null,
+        isConnecting: false,
+        error: error instanceof Error ? error : new Error(String(error)),
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedSession) initializeBridge(selectedSession.port);
+  }, [selectedSession, initializeBridge]);
+
+  return (
+    <SRPCBridgeContext.Provider value={state}>
+      {children}
+    </SRPCBridgeContext.Provider>
+  );
+}
+
+export function useSRPCBridge() {
+  const context = useContext(SRPCBridgeContext);
+  if (!context) {
+    throw new Error('useSRPCBridge must be used within an SRPCBridgeProvider');
+  }
+  return context;
+}

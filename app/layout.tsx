@@ -1,11 +1,10 @@
-import { ReactPlugin } from '@21st-extension/react';
-import { TwentyFirstToolbar } from '@21st-extension/toolbar-next';
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import DevConsoleFilter from '../components/DevConsoleFilter';
 import DevListenerPatch from '../components/DevListenerPatch';
 import Navigation from '../components/Navigation';
+import ToolbarMountController from '../components/ToolbarMountController';
 import '../globals.css';
 import '../lib/amplify';
 import { ThemeProvider } from '../lib/theme-context';
@@ -32,6 +31,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL('https://your-portfolio-domain.com'), // Replace with your actual domain
+  icons: {
+    icon: '/cloudless-favicon.ico',
+    apple: '/cloudless-favicon.ico',
+  },
   openGraph: {
     title: 'Themistoklis Baltzakis - Systems and Network Engineer',
     description: 'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
@@ -170,11 +173,7 @@ export default function RootLayout({
           These can be removed if the upstream package addresses these issues.
           See: https://github.com/21st-dev/21st-extension
         */}
-        <TwentyFirstToolbar
-          config={{
-            plugins: [ReactPlugin],
-          }}
-        />
+        <ToolbarMountController />
         <Analytics />
       </body>
     </html>

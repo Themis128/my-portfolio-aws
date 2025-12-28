@@ -16,3 +16,8 @@ frontend:
     paths:
       - .next/cache/**/*
       - node_modules/**/*
+  environment:
+    variables:
+      NEXT_PUBLIC_API_URL: https://d16sxvwaeiqalc.cloudfront.net
+      NEXT_PUBLIC_BASE_URL: https://d16sxvwaeiqalc.cloudfront.net
+      NEXT_PUBLIC_CLOUDFRONT_URL: https://d16sxvwaeiqalc.cloudfront.net

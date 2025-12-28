@@ -1,0 +1,5 @@
+{
+  "extends": "@21st-extension/typescript-config/base.json",
+  "include": ["."],
+  "exclude": ["node_modules", "dist", "template-*"]
+}
