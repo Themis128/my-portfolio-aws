@@ -118,7 +118,7 @@ This is an automated response. Please do not reply to this email.`,
 
     // Send to Slack webhook
     const slackPayload = {
-      channel: '#personal-website',
+      channel: '#contact-form',
       username: 'Contact Form Bot',
       icon_emoji: ':email:',
       attachments: [
