@@ -9,7 +9,7 @@ frontend:
       commands:
         - pnpm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: out
     files:
       - '**/*'
   cache:
@@ -18,6 +18,6 @@ frontend:
       - node_modules/**/*
   environment:
     variables:
-      NEXT_PUBLIC_API_URL: https://d16sxvwaeiqalc.cloudfront.net
-      NEXT_PUBLIC_BASE_URL: https://d16sxvwaeiqalc.cloudfront.net
-      NEXT_PUBLIC_CLOUDFRONT_URL: https://d16sxvwaeiqalc.cloudfront.net
+      NEXT_PUBLIC_API_URL: https://d22wdaam55nm5z.cloudfront.net
+      NEXT_PUBLIC_BASE_URL: https://d22wdaam55nm5z.cloudfront.net
+      NEXT_PUBLIC_CLOUDFRONT_URL: https://d22wdaam55nm5z.cloudfront.net

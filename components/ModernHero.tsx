@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Github, Globe, Linkedin, Sparkles, Network, Server, Cloud, Shield, type LucideIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { ArrowRight, Cloud, Github, Globe, Linkedin, Network, Server, Shield, Sparkles, type LucideIcon } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 // Particle class for the background animation
@@ -348,9 +349,11 @@ const ModernHeroSection = ({ data }: ModernHeroProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <img
+            <Image
               src="/cloudless-logo.svg"
               alt="Cloudless.gr Logo"
+              width={64}
+              height={64}
               className="h-16 w-auto"
             />
           </motion.div>

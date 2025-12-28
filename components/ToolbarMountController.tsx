@@ -2,27 +2,24 @@
 
 import { ReactPlugin } from "@21st-extension/react";
 import { TwentyFirstToolbar } from "@21st-extension/toolbar-next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const STORAGE_KEY = "21st-toolbar-enabled";
 
 export default function ToolbarMountController() {
-  const [mounted, setMounted] = useState<boolean | null>(null);
-
   // Default behavior: enabled in development or when NEXT_PUBLIC_ENABLE_21ST_TOOLBAR=true
   const showByDefault =
     process.env.NODE_ENV === "development" ||
     process.env.NEXT_PUBLIC_ENABLE_21ST_TOOLBAR === "true";
 
-  useEffect(() => {
+  const [mounted, setMounted] = useState<boolean>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored === null) setMounted(showByDefault);
-      else setMounted(stored === "true");
+      return stored !== null ? stored === "true" : showByDefault;
     } catch {
-      setMounted(showByDefault);
+      return showByDefault;
     }
-  }, [showByDefault]);
+  });
 
   const toggle = () => {
     const next = !mounted;
@@ -34,9 +31,7 @@ export default function ToolbarMountController() {
     }
   };
 
-  // Avoid SSR/hydration mismatch by rendering nothing until mounted is known
-  if (mounted === null) return null;
-
+  // No need for SSR check since we initialize with default value
   return (
     <>
       <div className="fixed bottom-4 right-4 z-[9999]">
