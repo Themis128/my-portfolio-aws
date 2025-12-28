@@ -19,9 +19,14 @@ export default function Contact({ data }: ContactProps) {
     email: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
     try {
       const client = generateClient();
       await client.graphql({
@@ -37,10 +42,18 @@ export default function Contact({ data }: ContactProps) {
 
       // Reset form
       setFormData({ name: '', email: '', message: '' });
-      alert('Message sent successfully! You will receive a confirmation email and we will get back to you within 24 hours.');
+      setSubmitStatus('success');
+
+      // Reset success message after 5 seconds
+      setTimeout(() => setSubmitStatus('idle'), 5000);
     } catch (error) {
       console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again.');
+      setSubmitStatus('error');
+
+      // Reset error message after 5 seconds
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -282,13 +295,64 @@ export default function Contact({ data }: ContactProps) {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl font-semibold"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl font-semibold disabled:opacity-50"
                 >
-                  <Send className="w-5 h-5 mr-2" />
-                  Send Message
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5 mr-2" />
+                      Send Message
+                    </>
+                  )}
                 </Button>
               </motion.div>
             </form>
+
+            {/* Status Messages */}
+            {submitStatus === 'success' && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg"
+              >
+                <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
+                  <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="font-medium">Message sent successfully!</span>
+                </div>
+                <p className="text-sm text-green-600 dark:text-green-500 mt-1">
+                  You will receive a confirmation email and we will get back to you within 24 hours.
+                </p>
+              </motion.div>
+            )}
+
+            {submitStatus === 'error' && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg"
+              >
+                <div className="flex items-center gap-2 text-red-700 dark:text-red-400">
+                  <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </div>
+                  <span className="font-medium">Failed to send message</span>
+                </div>
+                <p className="text-sm text-red-600 dark:text-red-500 mt-1">
+                  Please try again or contact us directly.
+                </p>
+              </motion.div>
+            )}
           </motion.div>
         </motion.div>
 
