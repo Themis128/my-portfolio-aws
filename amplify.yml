@@ -16,17 +16,3 @@ frontend:
     paths:
       - .next/cache/**/*
       - node_modules/**/*
-backend:
-  phases:
-    preBuild:
-      commands:
-        - npm install -g pnpm
-        - npm install -g @aws-amplify/cli
-        - pnpm install --frozen-lockfile
-    build:
-      commands:
-        - amplify pipeline-deploy --outputs-format json --outputs-path amplify-outputs.json
-  artifacts:
-    baseDirectory: amplify
-    files:
-      - 'amplify-outputs.json'
