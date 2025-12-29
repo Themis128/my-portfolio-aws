@@ -12,10 +12,8 @@ if (fs.existsSync(outputsPath)) {
   } catch (e) {
     // If parsing fails, log and continue without configuration
     // (backend features will be unavailable until amplify_outputs.json is present)
-    // eslint-disable-next-line no-console
     console.warn('Failed to parse amplify_outputs.json, skipping Amplify.configure:', e);
   }
 } else {
-  // eslint-disable-next-line no-console
   console.warn('amplify_outputs.json not found; skipping Amplify.configure(). Backend features may be unavailable during this build.');
 }

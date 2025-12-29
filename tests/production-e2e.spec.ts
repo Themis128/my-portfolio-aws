@@ -224,7 +224,7 @@ test.describe('Backend API Tests - Production', () => {
 
     // Verify our new contact is in the list
     const newContact = afterResponse.data.listContacts.items.find(
-      (item: any) => item.id === createResponse.data.createContact.id
+      (item: unknown) => (item as { id: string }).id === createResponse.data.createContact.id
     );
     expect(newContact).toBeTruthy();
     expect(newContact.name).toBe(testContact.name);
@@ -235,9 +235,9 @@ test.describe('Backend API Tests - Production', () => {
       await makeGraphQLRequest('invalid query');
       // If we get here, the test should fail
       expect(true).toBe(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Should get an error for invalid query
-      expect(error.message).toContain('GraphQL request failed');
+      expect((error as Error).message).toContain('GraphQL request failed');
     }
   });
 
@@ -262,9 +262,9 @@ test.describe('Backend API Tests - Production', () => {
         }
       });
       // If it succeeds, that's fine - validation happens on frontend
-    } catch (error: any) {
+    } catch (error: unknown) {
       // GraphQL might return validation errors for invalid email format
-      expect(error.message).toContain('GraphQL request failed');
+      expect((error as Error).message).toContain('GraphQL request failed');
     }
   });
 });

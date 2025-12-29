@@ -1,6 +1,7 @@
-require('dotenv').config({ path: '.env.local' });
+import { config } from 'dotenv';
+config({ path: '.env.local' });
 
-const { WebClient } = require('@slack/web-api');
+import { WebClient } from '@slack/web-api';
 
 const token = process.env.SLACK_BOT_TOKEN;
 if (!token) {
@@ -9,14 +10,14 @@ if (!token) {
 }
 const client = new WebClient(token);
 
-async function createChannel() {
+async function createChannel(): Promise<void> {
   try {
     const result = await client.conversations.create({
       name: 'webhook-channel',
       is_private: false,
     });
     console.log('Channel created successfully:', result.channel);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error creating channel:', error);
   }
 }

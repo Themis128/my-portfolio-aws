@@ -1,6 +1,17 @@
 import { generateClient } from '@aws-amplify/api';
 
-export const handler = async (event: any) => {
+interface ContactEvent {
+  arguments?: {
+    name: string;
+    email: string;
+    message: string;
+  };
+  Records?: Array<{
+    dynamodb?: unknown;
+  }>;
+}
+
+export const handler = async (event: ContactEvent) => {
   try {
     console.log('Contact handler called with event:', JSON.stringify(event, null, 2));
 

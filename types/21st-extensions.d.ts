@@ -1,17 +1,17 @@
 declare module '@21st-extension/extension-toolbar-srpc-contract' {
-  export const DEFAULT_PORT: any;
-  export const PING_ENDPOINT: any;
-  export const PING_RESPONSE: any;
-  export const contract: any;
-  export const EventName: any;
-  export function getExtensionBridge(...args: any[]): any;
-  export function getToolbarBridge(...args: any[]): any;
-  export type VSCodeContext = any;
-  export type PromptRequest = any;
+  export const DEFAULT_PORT: unknown;
+  export const PING_ENDPOINT: unknown;
+  export const PING_RESPONSE: unknown;
+  export const contract: unknown;
+  export const EventName: unknown;
+  export function getExtensionBridge(...args: unknown[]): unknown;
+  export function getToolbarBridge(...args: unknown[]): unknown;
+  export type VSCodeContext = unknown;
+  export type PromptRequest = unknown;
 }
 
 declare module '@21st-extension/srpc' {
-  export const createSRPCClientBridge: any;
-  export const createSRPCServerBridge: any;
-  export type SRPC = any;
+  export const createSRPCClientBridge: unknown;
+  export const createSRPCServerBridge: unknown;
+  export type SRPC = unknown;
 }

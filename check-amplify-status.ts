@@ -1,7 +1,8 @@
-const { AmplifyClient, ListAppsCommand, ListJobsCommand } = require('@aws-sdk/client-amplify');
+import { AmplifyClient, ListAppsCommand, ListJobsCommand } from '@aws-sdk/client-amplify';
+
 const client = new AmplifyClient({ region: 'eu-central-1' });
 
-async function checkStatus() {
+async function checkStatus(): Promise<void> {
   try {
     // Use the existing connected app
     const appId = 'd3gpsu0f51cpej';
@@ -9,15 +10,15 @@ async function checkStatus() {
 
     // Get app details
     const apps = await client.send(new ListAppsCommand({}));
-    const app = apps.apps.find(a => a.appId === appId);
+    const app = apps.apps?.find((a) => a.appId === appId);
     if (!app) {
       console.log('❌ App not found with ID:', appId);
       return;
     }
-    console.log('📊 App Status:', app.appState);
+    console.log('📊 App Status:', app.name || 'Unknown');
 
     const jobs = await client.send(new ListJobsCommand({ appId: app.appId, branchName: 'master' }));
-    const latestJob = jobs.jobSummaries[0];
+    const latestJob = jobs.jobSummaries?.[0];
     if (latestJob) {
       console.log('🏗️ Latest Job Status:', latestJob.status);
       console.log('🆔 Job ID:', latestJob.jobId);
@@ -26,8 +27,8 @@ async function checkStatus() {
     } else {
       console.log('❓ No jobs found');
     }
-  } catch (e) {
-    console.log('❌ Error:', e.message);
+  } catch (e: unknown) {
+    console.log('❌ Error:', (e as Error).message);
   }
 }
 
