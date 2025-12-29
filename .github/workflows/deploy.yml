@@ -1,9 +1,14 @@
 name: Deploy to AWS Amplify
 
 on:
-  push:
-    branches:
-      - master # Change to your default branch if different
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'master'
 
 jobs:
   deploy:
@@ -12,11 +17,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || 'master' }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18" # Match your project's Node version
+          node-version: "20" # Updated to match project requirements
           cache: "pnpm"
 
       - name: Install pnpm
@@ -32,7 +39,7 @@ jobs:
         uses: aws-actions/amplify-console@v1
         with:
           amplify_app_id: ${{ secrets.AMPLIFY_APP_ID }}
-          branch_name: master # Change to your branch
+          branch_name: ${{ github.event.inputs.branch || 'master' }}
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: ${{ secrets.AWS_REGION }}
