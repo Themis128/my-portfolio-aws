@@ -31,8 +31,8 @@ export default function ToolbarMountController() {
     }
   };
 
-  // Don't render anything in production
-  if (process.env.NODE_ENV === "production") {
+  // Don't render anything unless in development
+  if (process.env.NODE_ENV !== "development") {
     return null;
   }
 
