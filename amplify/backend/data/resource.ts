@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { contactHandler } from '../../functions/contact-handler/resource';
+import { slackNotifier } from '../../functions/slack-notifier/resource';
 
 const schema = a.schema({
   Contact: a
@@ -20,6 +21,15 @@ const schema = a.schema({
     })
     .returns(a.string())
     .handler(a.handler.function(contactHandler))
+    .authorization((allow) => [allow.publicApiKey()]),
+  sendSlackNotification: a
+    .mutation()
+    .arguments({
+      message: a.string().required(),
+      channel: a.string(),
+    })
+    .returns(a.string())
+    .handler(a.handler.function(slackNotifier))
     .authorization((allow) => [allow.publicApiKey()]),
 });
 

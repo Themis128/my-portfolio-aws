@@ -45,6 +45,8 @@ export const handler = async (event: ContactEvent) => {
 
     console.log('Processing contact form submission:', { name, email, message: message.substring(0, 50) + '...' });
 
+    // Trigger hot reload test
+
     if (isLocal) {
       // Local development mode - simulate success without calling real AWS services
       console.log('🧪 LOCAL MODE: Simulating contact form processing');

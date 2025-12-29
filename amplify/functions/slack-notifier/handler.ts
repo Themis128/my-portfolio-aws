@@ -1,5 +1,5 @@
+import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 import { WebClient } from '@slack/web-api';
-import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 
 interface SlackNotificationEvent {
   arguments?: {
