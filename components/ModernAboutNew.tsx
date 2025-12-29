@@ -340,34 +340,51 @@ export default function ModernAbout({ data }: ModernAboutProps) {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full blur-2xl" />
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-purple-500/20 to-pink-500/30 rounded-full blur-3xl animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-cyan-400/20 to-blue-500/20 rounded-full blur-2xl" />
               <div className="relative z-10">
-                <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white/20 bg-gradient-to-br from-primary/20 to-primary/5 shadow-2xl">
-                  {data.profilePicture ? (
-                    <Image
-                      src={data.profilePicture}
-                      alt={data.name}
-                      width={256}
-                      height={256}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        // Handle error by hiding the image and showing fallback
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                        const fallback = document.createElement('div');
-                        fallback.className = 'w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-4xl font-bold text-white';
-                        fallback.textContent = data.name.split(' ').map(n => n[0]).join('');
-                        target.parentElement?.appendChild(fallback);
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-4xl font-bold text-white">
-                      {data.name.split(' ').map(n => n[0]).join('')}
+                <div className="relative w-96 h-96">
+                  {/* Outer glow ring */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 opacity-20 blur-xl animate-pulse" />
+
+                  {/* Main frame with gradient border */}
+                  <div className="relative w-full h-full rounded-full p-1 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 shadow-2xl">
+                    <div className="w-full h-full rounded-full bg-white dark:bg-gray-900 p-1">
+                      {/* Inner decorative ring */}
+                      <div className="w-full h-full rounded-full p-0.5 bg-gradient-to-br from-cyan-300/50 via-blue-400/30 to-purple-500/50">
+                        <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-blue-50/80 dark:from-gray-800/80 to-purple-50/60 dark:to-gray-900/60 backdrop-blur-sm shadow-inner">
+                          {data.profilePicture ? (
+                            <div className="relative w-full h-full group">
+                              <Image
+                                src={data.profilePicture}
+                                alt={data.name}
+                                width={384}
+                                height={384}
+                                className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110 group-hover:contrast-105"
+                                onError={(e) => {
+                                  // Handle error by hiding the image and showing fallback
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = 'none';
+                                  const fallback = document.createElement('div');
+                                  fallback.className = 'w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-4xl font-bold text-white';
+                                  fallback.textContent = data.name.split(' ').map(n => n[0]).join('');
+                                  target.parentElement?.appendChild(fallback);
+                                }}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
+                            </div>
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-4xl font-bold text-white">
+                              {data.name.split(' ').map(n => n[0]).join('')}
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
                 <motion.div
-                  className="absolute -bottom-2 -right-2 w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center shadow-lg"
+                  className="absolute -bottom-2 -right-2 w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center shadow-lg"
                   animate={{
                     y: [0, -10, 0],
                     opacity: [0.5, 1, 0.5],
@@ -378,7 +395,7 @@ export default function ModernAbout({ data }: ModernAboutProps) {
                     ease: 'easeInOut',
                   }}
                 >
-                  <Network className="w-8 h-8 text-primary" />
+                  <Network className="w-10 h-10 text-primary" />
                 </motion.div>
               </div>
             </motion.div>

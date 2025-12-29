@@ -91,7 +91,7 @@ export function getPersonalDataServer(): PersonalData {
   return {
     name: "Themistoklis Baltzakis",
     title: "BCs Computer Science - MSc Data Analytics",
-    bio: "Data Analytics professional with a strong foundation in computer science and advanced data analysis techniques. Passionate about transforming complex data into actionable insights and driving data-driven decision making.",
+    bio: "Experienced IT professional and data analytics expert with a strong foundation in computer science, cloud computing, and software development. Passionate about leveraging cutting-edge technologies including AI/ML, full-stack development, and infrastructure automation to solve complex problems and drive innovation. Active researcher in data analytics methodologies and VS Code extension development.",
     email: "tbaltzakis@cloudless.gr",
     location: "Greece",
     phone: "+30 6977777838",
@@ -99,7 +99,7 @@ export function getPersonalDataServer(): PersonalData {
     linkedin: "https://www.linkedin.com/in/baltzakis-themis",
     github: "https://github.com/Themis128",
     credly: "https://www.credly.com/users/themistoklis-baltzakis",
-    profilePicture: "/images/20250604_231405~4-EDIT.jpg",
+    profilePicture: "/images/_subject_1__with_a_more_pronounced__open_smile.png",
     skills: [
       "Cisco Systems",
       "Azure Active Directory",
@@ -124,7 +124,22 @@ export function getPersonalDataServer(): PersonalData {
       "Data Visualization",
       "Scikit-Learn",
       "Python",
-      "Pandas"
+      "Pandas",
+      "XGBoost",
+      "Machine Learning",
+      "Time Series Analysis",
+      "Streamlit",
+      "VS Code Extensions",
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Tailwind CSS",
+      "Node.js",
+      "MCP Protocol",
+      "Preact",
+      "Jupyter",
+      "Statistical Analysis",
+      "Research Methodology"
     ],
     experience: [
       {
@@ -261,6 +276,37 @@ export function getPersonalDataServer(): PersonalData {
         image: "/images/projects/infrastructure-screenshot.png",
         category: "Infrastructure",
         featured: true
+      },
+      {
+        id: "6",
+        title: "21st.dev Extension",
+        description: "Advanced VS Code extension ecosystem providing AI-powered UI development tools, component generation, and design-to-code capabilities. Features include magic component builder, design inspiration system, and integrated development workflow enhancements.",
+        technologies: ["TypeScript", "React", "Node.js", "VS Code API", "Preact", "Tailwind CSS", "MCP Protocol"],
+        github: "https://github.com/themis128/my-portfolio-aws/tree/main/21st-extension-main",
+        image: "/images/projects/21st-extension-screenshot.png",
+        category: "Development Tools",
+        featured: true
+      },
+      {
+        id: "7",
+        title: "Data Analytics Thesis - Bolton University",
+        description: "Comprehensive research thesis on advanced data analytics techniques and methodologies. Explores machine learning applications, predictive modeling, and data-driven decision making frameworks for modern business intelligence solutions.",
+        technologies: ["Python", "Pandas", "Scikit-Learn", "Machine Learning", "Data Visualization", "Statistical Analysis", "Jupyter"],
+        github: "https://github.com/themis128/my-portfolio-aws/tree/main/Bolton_University_Thesis_Synopsis_Proposal",
+        image: "/images/projects/thesis-screenshot.png",
+        category: "Academic Research",
+        featured: true
+      },
+      {
+        id: "8",
+        title: "XGBoost Forecasting Streamlit App",
+        description: "Interactive web application for time series forecasting using XGBoost algorithms. Features real-time data visualization, model training interfaces, and predictive analytics dashboards for business intelligence and decision support systems.",
+        technologies: ["Python", "Streamlit", "XGBoost", "Pandas", "Plotly", "Scikit-Learn", "Time Series Analysis"],
+        url: "https://xgboost-forecasting.streamlit.app",
+        github: "https://github.com/Themis128/xgboost-forecasting",
+        image: "/images/projects/xgboost-screenshot.png",
+        category: "Data Science",
+        featured: true
       }
     ],
     certifications: [
@@ -383,7 +429,7 @@ export function getPersonalDataServer(): PersonalData {
     company: {
       name: "Themis Baltzakis",
       tagline: "Data Analytics & Cloud Computing Professional",
-      description: "Experienced IT professional specializing in data analytics, cloud computing, and network infrastructure. Passionate about leveraging technology to solve complex problems and drive innovation in the digital landscape.",
+      description: "Experienced IT professional specializing in data analytics, cloud computing, network infrastructure, and software development. Expert in AI/ML applications, full-stack web development, infrastructure automation, and VS Code extension development. Passionate about leveraging technology to solve complex problems and drive innovation in the digital landscape.",
       founded: "2000",
       location: "Greece",
       website: "https://www.baltzakisthemis.com",
@@ -393,7 +439,11 @@ export function getPersonalDataServer(): PersonalData {
         "Network Engineering",
         "IT Infrastructure",
         "DevOps",
-        "Cybersecurity"
+        "Cybersecurity",
+        "AI/ML Development",
+        "Full-Stack Development",
+        "VS Code Extensions",
+        "Research & Innovation"
       ],
       services: [
         "Data Analysis & Visualization",
@@ -401,12 +451,18 @@ export function getPersonalDataServer(): PersonalData {
         "Network Troubleshooting",
         "IT Consulting",
         "System Administration",
-        "Technical Support"
+        "Technical Support",
+        "AI/ML Model Development",
+        "Full-Stack Web Development",
+        "VS Code Extension Development",
+        "Research & Academic Consulting"
       ],
       technologies: [
         "Python",
         "Pandas",
         "Scikit-Learn",
+        "XGBoost",
+        "Machine Learning",
         "AWS",
         "Azure",
         "Cisco Systems",
@@ -414,7 +470,13 @@ export function getPersonalDataServer(): PersonalData {
         "Linux",
         "Docker",
         "Next.js",
-        "TypeScript"
+        "TypeScript",
+        "React",
+        "Streamlit",
+        "VS Code API",
+        "MCP Protocol",
+        "Terraform",
+        "Kubernetes"
       ],
       mission: "To leverage technology and data analytics to create meaningful solutions that help businesses and individuals achieve their goals in an increasingly digital world.",
       vision: "To become a leading expert in data analytics and cloud technologies, contributing to the advancement of digital transformation and innovation.",

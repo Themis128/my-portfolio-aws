@@ -16,10 +16,11 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci --cache .npm --prefer-offline
+        - npm install -g pnpm@9.14.4
+        - pnpm install --frozen-lockfile
     build:
       commands:
-        - npm run build
+        - pnpm run build
   artifacts:
     baseDirectory: .next
     files:
@@ -27,19 +28,7 @@ frontend:
   cache:
     paths:
       - .next/cache/**/*
-      - .npm/**/*
-backend:
-  phases:
-    preBuild:
-      commands:
-        - npm ci --cache .npm --prefer-offline
-    build:
-      commands:
-        - npx ampx pipeline-deploy --outputs-format json --outputs-path amplify-outputs.json
-  artifacts:
-    baseDirectory: amplify
-    files:
-      - 'amplify-outputs.json'`;
+      - node_modules/**/*`;
 
 async function createAmplifyAppWithoutRepo() {
   const client = new AmplifyClient({ region: REGION });

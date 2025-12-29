@@ -11,9 +11,6 @@ test('homepage loads correctly', async ({ page }: { page: Page }) => {
   await expect(page.locator('h1').filter({ hasText: 'Themistoklis' })).toBeVisible();
 
   // Check if the hero section has the correct title
-  await expect(page.locator('section').first()).toContainText('Systems & Network Engineer');
-
-  // Check for key elements that should be present
   await expect(page.locator('section').first()).toContainText('BCs Computer Science');
   await expect(page.locator('section').first()).toContainText('View My Work');
   await expect(page.locator('section').first()).toContainText('Get In Touch');

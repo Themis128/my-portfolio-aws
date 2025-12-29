@@ -47,7 +47,6 @@ PRODUCTION_URLS.forEach((baseURL) => {
       await expect(page.locator('h1').filter({ hasText: 'Themistoklis' })).toBeVisible();
 
       // Check if the hero section has the correct content
-      await expect(page.locator('section').first()).toContainText('Systems & Network Engineer');
       await expect(page.locator('section').first()).toContainText('BCs Computer Science');
       await expect(page.locator('section').first()).toContainText('View My Work');
       await expect(page.locator('section').first()).toContainText('Get In Touch');

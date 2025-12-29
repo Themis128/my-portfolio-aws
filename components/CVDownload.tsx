@@ -50,6 +50,45 @@ export default function CVDownload({ data }: CVDownloadProps) {
       'socket-io': ['socketio'],
       'tailwind-css': ['tailwindcss', 'tailwind'],
       's3': ['aws-s3'],
+      'mcp-sdk': ['mcp-protocol'],
+      'mcpsdk': ['mcp-protocol'],
+      'mcp_sdk': ['mcp-protocol'],
+      'cross-platform-development': ['microservices'],
+      'crossplatformdevelopment': ['microservices'],
+      'cross_platform_development': ['microservices'],
+      'wsl-integration': ['wsl-integration'],
+      'path-resolution-algorithms': ['path-resolution-algorithms'],
+      'error-handling': ['error-handling'],
+      'aws-cdk': ['aws-cdk'],
+      'awscdk': ['aws-cdk'],
+      'aws_cdk': ['aws-cdk'],
+      'github-actions': ['ci-cd'],
+      'prometheus': ['prometheus'],
+      'grafana': ['grafana'],
+      'kubernetes': ['kubernetes'],
+      'terraform': ['terraform'],
+      'scikit-learn': ['python'],
+      'pandas': ['python'],
+      'tcp-ip': ['network-security'],
+      'dns-dhcp': ['network-security'],
+      'virtualization': ['docker'],
+      'cloud-migration': ['serverless'],
+      'project-management': ['devops'],
+      'network-troubleshooting': ['network-security'],
+      'android-app-development': ['react'],
+      'data-analytics': ['python'],
+      'big-data': ['python'],
+      'problem-solving': ['devops'],
+      'data-visualization': ['grafana'],
+      'cisco-systems': ['devops'], // fallback to devops
+      'azure-active-directory': ['devops'], // fallback to devops
+      'microsoft-365': ['devops'], // fallback to devops
+      'aws-cloud-practitioner': ['aws'],
+      'network-security': ['network-security'],
+      'microsoft-intune': ['devops'], // fallback to devops
+      'servicenow': ['devops'], // fallback to devops
+      'cyberark-pam': ['network-security'],
+      'windows-server': ['devops'], // fallback to devops
     };
 
     const candidates = new Set<string>();

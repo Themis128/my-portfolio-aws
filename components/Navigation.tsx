@@ -64,9 +64,11 @@ export default function Navigation() {
     }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mono-accent">
-            TB
-          </div>
+          <img
+            src="/cloudless-logo.svg"
+            alt="Themis Baltzakis Logo"
+            className="h-8 w-auto dark:brightness-0 dark:invert transition-all duration-300"
+          />
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">

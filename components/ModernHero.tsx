@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowRight, Cloud, Github, Globe, Linkedin, Network, Server, Shield, Sparkles, type LucideIcon } from "lucide-react";
-import Image from "next/image";
+import { ArrowRight, Cloud, Github, Globe, Linkedin, Network, Server, Shield, type LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 // Particle class for the background animation
@@ -342,33 +341,6 @@ const ModernHeroSection = ({ data }: ModernHeroProps) => {
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-20">
         <div className="mx-auto max-w-6xl w-full text-center">
-          {/* Cloudless Logo */}
-          <motion.div
-            className="mb-8 flex justify-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Image
-              src="/cloudless-logo.svg"
-              alt="Cloudless.gr Logo"
-              width={64}
-              height={64}
-              className="h-16 w-auto"
-            />
-          </motion.div>
-
-          {/* Status Badge */}
-          <motion.div
-            className="inline-flex items-center gap-2 rounded-full border border-blue-200 dark:border-blue-800 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm px-4 py-2 text-sm font-medium text-blue-700 dark:text-blue-300 shadow-lg mb-8"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Sparkles className="h-4 w-4" />
-            <span>Systems & Network Engineer</span>
-          </motion.div>
-
           {/* Name */}
           <AnimatedName name={data.name.split(' ')[0]} />
 
@@ -394,7 +366,7 @@ const ModernHeroSection = ({ data }: ModernHeroProps) => {
           >
             <Button
               size="lg"
-              className="w-full sm:w-auto group relative overflow-hidden bg-blue-600 hover:bg-blue-700 text-white"
+              className="w-full sm:w-auto group relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             >
               <span className="relative z-10 flex items-center gap-2">
