@@ -3,13 +3,17 @@ const client = new AmplifyClient({ region: 'eu-central-1' });
 
 async function checkStatus() {
   try {
+    // Use the existing connected app
+    const appId = 'd3gpsu0f51cpej';
+    console.log('📋 App ID:', appId);
+
+    // Get app details
     const apps = await client.send(new ListAppsCommand({}));
-    const app = apps.apps.find(a => a.name === 'my-portfolio-aws');
+    const app = apps.apps.find(a => a.appId === appId);
     if (!app) {
-      console.log('❌ App not found');
+      console.log('❌ App not found with ID:', appId);
       return;
     }
-    console.log('📋 App ID:', app.appId);
     console.log('📊 App Status:', app.appState);
 
     const jobs = await client.send(new ListJobsCommand({ appId: app.appId, branchName: 'master' }));
