@@ -1,0 +1,14 @@
+{
+  "projectName": "myportfolioaws",
+  "defaultEditor": "vscode",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react",
+    "config": {
+      "SourceDir": "src",
+      "DistributionDir": "build",
+      "BuildCommand": "npm run build",
+      "StartCommand": "npm run start"
+    }
+  }
+}

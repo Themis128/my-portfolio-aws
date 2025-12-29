@@ -1,0 +1,8 @@
+{
+  "function": {
+    "contact-handler": {
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  }
+}

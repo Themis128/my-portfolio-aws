@@ -1,0 +1,15 @@
+{
+  "name": "my-portfolio-aws-amplify-backend",
+  "version": "1.0.0",
+  "description": "Amplify Gen 2 backend for portfolio",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "@aws-amplify/backend": "^1.0.0",
+    "@aws-amplify/backend-cli": "^1.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "prod": {
+    "awscloudformation": {
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "my-portfolio-aws-2025",
+      "StackName": "prod-stack",
+      "AmplifyAppId": "d3gpsu0f51cpej"
+    }
+  }
+}

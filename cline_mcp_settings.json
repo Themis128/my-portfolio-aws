@@ -557,54 +557,107 @@
         }
       ]
     },
-    "image-gen-ai": {
-      "name": "AI Logo Generation (Replicate)",
-      "description": "Generates logos using AI via Replicate",
+    "slack": {
+      "name": "Slack MCP Server",
+      "description": "MCP server for Slack integration with channels, messages, and DMs",
       "server_type": "stdio",
-      "command": "node index.js",
-      "working_directory": "./mcp-servers/branding-servers/image-gen-ai",
+      "command": "./slack-mcp-server",
+      "args": ["mcp-server", "--transport", "stdio"],
+      "working_directory": "./mcp-servers/slack-mcp-server",
       "enabled": true,
+      "env": {
+        "SLACK_MCP_XOXP_TOKEN": "your-slack-user-token-here",
+        "SLACK_MCP_LOG_LEVEL": "info"
+      },
       "tools": [
         {
-          "name": "generate_ai_logo",
-          "description": "Generates logos using AI models",
+          "name": "conversations_history",
+          "description": "Get messages from a Slack channel or DM",
           "input_schema": {
             "type": "object",
             "properties": {
-              "prompt": {
+              "channel_id": {
                 "type": "string",
-                "description": "Text prompt describing the desired logo"
+                "description": "Channel ID or name (e.g., C1234567890 or #general)"
               },
-              "outputDirectory": {
+              "limit": {
                 "type": "string",
-                "description": "Directory to save the generated logo"
-              },
-              "model": {
-                "type": "string",
-                "enum": ["stable-diffusion", "dall-e", "midjourney"],
-                "description": "AI model to use for logo generation"
-              },
-              "options": {
-                "type": "object",
-                "properties": {
-                  "width": {
-                    "type": "number",
-                    "default": 512,
-                    "description": "Width of the generated logo"
-                  },
-                  "height": {
-                    "type": "number",
-                    "default": 512,
-                    "description": "Height of the generated logo"
-                  },
-                  "style": {
-                    "type": "string",
-                    "description": "Style of the logo (e.g., 'minimal', 'vintage', 'modern')"
-                  }
-                }
+                "description": "Number of messages or time range (e.g., 50 or 1d)"
               }
             },
-            "required": ["prompt", "outputDirectory", "model"]
+            "required": ["channel_id"]
+          }
+        },
+        {
+          "name": "conversations_replies",
+          "description": "Get replies in a Slack thread",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "channel_id": {
+                "type": "string",
+                "description": "Channel ID or name"
+              },
+              "thread_ts": {
+                "type": "string",
+                "description": "Thread timestamp"
+              }
+            },
+            "required": ["channel_id", "thread_ts"]
+          }
+        },
+        {
+          "name": "conversations_add_message",
+          "description": "Post a message to a Slack channel (requires SLACK_MCP_ADD_MESSAGE_TOOL=true)",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "channel_id": {
+                "type": "string",
+                "description": "Channel ID or name"
+              },
+              "payload": {
+                "type": "string",
+                "description": "Message content"
+              },
+              "content_type": {
+                "type": "string",
+                "enum": ["text/markdown", "text/plain"],
+                "description": "Content type"
+              }
+            },
+            "required": ["channel_id", "payload"]
+          }
+        },
+        {
+          "name": "conversations_search_messages",
+          "description": "Search messages in Slack",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "search_query": {
+                "type": "string",
+                "description": "Search query"
+              },
+              "filter_in_channel": {
+                "type": "string",
+                "description": "Channel to search in"
+              }
+            }
+          }
+        },
+        {
+          "name": "channels_list",
+          "description": "List Slack channels",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "channel_types": {
+                "type": "string",
+                "description": "Comma-separated channel types (public_channel, private_channel, im, mpim)"
+              }
+            },
+            "required": ["channel_types"]
           }
         }
       ]
