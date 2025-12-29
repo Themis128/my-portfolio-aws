@@ -85,9 +85,9 @@ export default function Contact({ data }: ContactProps) {
     <section id="contact" className="relative py-24 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 right-32 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 left-32 w-48 h-48 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
+        <div className="absolute bottom-20 left-32 w-48 h-48 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
       <div className="relative z-10 container mx-auto px-6">
@@ -124,7 +124,7 @@ export default function Contact({ data }: ContactProps) {
           {/* Contact Information */}
           <motion.div variants={itemVariants} className="space-y-6">
             <div className="mb-8">
-              <h3 className="text-2xl font-bold mb-4">Let&apos;s Connect</h3>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Let&apos;s Connect</h3>
               <p className="text-muted-foreground">
                 I&apos;m always interested in new opportunities and exciting projects.
                 Let&apos;s discuss how we can work together.
@@ -141,7 +141,7 @@ export default function Contact({ data }: ContactProps) {
                   <Mail className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-lg mb-1">Email</h4>
+                  <h4 className="font-semibold text-lg mb-1 text-foreground">Email</h4>
                   <p className="text-primary font-medium mb-2">{data.email}</p>
                   <p className="text-sm text-muted-foreground">I&apos;ll get back to you within 24 hours</p>
                 </div>
@@ -158,7 +158,7 @@ export default function Contact({ data }: ContactProps) {
                   <MapPin className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-lg mb-1">Location</h4>
+                  <h4 className="font-semibold text-lg mb-1 text-foreground">Location</h4>
                   <p className="text-primary font-medium mb-2">{data.location}</p>
                   <p className="text-sm text-muted-foreground">Available for remote work worldwide</p>
                 </div>
@@ -175,7 +175,7 @@ export default function Contact({ data }: ContactProps) {
                   <Clock className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold text-lg mb-1">Response Time</h4>
+                  <h4 className="font-semibold text-lg mb-1 text-foreground">Response Time</h4>
                   <p className="text-primary font-medium mb-2">Within 24 hours</p>
                   <p className="text-sm text-muted-foreground">Quick and reliable communication</p>
                 </div>
@@ -187,7 +187,7 @@ export default function Contact({ data }: ContactProps) {
               variants={itemVariants}
               className="pt-6 border-t border-border/50"
             >
-              <h4 className="font-semibold mb-4">Follow Me</h4>
+              <h4 className="font-semibold mb-4 text-foreground">Follow Me</h4>
               <div className="flex gap-4">
                 {data.github && (
                   <motion.a
@@ -223,7 +223,7 @@ export default function Contact({ data }: ContactProps) {
             className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-xl"
           >
             <div className="mb-8">
-              <h3 className="text-2xl font-bold mb-2">Send Me a Message</h3>
+              <h3 className="text-2xl font-bold mb-2 text-foreground">Send Me a Message</h3>
               <p className="text-muted-foreground">
                 Have a project in mind? Let&apos;s discuss the details and see how we can make it happen.
               </p>
@@ -234,8 +234,9 @@ export default function Contact({ data }: ContactProps) {
                 <motion.div
                   whileFocus={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="space-y-2"
                 >
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium text-foreground">
                     Your Name
                   </label>
                   <Input
@@ -246,14 +247,15 @@ export default function Contact({ data }: ContactProps) {
                     onChange={handleChange}
                     required
                     placeholder="Enter your full name"
-                    className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
+                    className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 h-11"
                   />
                 </motion.div>
                 <motion.div
                   whileFocus={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="space-y-2"
                 >
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-foreground">
                     Your Email
                   </label>
                   <Input
@@ -264,7 +266,7 @@ export default function Contact({ data }: ContactProps) {
                     onChange={handleChange}
                     required
                     placeholder="your@email.com"
-                    className="transition-all duration-300 focus:ring-2 focus:ring-primary/20"
+                    className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 h-11"
                   />
                 </motion.div>
               </div>
@@ -272,8 +274,9 @@ export default function Contact({ data }: ContactProps) {
               <motion.div
                 whileFocus={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="space-y-2"
               >
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-foreground">
                   Your Message
                 </label>
                 <Textarea
