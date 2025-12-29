@@ -3,11 +3,10 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm install -g pnpm
-        - pnpm install --frozen-lockfile
+        - npm ci
     build:
       commands:
-        - pnpm run build
+        - npm run build
   artifacts:
     baseDirectory: .next
     files:
@@ -16,5 +15,3 @@ frontend:
     paths:
       - .next/cache/**/*
       - node_modules/**/*
-      - .pnpm-store/**/*
-# Build update: Mon Dec 29 11:19:35 EET 2025
