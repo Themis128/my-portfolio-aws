@@ -1,10 +1,11 @@
 "use client";
+import { generateClient } from '@aws-amplify/api';
 import { motion } from 'framer-motion';
 import { Clock, Github, Linkedin, Mail, MapPin, MessageSquare, Send } from 'lucide-react';
 import { useState } from 'react';
-import { generateClient } from '@aws-amplify/api';
+import '../lib/amplify-client-config'; // Ensure Amplify is configured
 import { PersonalData } from '../lib/personal-data';
-import { createContact } from '../lib/graphql/mutations';
+import { sendContact } from '../lib/graphql/mutations';
 import { Input } from './input';
 import { Textarea } from './textarea';
 import { Button } from "./ui/button";
@@ -28,6 +29,8 @@ export default function Contact({ data }: ContactProps) {
     setSubmitStatus('idle');
 
     try {
+      // Use the sendContact mutation which triggers the Lambda handler
+      // This ensures email notifications are sent via SES
       const client = generateClient();
       await client.graphql({
         query: sendContact,
