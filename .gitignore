@@ -56,6 +56,8 @@ logs
 # Amplify
 amplify_outputs.json
 .amplify/
+/.serverless/
+amplify-backup.bak*
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
