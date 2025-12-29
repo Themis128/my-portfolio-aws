@@ -240,7 +240,7 @@ export function getPersonalDataServer(): PersonalData {
         github: "https://github.com/Themis128/task-manager",
         image: "/images/projects/tasks-screenshot.png",
         category: "Side Project",
-        featured: false
+        featured: true
       },
       {
         id: "4",
@@ -260,7 +260,7 @@ export function getPersonalDataServer(): PersonalData {
         github: "https://github.com/Themis128/infrastructure-automation",
         image: "/images/projects/infrastructure-screenshot.png",
         category: "Infrastructure",
-        featured: false
+        featured: true
       }
     ],
     certifications: [

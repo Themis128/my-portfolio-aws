@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import { Clock, Github, Linkedin, Mail, MapPin, MessageSquare, Send } from 'lucide-react';
 import { useState } from 'react';
 import '../lib/amplify-client-config'; // Ensure Amplify is configured
-import { PersonalData } from '../lib/personal-data';
 import { sendContact } from '../lib/graphql/mutations';
+import { PersonalData } from '../lib/personal-data';
 import { Input } from './input';
 import { Textarea } from './textarea';
 import { Button } from "./ui/button";

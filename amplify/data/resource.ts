@@ -11,6 +11,20 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
+  // Contact form mutation - creates contact record and sends notifications
+  sendContact: a
+    .mutation()
+    .arguments({
+      name: a.string().required(),
+      email: a.string().required(),
+      message: a.string().required(),
+    })
+    .returns(a.string())
+    .handler(
+      a.handler.function('contact-handler')
+    )
+    .authorization((allow) => [allow.publicApiKey()]),
+
   // Slack notification mutation
   sendSlackNotification: a
     .mutation()

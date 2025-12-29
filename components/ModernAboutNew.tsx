@@ -2,18 +2,18 @@ import { Badge } from '@/components/badge';
 import { Card, CardContent } from '@/components/card';
 import { motion, useInView, useScroll, useSpring, useTransform } from 'framer-motion';
 import {
-  Award,
-  Briefcase,
-  Calendar,
-  CheckCircle,
-  Github,
-  Linkedin,
-  Mail,
-  MapPin,
-  Network,
-  Phone,
-  Server,
-  Terminal
+    Award,
+    Briefcase,
+    Calendar,
+    CheckCircle,
+    Github,
+    Linkedin,
+    Mail,
+    MapPin,
+    Network,
+    Phone,
+    Server,
+    Terminal
 } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
@@ -342,13 +342,13 @@ export default function ModernAbout({ data }: ModernAboutProps) {
             >
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full blur-2xl" />
               <div className="relative z-10">
-                <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white/20 bg-gradient-to-br from-primary/20 to-primary/5 shadow-2xl">
+                <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white/20 bg-gradient-to-br from-primary/20 to-primary/5 shadow-2xl">
                   {data.profilePicture ? (
                     <Image
                       src={data.profilePicture}
                       alt={data.name}
-                      width={192}
-                      height={192}
+                      width={256}
+                      height={256}
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         // Handle error by hiding the image and showing fallback
