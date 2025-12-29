@@ -7,6 +7,11 @@ import { useState } from "react";
 const STORAGE_KEY = "21st-toolbar-enabled";
 
 export default function ToolbarMountController() {
+  // Don't render anything in production
+  if (process.env.NODE_ENV === "production") {
+    return null;
+  }
+
   // Default behavior: enabled in development or when NEXT_PUBLIC_ENABLE_21ST_TOOLBAR=true
   const showByDefault =
     process.env.NODE_ENV === "development" ||
