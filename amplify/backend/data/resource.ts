@@ -12,6 +12,16 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()])
     .onCreate(a.handler.function(contactHandler)),
+  sendContact: a
+    .mutation()
+    .arguments({
+      name: a.string().required(),
+      email: a.string().required(),
+      message: a.string().required(),
+    })
+    .returns(a.string())
+    .handler(a.handler.function(contactHandler))
+    .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

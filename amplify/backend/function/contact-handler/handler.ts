@@ -1,20 +1,67 @@
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import { generateClient } from '@aws-amplify/api';
 
 const sesClient = new SESClient({ region: 'eu-central-1' });
 
 export const handler = async (event: any) => {
   try {
-    // Extract data from DynamoDB stream event
-    const record = event.Records[0];
-    const newImage = record.dynamodb.NewImage;
+    let name, email, message;
 
-    const name = newImage.name.S;
-    const email = newImage.email.S;
-    const message = newImage.message.S;
+    // Handle both DynamoDB stream events and direct GraphQL calls
+    if (event.Records && event.Records[0] && event.Records[0].dynamodb) {
+      // DynamoDB stream event
+      const record = event.Records[0];
+      const newImage = record.dynamodb.NewImage;
 
-    if (!name || !email || !message) {
-      console.error('Missing required fields in DynamoDB record');
-      return;
+      name = newImage.name.S;
+      email = newImage.email.S;
+      message = newImage.message.S;
+
+      if (!name || !email || !message) {
+        console.error('Missing required fields in DynamoDB record');
+        return;
+      }
+    } else if (event.arguments) {
+      // Direct GraphQL mutation call
+      name = event.arguments.name;
+      email = event.arguments.email;
+      message = event.arguments.message;
+
+      if (!name || !email || !message) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Missing required fields' }),
+        };
+      }
+
+      // Store in DynamoDB via GraphQL
+      const client = generateClient();
+      await client.graphql({
+        query: `
+          mutation CreateContact($input: CreateContactInput!) {
+            createContact(input: $input) {
+              id
+              name
+              email
+              message
+              createdAt
+            }
+          }
+        `,
+        variables: {
+          input: {
+            name,
+            email,
+            message,
+          },
+        },
+      });
+    } else {
+      console.error('Unsupported event format');
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Unsupported event format' }),
+      };
     }
 
     // Send confirmation email via SES
@@ -137,7 +184,18 @@ This is an automated response. Please do not reply to this email.`,
       }
     }
 
+    // Return appropriate response based on event type
+    if (event.arguments) {
+      // For GraphQL calls, return success message
+      return 'Message sent successfully';
+    }
+    // For DynamoDB triggers, no return needed
+
   } catch (error) {
     console.error('Error processing contact form:', error);
+    if (event.arguments) {
+      // For GraphQL calls, return error message
+      throw new Error('Failed to send message');
+    }
   }
 };

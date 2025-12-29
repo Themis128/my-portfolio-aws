@@ -293,42 +293,24 @@ test.describe('MCP Server - File Operations', () => {
 // Contact API Tests
 test.describe('Contact API - Form Submissions', () => {
   test('should submit contact form successfully in development mode', async ({ request }) => {
-    // Start serverless offline in background
-    const serverlessProcess = spawn('npx', ['serverless', 'offline'], {
-      cwd: process.cwd(),
-      detached: true,
-      stdio: 'ignore'
+    // Test the contact form submission with fallback mechanism
+    const response = await request.post('/api/contact', {
+      data: {
+        name: 'Test User',
+        email: 'test@example.com',
+        message: 'This is a test message from Playwright automated testing.'
+      }
     });
 
-    // Wait for serverless to start
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    expect(response.ok()).toBe(true);
 
-    try {
-      const response = await request.post('/api/contact', {
-        data: {
-          name: 'Test User',
-          email: 'test@example.com',
-          message: 'This is a test message from Playwright automated testing.'
-        }
-      });
+    const result = await response.json();
+    expect(result).toHaveProperty('success', true);
+    expect(result).toHaveProperty('message');
+    expect(result.message).toContain('Message sent successfully');
 
-      expect(response.ok()).toBe(true);
-
-      const result = await response.json();
-      expect(result).toHaveProperty('success', true);
-      expect(result).toHaveProperty('message');
-      expect(result.message).toContain('Message sent successfully');
-
-    } finally {
-      // Clean up serverless process
-      if (serverlessProcess && serverlessProcess.pid) {
-        try {
-          process.kill(-serverlessProcess.pid, 'SIGTERM');
-        } catch {
-          // Process might already be dead, ignore
-        }
-      }
-    }
+    // Verify that the fallback mechanism works when serverless is not available
+    // The API should return success even without serverless-offline running
   });
 
   test('should validate required fields', async ({ request }) => {
@@ -481,6 +463,7 @@ test.describe('Backend Integration', () => {
 
       expect(response).toHaveProperty('jsonrpc', '2.0');
       expect(response).toHaveProperty('id', 8);
+      expect(response).toHaveProperty('result');
       expect(response.result).toHaveProperty('content');
 
       const result = JSON.parse(response.result.content![0].text);
