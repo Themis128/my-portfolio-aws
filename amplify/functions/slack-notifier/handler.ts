@@ -1,4 +1,5 @@
 import { WebClient } from '@slack/web-api';
+import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 
 interface SlackNotificationEvent {
   arguments?: {
@@ -19,11 +20,23 @@ export const handler = async (event: SlackNotificationEvent) => {
   }
 
   try {
-    // Get Slack token from environment variables
-    const token = process.env.SLACK_BOT_TOKEN;
+    // Get Slack token from environment variables or SSM parameter
+    let token = process.env.SLACK_BOT_TOKEN;
+    const ssmParam = process.env.SLACK_SSM_PARAM;
+
+    if (!token && ssmParam) {
+      try {
+        const ssm = new SSMClient({});
+        const cmd = new GetParameterCommand({ Name: ssmParam, WithDecryption: true });
+        const resp = await ssm.send(cmd);
+        token = resp.Parameter?.Value;
+      } catch (e) {
+        console.error('Failed to fetch Slack token from SSM:', e);
+      }
+    }
 
     if (!token) {
-      console.error('SLACK_BOT_TOKEN environment variable not set');
+      console.error('SLACK_BOT_TOKEN not configured and no SLACK_SSM_PARAM available');
       return {
         statusCode: 500,
         body: JSON.stringify({ error: 'Slack configuration missing' }),
