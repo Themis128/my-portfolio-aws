@@ -1,14 +1,15 @@
 {
-  "projectName": "myportfolioaws",
+"projectName": "myportfolioaws",
   "defaultEditor": "vscode",
   "frontend": "javascript",
   "javascript": {
-    "framework": "react",
+    "framework": "nextjs",
     "config": {
-      "SourceDir": "src",
-      "DistributionDir": "build",
+      "SourceDir": ".",
+      "DistributionDir": ".next",
       "BuildCommand": "npm run build",
-      "StartCommand": "npm run start"
+      "StartCommand": "npm run dev"
     }
-  }
+  },
+  "providers": ["awscloudformation"]
 }

@@ -1,4 +1,5 @@
 import { a, defineData } from '@aws-amplify/backend';
+import { contactHandler } from '../function/contact-handler/resource';
 const schema = a.schema({
     Contact: a
         .model({
@@ -8,6 +9,16 @@ const schema = a.schema({
         message: a.string().required(),
         createdAt: a.datetime().required(),
     })
+        .authorization((allow) => [allow.publicApiKey()]),
+    sendContact: a
+        .mutation()
+        .arguments({
+        name: a.string().required(),
+        email: a.string().required(),
+        message: a.string().required(),
+    })
+        .returns(a.string())
+        .handler(a.handler.function(contactHandler))
         .authorization((allow) => [allow.publicApiKey()]),
 });
 export const data = defineData({

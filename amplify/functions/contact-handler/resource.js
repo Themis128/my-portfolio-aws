@@ -1,6 +1,6 @@
 import { defineFunction } from '@aws-amplify/backend';
-
 export const contactHandler = defineFunction({
-  entry: './handler.ts',
-  runtime: 20,
+    name: 'contact-handler',
+    entry: './handler.ts',
+    runtime: 20,
 });

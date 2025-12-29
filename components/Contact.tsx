@@ -29,10 +29,9 @@ export default function Contact({ data }: ContactProps) {
     setSubmitStatus('idle');
 
     try {
-      // Use the sendContact mutation which triggers the Lambda handler
-      // This ensures email notifications are sent via SES
+      // Use the sendContact mutation with Slack and SES notifications
       const client = generateClient();
-      await client.graphql({
+      const result = await client.graphql({
         query: sendContact,
         variables: {
           name: formData.name,

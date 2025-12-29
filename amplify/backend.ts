@@ -1,6 +1,6 @@
 import { defineBackend } from '@aws-amplify/backend';
-import { data } from './backend/data/resource';
-import { contactHandler } from './backend/function/contact-handler/resource';
+import { data } from './data/resource';
+import { contactHandler } from './functions/contact-handler/resource';
 
 defineBackend({
   data,

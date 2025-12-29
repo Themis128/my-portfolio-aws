@@ -30,11 +30,16 @@ echo ""
 # Find Lambda function
 FUNCTION_NAME=$(aws lambda list-functions \
     --region $REGION \
-    --query 'Functions[?contains(FunctionName, `contactHandler`)].FunctionName' \
+    --query 'Functions[?contains(FunctionName, `contacthandler`) || contains(FunctionName, `contact-handler`) || contains(FunctionName, `Contact`)].FunctionName' \
     --output text 2>/dev/null | head -1)
 
 if [ -z "$FUNCTION_NAME" ]; then
     echo -e "${RED}❌ Contact handler Lambda not found${NC}"
+    echo -e "${YELLOW}Available functions:${NC}"
+    aws lambda list-functions \
+        --region $REGION \
+        --query 'Functions[*].FunctionName' \
+        --output text | tr '\t' '\n' | head -10
     exit 1
 fi
 

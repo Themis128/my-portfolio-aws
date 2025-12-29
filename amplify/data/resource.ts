@@ -1,5 +1,4 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
-import { contactHandler } from '../../functions/contact-handler/resource';
 
 const schema = a.schema({
   Contact: a
@@ -11,6 +10,8 @@ const schema = a.schema({
       createdAt: a.datetime().required(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
+
+  // Contact form mutation - creates contact record and sends notifications
   sendContact: a
     .mutation()
     .arguments({
@@ -19,7 +20,9 @@ const schema = a.schema({
       message: a.string().required(),
     })
     .returns(a.string())
-    .handler(a.handler.function(contactHandler))
+    .handler(
+      a.handler.function('contact-handler')
+    )
     .authorization((allow) => [allow.publicApiKey()]),
 });
 
