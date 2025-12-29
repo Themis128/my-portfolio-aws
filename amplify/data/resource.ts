@@ -11,17 +11,16 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
-  // Contact form mutation - creates contact record and sends notifications
-  sendContact: a
+  // Slack notification mutation
+  sendSlackNotification: a
     .mutation()
     .arguments({
-      name: a.string().required(),
-      email: a.string().required(),
       message: a.string().required(),
+      channel: a.string(),
     })
     .returns(a.string())
     .handler(
-      a.handler.function('contact-handler')
+      a.handler.function('slack-notifier')
     )
     .authorization((allow) => [allow.publicApiKey()]),
 });

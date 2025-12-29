@@ -48,6 +48,27 @@ export const handler = async (event: ContactEvent) => {
       });
 
       console.log('Contact form stored successfully');
+
+      // Send Slack notification
+      try {
+        console.log('Sending Slack notification...');
+        await client.graphql({
+          query: `
+            mutation SendSlackNotification($message: String!, $channel: String) {
+              sendSlackNotification(message: $message, channel: $channel)
+            }
+          `,
+          variables: {
+            message: `New contact form submission from ${name} (${email}): ${message}`,
+            channel: '#general'
+          }
+        });
+        console.log('Slack notification sent successfully');
+      } catch (slackError) {
+        console.warn('Failed to send Slack notification:', slackError);
+        // Don't fail the whole operation if Slack fails
+      }
+
       return 'Message sent successfully';
     } catch (error) {
       console.error('Error storing contact:', error);
