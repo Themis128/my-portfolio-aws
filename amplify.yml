@@ -3,11 +3,16 @@ frontend:
   phases:
     preBuild:
       commands:
+        - echo "=== Starting preBuild phase ==="
         - npm install -g pnpm@9.14.4
-        - pnpm install --frozen-lockfile
+        - echo "=== Installing dependencies ==="
+        - pnpm install --frozen-lockfile --prefer-offline
+        - echo "=== PreBuild completed successfully ==="
     build:
       commands:
+        - echo "=== Starting Next.js build ==="
         - pnpm run build
+        - echo "=== Build completed successfully ==="
   artifacts:
     baseDirectory: .next
     files:
@@ -16,3 +21,4 @@ frontend:
     paths:
       - .next/cache/**/*
       - node_modules/**/*
+      - ~/.pnpm-store/**/*
