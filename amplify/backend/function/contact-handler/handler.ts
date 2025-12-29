@@ -1,51 +1,21 @@
-import { generateClient } from '@aws-amplify/api';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-import { createContact } from './graphql/mutations';
 
 const sesClient = new SESClient({ region: 'eu-central-1' });
 
-export const handler = async (event: {
-  body?: string | Record<string, unknown>;
-}) => {
+export const handler = async (event: any) => {
   try {
-    // Handle both Amplify and serverless-offline event formats
-    let body: Record<string, unknown> = {};
-    if (typeof event.body === 'string') {
-      body = JSON.parse(event.body);
-    } else if (event.body) {
-      body = event.body;
-    }
+    // Extract data from DynamoDB stream event
+    const record = event.Records[0];
+    const newImage = record.dynamodb.NewImage;
 
-    const { name, email, message } = body as {
-      name?: string;
-      email?: string;
-      message?: string;
-    };
+    const name = newImage.name.S;
+    const email = newImage.email.S;
+    const message = newImage.message.S;
 
     if (!name || !email || !message) {
-      return {
-        statusCode: 400,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        },
-        body: JSON.stringify({ error: 'Missing required fields' }),
-      };
+      console.error('Missing required fields in DynamoDB record');
+      return;
     }
-
-    // Store in DynamoDB via GraphQL
-    const client = generateClient();
-    await client.graphql({
-      query: createContact,
-      variables: {
-        input: {
-          name,
-          email,
-          message,
-        },
-      },
-    });
 
     // Send confirmation email via SES
     const emailParams = {
@@ -167,33 +137,7 @@ This is an automated response. Please do not reply to this email.`,
       }
     }
 
-    return {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      },
-      body: JSON.stringify({
-        message: 'Message sent successfully',
-        success: true
-      }),
-    };
-
   } catch (error) {
     console.error('Error processing contact form:', error);
-
-    return {
-      statusCode: 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      },
-      body: JSON.stringify({
-        error: 'Internal server error',
-        success: false
-      }),
-    };
   }
 };

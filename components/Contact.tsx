@@ -4,7 +4,7 @@ import { Clock, Github, Linkedin, Mail, MapPin, MessageSquare, Send } from 'luci
 import { useState } from 'react';
 import { generateClient } from '@aws-amplify/api';
 import { PersonalData } from '../lib/personal-data';
-import { createContact, sendContact } from '../lib/graphql/mutations';
+import { createContact } from '../lib/graphql/mutations';
 import { Input } from './input';
 import { Textarea } from './textarea';
 import { Button } from "./ui/button";
@@ -30,13 +30,11 @@ export default function Contact({ data }: ContactProps) {
     try {
       const client = generateClient();
       await client.graphql({
-        query: createContact,
+        query: sendContact,
         variables: {
-          input: {
-            name: formData.name,
-            email: formData.email,
-            message: formData.message,
-          },
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
         },
       });
 

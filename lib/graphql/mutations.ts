@@ -13,13 +13,3 @@ export const createContact = /* GraphQL */ `
     }
   }
 `;
-
-export const sendContact = /* GraphQL */ `
-  mutation SendContact(
-    $name: String!
-    $email: String!
-    $message: String!
-  ) {
-    sendContact(name: $name, email: $email, message: $message)
-  }
-`;

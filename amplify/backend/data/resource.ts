@@ -10,17 +10,8 @@ const schema = a.schema({
       message: a.string().required(),
       createdAt: a.datetime().required(),
     })
-    .authorization((allow) => [allow.publicApiKey()]),
-  sendContact: a
-    .mutation()
-    .arguments({
-      name: a.string().required(),
-      email: a.string().required(),
-      message: a.string().required(),
-    })
-    .returns(a.string())
-    .handler(a.handler.function(contactHandler))
-    .authorization((allow) => [allow.publicApiKey()]),
+    .authorization((allow) => [allow.publicApiKey()])
+    .onCreate(a.handler.function(contactHandler)),
 });
 
 export type Schema = ClientSchema<typeof schema>;
