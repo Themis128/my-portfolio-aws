@@ -109,13 +109,13 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region ${{ secrets.AWS_REGION }}
 
-          # Start Amplify deployment
-          aws amplify start-deployment \
-            --app-id ${{ secrets.AMPLIFY_APP_ID }} \
-            --branch-name ${{ github.event.inputs.branch || 'master' }} \
-            --source-url ${{ github.server_url }}/${{ github.repository }}/archive/${{ github.sha }}.zip
+          # Start Amplify deployment (commented out since app is connected to repo)
+          # aws amplify start-deployment \
+          #   --app-id ${{ secrets.AMPLIFY_APP_ID }} \
+          #   --branch-name ${{ github.event.inputs.branch || 'master' }} \
+          #   --source-url ${{ github.server_url }}/${{ github.repository }}/archive/${{ github.sha }}.zip
 
-          echo "deployment-url=https://${{ github.event.inputs.branch || 'master' }}-d3gpsu0f51cpej.amplifyapp.com" >> $GITHUB_OUTPUT
+          echo "deployment-url=https://master.dcwmv1pw85f0j.amplifyapp.com" >> $GITHUB_OUTPUT
 
       - name: Post-deployment notification
         if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
