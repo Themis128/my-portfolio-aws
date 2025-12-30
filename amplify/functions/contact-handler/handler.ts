@@ -12,30 +12,33 @@ export const handler = async (event: {
     message: string;
   };
 }) => {
-  try {
-    // Handle both GraphQL mutation arguments and API Gateway body
-    let name: string, email: string, message: string;
+  // Handle both GraphQL mutation arguments and API Gateway body
+  let name: string | undefined, email: string | undefined, message: string | undefined;
 
-    if (event.arguments) {
-      // GraphQL mutation call
-      ({ name, email, message } = event.arguments);
-    } else {
-      // Handle both Amplify and serverless-offline event formats
-      let body: Record<string, unknown> = {};
-      if (typeof event.body === 'string') {
-        body = JSON.parse(event.body);
-      } else if (event.body) {
-        body = event.body;
-      }
-
-      ({ name, email, message } = body as {
-        name?: string;
-        email?: string;
-        message?: string;
-      });
+  if (event.arguments) {
+    // GraphQL mutation call
+    ({ name, email, message } = event.arguments);
+  } else {
+    // Handle both Amplify and serverless-offline event formats
+    let body: Record<string, unknown> = {};
+    if (typeof event.body === 'string') {
+      body = JSON.parse(event.body);
+    } else if (event.body) {
+      body = event.body;
     }
 
-    if (!name || !email || !message) {
+    ({ name, email, message } = body as {
+      name?: string;
+      email?: string;
+      message?: string;
+    });
+  }
+
+  if (!name || !email || !message) {
+    if (event.arguments) {
+      // For GraphQL, throw error for validation
+      throw new Error('Missing required fields');
+    } else {
       return {
         statusCode: 400,
         headers: {
@@ -46,7 +49,11 @@ export const handler = async (event: {
         body: JSON.stringify({ error: 'Missing required fields' }),
       };
     }
+  }
 
+  // At this point, we know name, email, message are defined
+
+  try {
     // Store in DynamoDB via GraphQL
     const client = generateClient();
     await client.graphql({
@@ -61,18 +68,19 @@ export const handler = async (event: {
     });
 
     // Send confirmation email via SES
-    const emailParams = {
-      Source: 'noreply@cloudless.gr',
-      Destination: {
-        ToAddresses: [email],
-      },
-      Message: {
-        Subject: {
-          Data: 'Thank you for your message - Baltzakis Themis',
+    try {
+      const emailParams = {
+        Source: 'noreply@cloudless.gr',
+        Destination: {
+          ToAddresses: [email],
         },
-        Body: {
-          Text: {
-            Data: `Dear ${name},
+        Message: {
+          Subject: {
+            Data: 'Thank you for your message - Baltzakis Themis',
+          },
+          Body: {
+            Text: {
+              Data: `Dear ${name},
 
 Thank you for reaching out to me!
 
@@ -82,14 +90,14 @@ For your reference, here's a copy of your message:
 "${message}"
 
 Best regards,
-Themis Baltzakis
+Themistoklis Baltzakis
 www.baltzakisthemis.com
 
 ---
 This is an automated response. Please do not reply to this email.`,
-          },
-          Html: {
-            Data: `
+            },
+            Html: {
+              Data: `
 <!DOCTYPE html>
 <html>
 <head>
@@ -122,53 +130,62 @@ This is an automated response. Please do not reply to this email.`,
     </div>
 </body>
 </html>`,
+            },
           },
         },
-      },
-    };
+      };
 
-    await sesClient.send(new SendEmailCommand(emailParams));
+      await sesClient.send(new SendEmailCommand(emailParams));
+    } catch (emailError) {
+      console.error('Error sending email:', emailError);
+      // Continue anyway
+    }
 
     // Send to Slack webhook
-    const slackPayload = {
-      channel: '#personal-website',
-      username: 'Contact Form Bot',
-      icon_emoji: ':email:',
-      attachments: [
-        {
-          fallback: `New contact form submission from ${name}`,
-          color: '#36a64f',
-          title: 'New Contact Form Submission',
-          fields: [
-            {
-              title: 'Name',
-              value: name,
-              short: true,
-            },
-            {
-              title: 'Email',
-              value: email,
-              short: true,
-            },
-            {
-              title: 'Message',
-              value: message,
-              short: false,
-            },
-          ],
-          footer: 'Baltzakis Themis Contact Form',
-          ts: Math.floor(Date.now() / 1000),
-        },
-      ],
-    };
+    try {
+      const slackPayload = {
+        channel: '#personal-website',
+        username: 'Contact Form Bot',
+        icon_emoji: ':email:',
+        attachments: [
+          {
+            fallback: `New contact form submission from ${name}`,
+            color: '#36a64f',
+            title: 'New Contact Form Submission',
+            fields: [
+              {
+                title: 'Name',
+                value: name,
+                short: true,
+              },
+              {
+                title: 'Email',
+                value: email,
+                short: true,
+              },
+              {
+                title: 'Message',
+                value: message,
+                short: false,
+              },
+            ],
+            footer: 'Baltzakis Themis Contact Form',
+            ts: Math.floor(Date.now() / 1000),
+          },
+        ],
+      };
 
-    await fetch('REDACTED_SLACK_WEBHOOK_URL', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(slackPayload),
-    });
+      await fetch('REDACTED_SLACK_WEBHOOK_URL', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(slackPayload),
+      });
+    } catch (slackError) {
+      console.error('Error sending to Slack:', slackError);
+      // Continue anyway
+    }
 
     // Return different format for GraphQL vs API Gateway
     if (event.arguments) {
@@ -193,17 +210,22 @@ This is an automated response. Please do not reply to this email.`,
   } catch (error) {
     console.error('Error processing contact form:', error);
 
-    return {
-      statusCode: 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      },
-      body: JSON.stringify({
-        error: 'Internal server error',
-        success: false
-      }),
-    };
+    if (event.arguments) {
+      // For GraphQL, throw error
+      throw error;
+    } else {
+      return {
+        statusCode: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        },
+        body: JSON.stringify({
+          error: 'Internal server error',
+          success: false
+        }),
+      };
+    }
   }
 };
