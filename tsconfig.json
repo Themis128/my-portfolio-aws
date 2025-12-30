@@ -48,6 +48,7 @@
   "exclude": [
     "node_modules",
     "amplify/**",
+    "amplify-backup/**",
     ".amplify/**",
     "serverless-local/**",
     "21st-extension-main/21st-extension-main/apps/vscode-extension/**",
