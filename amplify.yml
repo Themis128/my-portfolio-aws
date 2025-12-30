@@ -12,7 +12,7 @@ backend:
     build:
       commands:
         - echo "=== Starting Backend build ==="
-        - npx ampx generate schema-from-models
+        - npx ampx pipeline-deploy --outputs-format json --outputs-path amplify_outputs.json
         - echo "=== Backend build completed successfully ==="
   cache:
     paths:
