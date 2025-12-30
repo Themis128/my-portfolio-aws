@@ -51,6 +51,8 @@
     ".amplify/**",
     "serverless-local/**",
     "21st-extension-main/21st-extension-main/apps/vscode-extension/**",
-    "21st-extension-main/21st-extension-main/**"
+    "21st-extension-main/21st-extension-main/**",
+    "playwright.config.ts",
+    "playwright.production.config.ts"
   ]
 }
