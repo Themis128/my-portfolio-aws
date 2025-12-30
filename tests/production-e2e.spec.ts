@@ -245,10 +245,15 @@ test.describe('Backend API Tests - Production', () => {
     expect(createResponse.data.createContact.email).toBe(testContact.email);
     expect(createResponse.data.createContact.message).toBe(testContact.message);
 
-    // Verify the contact was added to the database by checking count
-    const afterResponse = await makeGraphQLRequest(listQuery);
-    const afterCount = afterResponse.data.listContacts.items.length;
-
+    // Verify the contact was added to the database by checking count (with retry for eventual consistency)
+    let afterResponse = await makeGraphQLRequest(listQuery);
+    let afterCount = afterResponse.data.listContacts.items.length;
+    for (let i = 0; i < 5; i++) {
+      if (afterCount === beforeCount + 1) break;
+      await new Promise(res => setTimeout(res, 1000));
+      afterResponse = await makeGraphQLRequest(listQuery);
+      afterCount = afterResponse.data.listContacts.items.length;
+    }
     expect(afterCount).toBe(beforeCount + 1);
 
     // Verify our new contact exists (due to DynamoDB eventual consistency, we check by count rather than exact match)
