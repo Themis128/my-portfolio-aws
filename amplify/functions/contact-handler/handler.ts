@@ -1,5 +1,5 @@
-import { generateClient } from '@aws-amplify/api';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import https from 'https';
 import { createContact } from './graphql/mutations';
 
 const sesClient = new SESClient({ region: 'eu-central-1' });
@@ -54,9 +54,8 @@ export const handler = async (event: {
   // At this point, we know name, email, message are defined
 
   try {
-    // Store in DynamoDB via GraphQL
-    const client = generateClient();
-    await client.graphql({
+    // Store in DynamoDB via direct GraphQL call
+    const postData = JSON.stringify({
       query: createContact,
       variables: {
         input: {
@@ -66,6 +65,45 @@ export const handler = async (event: {
         },
       },
     });
+
+    const result = await new Promise((resolve, reject) => {
+      const url = new URL(process.env.AMPLIFY_DATA_GRAPHQL_ENDPOINT!);
+      const options = {
+        hostname: url.hostname,
+        path: url.pathname,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': process.env.AMPLIFY_DATA_API_KEY!,
+          'Content-Length': Buffer.byteLength(postData),
+        },
+      };
+
+      const req = https.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            reject(e);
+          }
+        });
+      });
+
+      req.on('error', (e) => {
+        reject(e);
+      });
+
+      req.write(postData);
+      req.end();
+    });
+
+    if ((result as any).errors) {
+      throw new Error(`GraphQL error: ${JSON.stringify((result as any).errors)}`);
+    }
 
     // Send confirmation email via SES
     try {
@@ -141,50 +179,56 @@ This is an automated response. Please do not reply to this email.`,
       // Continue anyway
     }
 
-    // Send to Slack webhook
-    try {
-      const slackPayload = {
-        channel: '#personal-website',
-        username: 'Contact Form Bot',
-        icon_emoji: ':email:',
-        attachments: [
-          {
-            fallback: `New contact form submission from ${name}`,
-            color: '#36a64f',
-            title: 'New Contact Form Submission',
-            fields: [
-              {
-                title: 'Name',
-                value: name,
-                short: true,
-              },
-              {
-                title: 'Email',
-                value: email,
-                short: true,
-              },
-              {
-                title: 'Message',
-                value: message,
-                short: false,
-              },
-            ],
-            footer: 'Baltzakis Themis Contact Form',
-            ts: Math.floor(Date.now() / 1000),
-          },
-        ],
-      };
+    // Send to Slack webhook (only if properly configured)
+    const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
+    if (slackWebhookUrl && slackWebhookUrl !== 'REDACTED_SLACK_WEBHOOK_URL' && slackWebhookUrl.startsWith('https://')) {
+      try {
+        const slackPayload = {
+          channel: '#personal-website',
+          username: 'Contact Form Bot',
+          icon_emoji: ':email:',
+          attachments: [
+            {
+              fallback: `New contact form submission from ${name}`,
+              color: '#36a64f',
+              title: 'New Contact Form Submission',
+              fields: [
+                {
+                  title: 'Name',
+                  value: name,
+                  short: true,
+                },
+                {
+                  title: 'Email',
+                  value: email,
+                  short: true,
+                },
+                {
+                  title: 'Message',
+                  value: message,
+                  short: false,
+                },
+              ],
+              footer: 'Baltzakis Themis Contact Form',
+              ts: Math.floor(Date.now() / 1000),
+            },
+          ],
+        };
 
-      await fetch('REDACTED_SLACK_WEBHOOK_URL', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(slackPayload),
-      });
-    } catch (slackError) {
-      console.error('Error sending to Slack:', slackError);
-      // Continue anyway
+        await fetch(slackWebhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(slackPayload),
+        });
+        console.log('✅ Slack notification sent successfully');
+      } catch (slackError) {
+        console.error('Error sending to Slack:', slackError);
+        // Continue anyway
+      }
+    } else {
+      console.log('ℹ️ Slack webhook not configured, skipping notification');
     }
 
     // Return different format for GraphQL vs API Gateway

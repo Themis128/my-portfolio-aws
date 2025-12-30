@@ -59,6 +59,7 @@
     "**/*.test.ts",
     "tests/**",
     "test-results/**",
-    "playwright-report/**"
+    "playwright-report/**",
+    "$amplify/**"
   ]
 }

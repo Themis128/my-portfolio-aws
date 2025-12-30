@@ -4,8 +4,9 @@ import DevConsoleFilter from '../components/DevConsoleFilter';
 import DevListenerPatch from '../components/DevListenerPatch';
 import Navigation from '../components/Navigation';
 import ToolbarMountController from '../components/ToolbarMountController';
+import AmplifyInitializer from '../components/AmplifyInitializer';
 import '../globals.css';
-import '../lib/amplify';
+import '../lib/amplify'; // Keep empty for static export compatibility
 import { ThemeProvider } from '../lib/theme-context';
 
 const geistSans = Geist({
@@ -159,6 +160,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
+        <AmplifyInitializer />
         <ThemeProvider>
           {/* Global tech overlay */}
           <div className="site-tech-overlay pointer-events-none fixed inset-0 z-0" aria-hidden="true" />

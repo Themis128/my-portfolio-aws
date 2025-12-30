@@ -6,9 +6,9 @@ import { Amplify } from 'aws-amplify';
 // This configuration connects to the existing backend API
 const amplifyconfig = {
   data: {
-    url: "https://74de5bh225e2xjbmaux7e6fcsq.appsync-api.eu-central-1.amazonaws.com/graphql",
+    url: "https://52sbnvcfvvh6bmnpumczqlfihi.appsync-api.eu-central-1.amazonaws.com/graphql",
     aws_region: "eu-central-1",
-    api_key: "da2-ht5uhvqma5fcnnxemn47mnbhya",
+    api_key: "da2-nz4qfcj7lne3dbeknww64vwala",
     default_authorization_type: "API_KEY",
     authorization_types: ["AWS_IAM"],
     model_introspection: {
@@ -77,12 +77,43 @@ const amplifyconfig = {
   version: "1.4"
 };
 
-// Configure Amplify for client-side usage
-// This ensures the configuration is applied in the browser
+// Configure Amplify immediately when this module is loaded in the browser
+// This ensures Amplify is configured before any components that use it are rendered
 if (typeof window !== 'undefined') {
-  Amplify.configure(amplifyconfig, {
-    ssr: false, // Disable SSR mode for static export
-  });
+  try {
+    Amplify.configure(amplifyconfig, {
+      ssr: false, // Disable SSR mode for static export
+    });
+    console.log('✅ Amplify configured successfully for client-side usage');
+  } catch (error) {
+    console.error('❌ Failed to configure Amplify:', error);
+  }
 }
 
+// Export the configuration for use in components if needed
 export default amplifyconfig;
+
+// Export a function to ensure Amplify is configured (for use in components)
+export const ensureAmplifyConfigured = () => {
+  if (typeof window !== 'undefined') {
+    try {
+      // Try to get the current config to check if Amplify is already configured
+      const currentConfig = Amplify.getConfig();
+      // If we can get config without error, Amplify is likely configured
+      if (currentConfig && typeof currentConfig === 'object') {
+        console.log('✅ Amplify already configured');
+        return;
+      }
+    } catch (error) {
+      // If getConfig throws an error, Amplify is not configured
+      try {
+        Amplify.configure(amplifyconfig, {
+          ssr: false,
+        });
+        console.log('✅ Amplify configured successfully');
+      } catch (configError) {
+        console.error('❌ Failed to configure Amplify:', configError);
+      }
+    }
+  }
+};

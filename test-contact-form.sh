@@ -26,8 +26,8 @@ if [ ! -f "amplify_outputs.json" ]; then
 fi
 
 # Extract API endpoint and key
-API_URL=$(grep -o '"url":"[^"]*"' amplify_outputs.json | head -1 | cut -d'"' -f4)
-API_KEY=$(grep -o '"api_key":"[^"]*"' amplify_outputs.json | head -1 | cut -d'"' -f4)
+API_URL=$(grep '"url"' amplify_outputs.json | head -1 | cut -d'"' -f4)
+API_KEY=$(grep '"api_key"' amplify_outputs.json | head -1 | cut -d'"' -f4)
 
 if [ -z "$API_URL" ] || [ -z "$API_KEY" ]; then
     echo -e "${RED}❌ Could not extract API details${NC}"

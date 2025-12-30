@@ -1,0 +1,24 @@
+{
+  "version": "3.1",
+  "projectName": "my-portfolio-aws",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react",
+    "config": {
+      "SourceDir": "src",
+      "DistributionDir": "build",
+      "BuildCommand": "npm run build",
+      "StartCommand": "npm run start"
+    }
+  },
+  "providers": {
+    "awscloudformation": {
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-my-portfolio-prod-025114-deployment",
+      "UnauthRoleName": "amplify-my-portfolio-prod-025114-unauthRole",
+      "StackName": "amplify-my-portfolio-prod-025114",
+      "StackId": "arn:aws:cloudformation:eu-central-1:278585680617:stack/amplify-my-portfolio-prod-025114/12345678-1234-1234-1234-123456789012",
+      "AmplifyAppId": "dcwmv1pw85f0j"
+    }
+  }
+}

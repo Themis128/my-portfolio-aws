@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Clock, Github, Linkedin, Mail, MapPin, MessageSquare, Send } from 'lucide-react';
 import { useState } from 'react';
 import '../lib/amplify-client-config'; // Ensure Amplify is configured
+import { ensureAmplifyConfigured } from '../lib/amplify-client-config';
 import { sendContact } from '../lib/graphql/mutations';
 import { PersonalData } from '../lib/personal-data';
 import { Input } from './input';
@@ -29,6 +30,9 @@ export default function Contact({ data }: ContactProps) {
     setSubmitStatus('idle');
 
     try {
+      // Ensure Amplify is configured before making API calls
+      ensureAmplifyConfigured();
+
       // Use the sendContact mutation with Slack and SES notifications
       const client = generateClient();
       await client.graphql({

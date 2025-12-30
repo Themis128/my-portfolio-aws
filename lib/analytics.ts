@@ -55,9 +55,7 @@ export const trackDownload = (fileName: string) => {
   });
 };
 
-// Lambda-based analytics tracking (server-side) - NOT IMPLEMENTED
-// This function is commented out because the analytics model is not defined in the backend schema
-/*
+// Lambda-based analytics tracking (server-side) - NOW IMPLEMENTED
 export const trackAnalyticsEvent = async (
   eventType: string,
   page?: string,
@@ -87,4 +85,3 @@ export const trackAnalyticsEvent = async (
     // Don't throw - analytics failures shouldn't break the app
   }
 };
-*/

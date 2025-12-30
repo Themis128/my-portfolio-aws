@@ -4,8 +4,7 @@ export const storage = defineStorage({
   name: 'portfolioStorage',
   access: (allow) => ({
     'images/*': [
-      allow.guest.to(['read']),
-      allow.authenticated.to(['read', 'write']),
+      allow.guest.to(['read', 'write']),
     ],
   }),
 });
