@@ -1,7 +1,7 @@
 "use client";
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { trackAnalyticsEvent, trackInteraction } from '../lib/analytics';
+import { trackInteraction } from '../lib/analytics';
 import ThemeSwitcher from './ThemeSwitcher';
 
 export default function Navigation() {
@@ -20,12 +20,6 @@ export default function Navigation() {
   const scrollToSection = (sectionId: string) => {
     // Track navigation interaction (Google Analytics)
     trackInteraction('navigation_click', 'navigation', sectionId);
-
-    // Track with Lambda analytics (server-side)
-    trackAnalyticsEvent('navigation_click', undefined, {
-      section: sectionId,
-      timestamp: new Date().toISOString()
-    });
 
     let element;
     

@@ -173,7 +173,6 @@ export default function RootLayout({
           See: https://github.com/21st-dev/21st-extension
         */}
         <ToolbarMountController />
-        <Analytics />
       </body>
     </html>
   );

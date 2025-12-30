@@ -1,0 +1,231 @@
+{
+  "version": "1.0.0",
+  "name": "Claude Desktop + GitHub Copilot Integration",
+  "description": "MCP server configuration for integrating Claude Desktop models with GitHub Copilot functionality",
+  "servers": {
+    "claude-copilot-bridge": {
+      "name": "Claude Copilot Bridge",
+      "description": "Bridge between Claude Desktop models and GitHub Copilot functionality",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/claude-copilot-bridge",
+      "enabled": true,
+      "env": {
+        "CLAUDE_API_KEY": "${CLAUDE_API_KEY}",
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}",
+        "COPILOT_API_ENDPOINT": "https://api.github.com/copilot"
+      },
+      "tools": [
+        {
+          "name": "generate_code_with_claude",
+          "description": "Generate code using Claude Desktop models with GitHub Copilot context",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "prompt": {
+                "type": "string",
+                "description": "Code generation prompt"
+              },
+              "language": {
+                "type": "string",
+                "description": "Programming language"
+              },
+              "context": {
+                "type": "string",
+                "description": "Code context from GitHub Copilot"
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Related file paths for context"
+              }
+            },
+            "required": ["prompt"]
+          }
+        },
+        {
+          "name": "review_code_with_claude",
+          "description": "Review code using Claude Desktop models",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Code to review"
+              },
+              "language": {
+                "type": "string",
+                "description": "Programming language"
+              },
+              "review_type": {
+                "type": "string",
+                "enum": ["security", "performance", "best-practices", "general"],
+                "description": "Type of code review"
+              }
+            },
+            "required": ["code"]
+          }
+        },
+        {
+          "name": "copilot_suggestions_enhanced",
+          "description": "Get enhanced GitHub Copilot suggestions using Claude Desktop",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "current_code": {
+                "type": "string",
+                "description": "Current code context"
+              },
+              "cursor_position": {
+                "type": "number",
+                "description": "Cursor position in code"
+              },
+              "file_path": {
+                "type": "string",
+                "description": "Current file path"
+              },
+              "enhancement_type": {
+                "type": "string",
+                "enum": ["autocomplete", "refactor", "optimize", "document"],
+                "description": "Type of enhancement needed"
+              }
+            },
+            "required": ["current_code", "file_path"]
+          }
+        },
+        {
+          "name": "sync_copilot_workspace",
+          "description": "Sync workspace context between Claude Desktop and GitHub Copilot",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "workspace_path": {
+                "type": "string",
+                "description": "Workspace directory path"
+              },
+              "sync_type": {
+                "type": "string",
+                "enum": ["files", "settings", "extensions"],
+                "description": "What to sync"
+              }
+            },
+            "required": ["workspace_path"]
+          }
+        }
+      ]
+    },
+    "claude-agent-orchestrator": {
+      "name": "Claude Agent Orchestrator",
+      "description": "Orchestrates multiple Claude Desktop agents for complex tasks",
+      "server_type": "stdio",
+      "command": "node orchestrator.js",
+      "working_directory": "./mcp-servers/claude-agent-orchestrator",
+      "enabled": true,
+      "env": {
+        "CLAUDE_API_KEY": "${CLAUDE_API_KEY}",
+        "MAX_AGENTS": "5",
+        "AGENT_TIMEOUT": "300000"
+      },
+      "tools": [
+        {
+          "name": "create_development_agent",
+          "description": "Create a specialized Claude agent for development tasks",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "agent_type": {
+                "type": "string",
+                "enum": ["frontend", "backend", "devops", "testing", "security"],
+                "description": "Type of development agent"
+              },
+              "task_description": {
+                "type": "string",
+                "description": "Description of the task for the agent"
+              },
+              "context_files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Files to provide as context"
+              }
+            },
+            "required": ["agent_type", "task_description"]
+          }
+        },
+        {
+          "name": "coordinate_agents",
+          "description": "Coordinate multiple agents for complex multi-step tasks",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "type": "string",
+                "description": "Complex task requiring multiple agents"
+              },
+              "agents_needed": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["frontend", "backend", "devops", "testing", "security"]
+                },
+                "description": "Types of agents needed"
+              },
+              "deadline": {
+                "type": "string",
+                "description": "Task deadline (optional)"
+              }
+            },
+            "required": ["task", "agents_needed"]
+          }
+        },
+        {
+          "name": "agent_status_monitor",
+          "description": "Monitor the status and progress of running agents",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "agent_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "IDs of agents to monitor"
+              },
+              "include_logs": {
+                "type": "boolean",
+                "default": false,
+                "description": "Include detailed logs"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "integration_settings": {
+    "claude_desktop": {
+      "model": "claude-3-5-sonnet-20241022",
+      "max_tokens": 4096,
+      "temperature": 0.7
+    },
+    "github_copilot": {
+      "api_version": "2023-07-07-preview",
+      "max_suggestions": 3,
+      "context_window": 2048
+    },
+    "agent_settings": {
+      "max_concurrent_agents": 3,
+      "default_timeout": 300000,
+      "auto_cleanup": true
+    }
+  },
+  "metadata": {
+    "created_at": "2025-12-30T12:00:00Z",
+    "version": "1.0.0",
+    "author": "Claude Desktop + GitHub Copilot Integration",
+    "license": "MIT"
+  }
+}

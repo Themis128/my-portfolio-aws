@@ -1,0 +1,31 @@
+{
+  "name": "claude-agent-orchestrator",
+  "version": "1.0.0",
+  "description": "MCP server that orchestrates multiple Claude Desktop agents for complex development tasks",
+  "main": "orchestrator.js",
+  "scripts": {
+    "start": "node orchestrator.js",
+    "dev": "node --watch orchestrator.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "mcp",
+    "claude",
+    "agents",
+    "orchestrator",
+    "ai",
+    "development"
+  ],
+  "author": "Claude Agent Orchestrator",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  }
+}

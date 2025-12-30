@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
 
   // Build optimizations for Amplify
   experimental: {
-    // reactCompiler: false, // Explicitly disable React Compiler
     optimizePackageImports: ['@aws-amplify/ui-react', 'lucide-react'], // Optimize Amplify and icon imports
   },
 
@@ -65,41 +64,11 @@ const nextConfig: NextConfig = {
             value: 'camera=(), microphone=(), geolocation=()'
           }
         ]
-      },
-      {
-        // API routes get stricter CSP
-        source: '/api/:path*',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: [
-              "default-src 'self'",
-              "script-src 'self'",
-              "style-src 'self' 'unsafe-inline'", // Allow inline styles for Next.js
-              "img-src 'self' data: https:", // Allow data URLs and HTTPS images
-              "font-src 'self'",
-              "connect-src 'self' https://*.appsync-api.eu-central-1.amazonaws.com", // Allow Amplify API
-              "frame-ancestors 'none'",
-              "base-uri 'self'",
-              "form-action 'self'"
-            ].join('; ')
-          }
-        ]
       }
     ];
   },
 
-  // Webpack optimizations for Amplify
-  webpack: (config, { isServer }) => {
-    // Optimize bundle splitting for Amplify
-    if (!isServer) {
-      config.optimization.splitChunks.chunks = 'all';
-    }
-
-    return config;
-  },
   // Turbopack config: keep empty object to silence Turbopack/webpack conflict
-  // If you later migrate to Turbopack, populate this section with needed options.
   turbopack: {},
 };
 
