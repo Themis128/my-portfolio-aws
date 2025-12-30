@@ -4,7 +4,8 @@ frontend:
     preBuild:
       commands:
         - echo "=== Starting preBuild phase ==="
-        - npm install -g pnpm
+        - echo "=== Checking pnpm availability ==="
+        - which pnpm || npm install -g pnpm
         - echo "=== Installing dependencies ==="
         - pnpm install --frozen-lockfile
         - echo "=== PreBuild completed successfully ==="
