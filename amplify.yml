@@ -4,9 +4,9 @@ frontend:
     preBuild:
       commands:
         - echo "=== Starting preBuild phase ==="
-        - npm install -g pnpm@9.14.4
+        - npm install -g pnpm
         - echo "=== Installing dependencies ==="
-        - pnpm install --frozen-lockfile --prefer-offline
+        - pnpm install --frozen-lockfile
         - echo "=== PreBuild completed successfully ==="
     build:
       commands:
@@ -19,6 +19,5 @@ frontend:
       - '**/*'
   cache:
     paths:
-      - .next/cache/**/*
       - node_modules/**/*
       - ~/.pnpm-store/**/*
