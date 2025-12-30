@@ -39,6 +39,7 @@
   "devDependencies": {
     "@21st-extension/react": "^0.5.14",
     "@21st-extension/toolbar-next": "^0.5.14",
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^20",
     "@types/react": "^19",
