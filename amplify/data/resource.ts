@@ -57,12 +57,23 @@ const schema = a.schema({
 
 export type Schema = ClientSchema<typeof schema>;
 
+// Environment-aware configuration
+const isProduction = process.env.AMPLIFY_ENV === 'prod';
+const isStaging = process.env.AMPLIFY_ENV === 'staging';
+
 export const data = defineData({
   schema,
   authorizationModes: {
     defaultAuthorizationMode: 'apiKey',
+    // Environment-specific API key configuration
     apiKeyAuthorizationMode: {
-      expiresInDays: 30,
+      // Production: 30 days, Staging: 7 days, Dev: 1 day
+      expiresInDays: isProduction ? 30 : isStaging ? 7 : 1,
     },
+  },
+  // Environment-aware logging
+  logging: {
+    level: isProduction ? 'ERROR' : 'INFO', // Less verbose logging in production
+    excludeVerboseContent: true,
   },
 });

@@ -135,7 +135,7 @@ This is an automated response. Please do not reply to this email.`,
                 },
             ],
         };
-        await fetch('https://hooks.slack.com/services/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', {
+        await fetch('REDACTED_SLACK_WEBHOOK_URL', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

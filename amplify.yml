@@ -19,7 +19,16 @@ frontend:
       - '**/*'
     exclude:
       - '*.map'
+      - '*.tsbuildinfo'  # Exclude TypeScript build info files
   cache:
+    # Optimized caching strategy for Amplify builds
     paths:
       - node_modules/**/*
       - ~/.pnpm-store/**/*
+      - .next/cache/**/*
+      - amplify_outputs.json  # Cache the backend configuration
+      # Cache Next.js build cache for faster subsequent builds
+      - .next/**/*
+      # Exclude large or unnecessary cache files
+      - '!node_modules/.cache/**'
+      - '!node_modules/.pnpm-debug.log*'
