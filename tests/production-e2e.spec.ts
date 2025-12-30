@@ -171,7 +171,7 @@ PRODUCTION_URLS.forEach((baseURL) => {
       await expect(githubLink).toHaveAttribute('target', '_blank');
 
       // Check LinkedIn link in contact section
-      const linkedinLink = contactSection.locator('a[href*="linkedin.com/in/baltzakisthemis"]');
+      const linkedinLink = contactSection.locator('a[href*="linkedin.com/in/baltzakis-themis"]');
       await expect(linkedinLink).toBeVisible();
       await expect(linkedinLink).toHaveAttribute('target', '_blank');
     });
