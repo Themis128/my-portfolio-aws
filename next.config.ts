@@ -98,7 +98,8 @@ const nextConfig: NextConfig = {
 
     return config;
   },
-  // Turbopack empty config to avoid error when custom webpack is present
+  // Turbopack config: keep empty object to silence Turbopack/webpack conflict
+  // If you later migrate to Turbopack, populate this section with needed options.
   turbopack: {},
 };
 
