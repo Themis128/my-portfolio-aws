@@ -8,7 +8,7 @@ export const trackEvent = (eventName: string, parameters?: Record<string, unknow
   }
 };
 
-// Track page views (automatically handled by Vercel Analytics, but good to have)
+// Track page views (automatically handled by Google Analytics, but good to have)
 export const trackPageView = (pagePath: string) => {
   trackEvent('page_view', {
     page_path: pagePath,
@@ -55,7 +55,9 @@ export const trackDownload = (fileName: string) => {
   });
 };
 
-// Lambda-based analytics tracking (server-side)
+// Lambda-based analytics tracking (server-side) - NOT IMPLEMENTED
+// This function is commented out because the analytics model is not defined in the backend schema
+/*
 export const trackAnalyticsEvent = async (
   eventType: string,
   page?: string,
@@ -85,3 +87,4 @@ export const trackAnalyticsEvent = async (
     // Don't throw - analytics failures shouldn't break the app
   }
 };
+*/
