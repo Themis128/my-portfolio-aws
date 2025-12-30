@@ -98,13 +98,24 @@ jobs:
 
       - name: Deploy to Amplify
         id: deploy
-        uses: aws-actions/amplify-console@v1
-        with:
-          amplify_app_id: ${{ secrets.AMPLIFY_APP_ID }}
-          branch_name: ${{ github.event.inputs.branch || 'master' }}
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_REGION }}
+        run: |
+          # Install AWS CLI v2
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install --update
+
+          # Configure AWS credentials
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region ${{ secrets.AWS_REGION }}
+
+          # Start Amplify deployment
+          aws amplify start-deployment \
+            --app-id ${{ secrets.AMPLIFY_APP_ID }} \
+            --branch-name ${{ github.event.inputs.branch || 'master' }} \
+            --source-url ${{ github.server_url }}/${{ github.repository }}/archive/${{ github.sha }}.zip
+
+          echo "deployment-url=https://${{ github.event.inputs.branch || 'master' }}-d3gpsu0f51cpej.amplifyapp.com" >> $GITHUB_OUTPUT
 
       - name: Post-deployment notification
         if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
