@@ -53,6 +53,11 @@
     "21st-extension-main/21st-extension-main/apps/vscode-extension/**",
     "21st-extension-main/21st-extension-main/**",
     "playwright.config.ts",
-    "playwright.production.config.ts"
+    "playwright.production.config.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "tests/**",
+    "test-results/**",
+    "playwright-report/**"
   ]
 }
