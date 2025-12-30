@@ -1,0 +1,51 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CloudFormation template for email-sender function",
+  "Parameters": {
+    "env": { "Type": "String", "Default": "dev" },
+    "functionName": { "Type": "String", "Default": "email-sender" },
+    "s3Bucket": { "Type": "String" },
+    "s3Key": { "Type": "String" }
+  },
+  "Resources": {
+    "EmailSenderFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": { "Fn::Sub": "${functionName}-${env}" },
+        "Description": "Sends emails via Amazon SES",
+        "Handler": "index.handler",
+        "Runtime": "nodejs20.x",
+        "Code": { "S3Bucket": { "Ref": "s3Bucket" }, "S3Key": { "Ref": "s3Key" } },
+        "Role": { "Fn::GetAtt": [ "EmailSenderFunctionRole", "Arn" ] },
+        "Environment": {
+          "Variables": {
+            "FROM_EMAIL": "",
+            "REGION": { "Ref": "AWS::Region" },
+            "ENV": { "Ref": "env" }
+          }
+        },
+        "Timeout": 30,
+        "MemorySize": 256
+      }
+    },
+    "EmailSenderFunctionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": { "Version": "2012-10-17", "Statement": [ { "Effect": "Allow", "Principal": { "Service": "lambda.amazonaws.com" }, "Action": "sts:AssumeRole" } ] },
+        "Path": "/",
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          "arn:aws:iam::aws:policy/AmazonSESFullAccess"
+        ]
+      }
+    },
+    "EmailSenderFunctionLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": { "LogGroupName": { "Fn::Join": [ "", [ "/aws/lambda/", { "Ref": "EmailSenderFunction" } ] ] }, "RetentionInDays": 30 }
+    }
+  },
+  "Outputs": {
+    "FunctionName": { "Description": "Name of the Lambda function", "Value": { "Ref": "EmailSenderFunction" } },
+    "FunctionArn": { "Description": "ARN of the Lambda function", "Value": { "Fn::GetAtt": [ "EmailSenderFunction", "Arn" ] } }
+  }
+}

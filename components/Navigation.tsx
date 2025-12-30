@@ -1,6 +1,7 @@
 "use client";
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { trackInteraction } from '../lib/analytics';
+import { trackAnalyticsEvent, trackInteraction } from '../lib/analytics';
 import ThemeSwitcher from './ThemeSwitcher';
 
 export default function Navigation() {
@@ -17,8 +18,14 @@ export default function Navigation() {
   }, []);
 
   const scrollToSection = (sectionId: string) => {
-    // Track navigation interaction
+    // Track navigation interaction (Google Analytics)
     trackInteraction('navigation_click', 'navigation', sectionId);
+
+    // Track with Lambda analytics (server-side)
+    trackAnalyticsEvent('navigation_click', undefined, {
+      section: sectionId,
+      timestamp: new Date().toISOString()
+    });
 
     let element;
     
@@ -64,9 +71,11 @@ export default function Navigation() {
     }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <img
+          <Image
             src="/cloudless-logo.svg"
             alt="Themis Baltzakis Logo"
+            width={32}
+            height={32}
             className="h-8 w-auto dark:brightness-0 dark:invert transition-all duration-300"
           />
 

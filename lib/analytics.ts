@@ -54,3 +54,34 @@ export const trackDownload = (fileName: string) => {
     event_label: fileName,
   });
 };
+
+// Lambda-based analytics tracking (server-side)
+export const trackAnalyticsEvent = async (
+  eventType: string,
+  page?: string,
+  metadata?: Record<string, unknown>
+) => {
+  try {
+    // Dynamic import to avoid issues in server-side rendering
+    const { generateClient } = await import('@aws-amplify/api');
+    const client = generateClient();
+
+    await client.graphql({
+      query: `
+        mutation TrackAnalytics($eventType: String!, $page: String, $userAgent: String, $referrer: String, $metadata: AWSJSON) {
+          trackAnalytics(eventType: $eventType, page: $page, userAgent: $userAgent, referrer: $referrer, metadata: $metadata)
+        }
+      `,
+      variables: {
+        eventType,
+        page: page || (typeof window !== 'undefined' ? window.location.pathname : undefined),
+        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
+        referrer: typeof document !== 'undefined' ? document.referrer : undefined,
+        metadata,
+      },
+    });
+  } catch (error) {
+    console.warn('Lambda analytics tracking failed:', error);
+    // Don't throw - analytics failures shouldn't break the app
+  }
+};

@@ -1,12 +1,10 @@
-import { useVSCode } from '@/hooks/use-vscode';
-import { Panel } from '@/plugin-ui/components/panel';
-import { RefreshCwIcon, SettingsIcon, X } from 'lucide-react';
+fimport { useVSCode } from '@/hooks/use-vscode';
+import { SettingsIcon, X } from 'lucide-react';
 import { ToolbarButton } from './button';
 import { ToolbarSection } from './section';
 import { useAppState } from '@/hooks/use-app-state';
 import { SelectNative } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/utils';
 import { useState } from 'preact/hooks';
 import { AuthSection } from '@/components/auth/auth-section';
 
@@ -171,7 +169,6 @@ const ConnectionSettings = () => {
     discover,
     selectedSession,
     selectSession,
-    appName,
   } = useVSCode();
 
   const [showRefreshed, setShowRefreshed] = useState(false);

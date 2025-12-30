@@ -1,9 +1,7 @@
 import type { ComponentSearchResult } from '@/types/supabase';
 import { useCallback, useState } from 'preact/hooks';
 
-export interface SelectedComponentWithCode extends ComponentSearchResult {
-  // Removed codeContent, codeLoading, codeError since we no longer fetch code upfront
-}
+export type SelectedComponentWithCode = ComponentSearchResult;
 
 interface UseSelectedComponentsReturn {
   selectedComponents: SelectedComponentWithCode[];

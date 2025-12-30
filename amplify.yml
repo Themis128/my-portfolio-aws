@@ -14,9 +14,11 @@ frontend:
         - pnpm run build
         - echo "=== Build completed successfully ==="
   artifacts:
-    baseDirectory: .next
+    baseDirectory: out
     files:
       - '**/*'
+    exclude:
+      - '*.map'
   cache:
     paths:
       - node_modules/**/*

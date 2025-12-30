@@ -1,6 +1,6 @@
-const { generateClient } = require('@aws-amplify/api');
-const { Amplify } = require('aws-amplify');
-const amplifyconfig = require('./amplify_outputs.json');
+import { generateClient } from '@aws-amplify/api';
+import { Amplify } from 'aws-amplify';
+import amplifyconfig from './amplify_outputs.json';
 
 // Configure Amplify
 Amplify.configure(amplifyconfig);
@@ -65,6 +65,7 @@ async function testGraphQLAPI() {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function testSlackNotification() {
   console.log('📢 Testing Slack notification...');
 
@@ -99,6 +100,7 @@ async function testSlackNotification() {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function testCostlessNotification() {
   console.log('📢 Testing costless notification system...');
 
@@ -127,7 +129,7 @@ async function testCostlessNotification() {
   }
 }
 
-async function testContactFormWorkflow(contactId) {
+async function testContactFormWorkflow(contactId) { // eslint-disable-line @typescript-eslint/no-unused-vars
   console.log('📝 Testing complete contact form workflow...');
 
   try {

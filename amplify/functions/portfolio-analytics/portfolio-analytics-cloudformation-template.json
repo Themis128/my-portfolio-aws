@@ -1,0 +1,47 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CloudFormation template for portfolio-analytics function",
+  "Parameters": {
+    "env": { "Type": "String", "Default": "dev" },
+    "functionName": { "Type": "String", "Default": "portfolio-analytics" },
+    "s3Bucket": { "Type": "String" },
+    "s3Key": { "Type": "String" }
+  },
+  "Resources": {
+    "PortfolioAnalyticsFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": { "Fn::Sub": "${functionName}-${env}" },
+        "Description": "Tracks portfolio analytics events",
+        "Handler": "index.handler",
+        "Runtime": "nodejs20.x",
+        "Code": { "S3Bucket": { "Ref": "s3Bucket" }, "S3Key": { "Ref": "s3Key" } },
+        "Role": { "Fn::GetAtt": [ "PortfolioAnalyticsFunctionRole", "Arn" ] },
+        "Environment": {
+          "Variables": {
+            "REGION": { "Ref": "AWS::Region" },
+            "ENV": { "Ref": "env" }
+          }
+        },
+        "Timeout": 10,
+        "MemorySize": 128
+      }
+    },
+    "PortfolioAnalyticsFunctionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": { "Version": "2012-10-17", "Statement": [ { "Effect": "Allow", "Principal": { "Service": "lambda.amazonaws.com" }, "Action": "sts:AssumeRole" } ] },
+        "Path": "/",
+        "ManagedPolicyArns": [ "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole" ]
+      }
+    },
+    "PortfolioAnalyticsFunctionLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": { "LogGroupName": { "Fn::Join": [ "", [ "/aws/lambda/", { "Ref": "PortfolioAnalyticsFunction" } ] ] }, "RetentionInDays": 30 }
+    }
+  },
+  "Outputs": {
+    "FunctionName": { "Description": "Name of the Lambda function", "Value": { "Ref": "PortfolioAnalyticsFunction" } },
+    "FunctionArn": { "Description": "ARN of the Lambda function", "Value": { "Fn::GetAtt": [ "PortfolioAnalyticsFunction", "Arn" ] } }
+  }
+}

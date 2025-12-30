@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Additional ignores for generated/build files:
     ".amplify/**",
+    "amplify/**",
     ".serverless/**",
     "node_modules/**",
     "dist/**",
@@ -26,6 +27,8 @@ const eslintConfig = defineConfig([
     "test-local.js",
     "serverless-local/**",
     "mcp-servers/**",
+    // Separate projects:
+    "21st-extension-main/**",
   ]),
 ]);
 

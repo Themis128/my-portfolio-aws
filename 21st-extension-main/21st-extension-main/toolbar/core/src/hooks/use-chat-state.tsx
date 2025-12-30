@@ -179,7 +179,7 @@ export const ChatStateProvider = ({ children }: ChatStateProviderProps) => {
   const { bridge } = useSRPCBridge();
 
   // Runtime errors handling
-  const { lastError, clearError } = useRuntimeErrors();
+  const { clearError } = useRuntimeErrors();
 
   const createChat = useCallback(() => {
     const newChatId = generateId();
@@ -249,7 +249,7 @@ export const ChatStateProvider = ({ children }: ChatStateProviderProps) => {
     plugins.forEach((plugin) => {
       plugin.onPromptingStart?.();
     });
-  }, [chatAreaState]);
+  }, [chatAreaState, plugins]);
 
   const stopPromptCreation = useCallback(() => {
     setIsPromptCreationMode(false);
@@ -273,7 +273,7 @@ export const ChatStateProvider = ({ children }: ChatStateProviderProps) => {
     plugins.forEach((plugin) => {
       plugin.onPromptingAbort?.();
     });
-  }, [currentChatId, chatAreaState]);
+  }, [currentChatId, chatAreaState, plugins]);
 
   const setChatAreaState = useCallback(
     (state: ChatAreaState) => {
@@ -529,7 +529,7 @@ export const ChatStateProvider = ({ children }: ChatStateProviderProps) => {
               }
             }
 
-            let result: any = { result: { success: true } }; // Default success for copy-only mode
+            let result: { result: { success: boolean; errorCode?: string } } = { result: { success: true } }; // Default success for copy-only mode
 
             // Send prompt to IDE if enabled
             if (shouldSend) {
@@ -680,6 +680,7 @@ export const ChatStateProvider = ({ children }: ChatStateProviderProps) => {
       setPromptState,
       plugins,
       promptAction,
+      setShouldPromptWindowSelection,
     ],
   );
 

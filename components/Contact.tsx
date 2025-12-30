@@ -31,7 +31,7 @@ export default function Contact({ data }: ContactProps) {
     try {
       // Use the sendContact mutation with Slack and SES notifications
       const client = generateClient();
-      const result = await client.graphql({
+      await client.graphql({
         query: sendContact,
         variables: {
           name: formData.name,

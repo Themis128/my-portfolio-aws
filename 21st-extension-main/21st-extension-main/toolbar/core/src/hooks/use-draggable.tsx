@@ -508,6 +508,37 @@ export function useDraggable(config: DraggableConfig) {
   const [wasDragged, setWasDragged] = useState(false);
 
   // This will be listened to globally if the mouse was pressed down on the draggable element
+  const mouseMoveHandler = useCallback(
+    (e: MouseEvent) => {
+      if (!mouseDownPosRef.current) {
+        return;
+      }
+
+      const distance = Math.hypot(
+        e.clientX - mouseDownPosRef.current!.x,
+        e.clientY - mouseDownPosRef.current!.y,
+      );
+
+      if (distance > startThreshold && !isDraggingRef.current) {
+        isDraggingRef.current = true;
+        if (movingElementRef.current) {
+          movingElementRef.current.style.userSelect = 'none';
+        }
+        document.body.style.userSelect = 'none';
+        document.body.style.cursor = 'grabbing';
+        if (onDragStart) onDragStart();
+        if (latestProviderDataRef.current?.emitDragStart) {
+          latestProviderDataRef.current.emitDragStart();
+        }
+        requestAnimationFrame(updateDraggablePosition);
+      }
+
+      currentMousePosRef.current = { x: e.clientX, y: e.clientY };
+    },
+    [startThreshold, onDragStart, updateDraggablePosition],
+  );
+
+  // This will be listened to globally if the mouse was pressed down on the draggable element
   const mouseUpHandler = useCallback(
     (e: MouseEvent) => {
       if (isDraggingRef.current) {
@@ -619,38 +650,7 @@ export function useDraggable(config: DraggableConfig) {
       document.body.style.userSelect = '';
       document.body.style.cursor = '';
     },
-    [onDragEnd],
-  );
-
-  // This will be listened to globally if the mouse was pressed down on the draggable element
-  const mouseMoveHandler = useCallback(
-    (e: MouseEvent) => {
-      if (!mouseDownPosRef.current) {
-        return;
-      }
-
-      const distance = Math.hypot(
-        e.clientX - mouseDownPosRef.current!.x,
-        e.clientY - mouseDownPosRef.current!.y,
-      );
-
-      if (distance > startThreshold && !isDraggingRef.current) {
-        isDraggingRef.current = true;
-        if (movingElementRef.current) {
-          movingElementRef.current.style.userSelect = 'none';
-        }
-        document.body.style.userSelect = 'none';
-        document.body.style.cursor = 'grabbing';
-        if (onDragStart) onDragStart();
-        if (latestProviderDataRef.current?.emitDragStart) {
-          latestProviderDataRef.current.emitDragStart();
-        }
-        requestAnimationFrame(updateDraggablePosition);
-      }
-
-      currentMousePosRef.current = { x: e.clientX, y: e.clientY };
-    },
-    [startThreshold, onDragStart, updateDraggablePosition],
+    [onDragEnd, mouseMoveHandler],
   );
 
   // This is attached to the draggable item or its handle

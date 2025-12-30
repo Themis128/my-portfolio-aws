@@ -98,10 +98,10 @@ export function SelectedDomElements({
     children,
   }: {
     component: SelectedComponentWithCode;
-    children: any;
+    children: React.ReactNode;
   }) => {
     const iconName = component.component_data?.name || component.name;
-    const IconComponent = iconName ? (LucideIcons as any)[iconName] : null;
+    const IconComponent = iconName ? (LucideIcons as Record<string, React.ComponentType<any>>)[iconName] : null;
 
     if (!IconComponent) {
       return children;
@@ -124,57 +124,45 @@ export function SelectedDomElements({
   };
 
   // Component for logo hover preview
-  const LogoHoverPeek = useCallback(
-    ({
-      component,
-      children,
-    }: {
-      component: SelectedComponentWithCode;
-      children: any;
-    }) => {
-      const logoName = component.component_data?.name || component.name;
-      const logoUrl = component.preview_url;
+  const LogoHoverPeek = ({
+    component,
+    children,
+  }: {
+    component: SelectedComponentWithCode;
+    children: React.ReactNode;
+  }) => {
+    const logoName = component.component_data?.name || component.name;
+    const logoUrl = component.preview_url;
 
-      // Memoize the image element to prevent re-downloads
-      const logoImage = useMemo(() => {
-        if (!logoUrl) return null;
+    if (!logoUrl) {
+      return children;
+    }
 
-        return (
-          <img
-            key={`logo-hover-${component.id}-${logoUrl}`}
-            src={logoUrl}
-            alt={logoName}
-            className="h-8 w-8 object-contain"
-            loading="lazy"
-            decoding="async"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }}
-          />
-        );
-      }, [logoUrl, logoName, component.id]);
-
-      if (!logoUrl) {
-        return children;
-      }
-
-      return (
-        <div className="group relative">
-          {children}
-          {/* Hover preview - smaller than icon preview */}
-          <div className="-translate-x-1/2 pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 hidden group-hover:block">
-            <div className="flex h-16 w-16 items-center justify-center rounded-lg border border-border bg-background shadow-lg">
-              {logoImage}
-            </div>
-            <div className="mt-1 text-center text-muted-foreground text-xs">
-              {logoName}
-            </div>
+    return (
+      <div className="group relative">
+        {children}
+        {/* Hover preview - smaller than icon preview */}
+        <div className="-translate-x-1/2 pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 hidden group-hover:block">
+          <div className="flex h-16 w-16 items-center justify-center rounded-lg border border-border bg-background shadow-lg">
+            <img
+              key={`logo-hover-${component.id}-${logoUrl}`}
+              src={logoUrl}
+              alt={logoName}
+              className="h-8 w-8 object-contain"
+              loading="lazy"
+              decoding="async"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </div>
+          <div className="mt-1 text-center text-muted-foreground text-xs">
+            {logoName}
           </div>
         </div>
-      );
-    },
-    [],
-  );
+      </div>
+    );
+  };
 
   // Component for documentation hover preview
   const DocHoverPeek = ({
@@ -182,7 +170,7 @@ export function SelectedDomElements({
     children,
   }: {
     component: SelectedComponentWithCode;
-    children: any;
+    children: React.ReactNode;
   }) => {
     const docTitle = component.component_data?.name || component.name;
     const docDescription = component.component_data?.description || '';
@@ -211,7 +199,10 @@ export function SelectedDomElements({
   };
 
   const getElementInfo = useCallback(
-    (element: HTMLElement, pluginContext: any[]) => {
+    (element: HTMLElement, pluginContext: Array<{
+      pluginName: string;
+      context: { annotation: string | null };
+    }>) => {
       // Get element type (tagName)
       const tagName = element.tagName.toLowerCase();
 
@@ -303,7 +294,7 @@ export function SelectedDomElements({
             const isLogoComponent = isLogo(component);
             const isDoc = isDocumentation(component);
             const IconComponent = isIcon
-              ? (LucideIcons as any)[componentName]
+              ? (LucideIcons as Record<string, React.ComponentType<any>>)[componentName]
               : null;
 
             const componentElement = (
@@ -436,6 +427,7 @@ export function SelectedDomElements({
           isDocumentation,
           handleRemoveComponent,
           compact,
+          LogoHoverPeek,
         ],
       )}
 

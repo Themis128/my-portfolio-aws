@@ -39,7 +39,7 @@ export function ToolbarBox() {
 
   const chatState = useChatState();
 
-  const { minimized, minimize, expand, position } = useAppState();
+  const { minimized, expand, position } = useAppState();
 
   useEffect(() => {
     if (minimized) {
@@ -85,12 +85,11 @@ export function ToolbarBox() {
   // Now chat is activated only through Option+Period hotkey
 
   // Create a wrapper function to handle button clicks
-  const handleButtonClick = (handler: () => void) => (e: MouseEvent) => {
+  const handleButtonClick = (handler: () => void) => () => {
     handler();
   };
 
   // Determine which theme and content to show
-  const isLoadingState = debouncedDiscovering;
   const isDisconnectedState = debouncedDisconnected;
   const isConnectedState = isConnected;
   const shouldShowWindowSelection =

@@ -87,7 +87,8 @@ PRODUCTION_URLS.forEach((baseURL) => {
       await page.goto('/');
 
       // Navigate to contact section - handle mobile navigation
-      const isMobile = page.viewportSize()?.width < 768;
+      const viewportSize = page.viewportSize();
+      const isMobile = viewportSize ? viewportSize.width < 768 : false;
       if (isMobile) {
         // On mobile, first open the mobile menu, then click Contact
         await page.locator('nav button.md\\:hidden').click(); // Click the hamburger menu button
@@ -152,7 +153,8 @@ PRODUCTION_URLS.forEach((baseURL) => {
       await page.goto('/');
 
       // Navigate to contact section - handle mobile navigation
-      const isMobile = page.viewportSize()?.width < 768;
+      const viewportSize = page.viewportSize();
+      const isMobile = viewportSize ? viewportSize.width < 768 : false;
       if (isMobile) {
         // On mobile, first open the mobile menu, then click Contact
         await page.locator('nav button.md\\:hidden').click(); // Click the hamburger menu button
@@ -312,11 +314,12 @@ test.describe('Performance Tests - Production', () => {
     expect(loadTime).toBeLessThan(5000);
   });
 
-  test('contact form submission is responsive', async ({ page }: { page: Page }) => {
+    test('contact form submission is responsive', async ({ page }: { page: Page }) => {
     await page.goto('https://baltzakisthemis.com/');
 
     // Navigate to contact section - handle mobile navigation
-    const isMobile = page.viewportSize()?.width < 768;
+    const viewportSize = page.viewportSize();
+    const isMobile = viewportSize ? viewportSize.width < 768 : false;
     if (isMobile) {
       // On mobile, first open the mobile menu, then click Contact
       await page.locator('nav button.md\\:hidden').click(); // Click the hamburger menu button

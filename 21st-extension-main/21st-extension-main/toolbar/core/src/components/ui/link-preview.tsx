@@ -6,6 +6,7 @@ import { encode } from 'qss';
 import React, {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -38,7 +39,7 @@ function usePreviewSource(
       'viewport.height': height * 2.5,
     });
     return `https://api.microlink.io/?${params}`;
-  }, [isStatic, staticImageSrc, url, width, height, quality]); // Recalculate only if these change.
+  }, [isStatic, staticImageSrc, url, width, height]); // Recalculate only if these change.
 }
 
 // This hook handles the hover card's open state and the mouse-following effect for the card itself.
@@ -180,10 +181,10 @@ export const HoverPeek = ({
   const [lensMousePosition, setLensMousePosition] = useState({ x: 0, y: 0 }); // Mouse coords relative to the image.
 
   // Little cleanup effects: Reset error if source changes, and reset everything if card closes.
-  useEffect(() => {
+  useLayoutEffect(() => {
     setImageLoadFailed(false);
   }, [finalImageSrc]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isPeeking) {
       setImageLoadFailed(false);
       setIsHoveringLens(false); // Important to reset lens state when card hides.

@@ -1,4 +1,3 @@
-import { RefreshCwIcon } from 'lucide-react';
 import { useVSCode } from '@/hooks/use-vscode';
 import { SelectNative } from '@/components/ui/select';
 import { useState } from 'preact/hooks';
@@ -11,7 +10,6 @@ export function WindowSelectionPanel() {
     discover,
     selectedSession,
     selectSession,
-    appName,
   } = useVSCode();
 
   const [showRefreshed, setShowRefreshed] = useState(false);

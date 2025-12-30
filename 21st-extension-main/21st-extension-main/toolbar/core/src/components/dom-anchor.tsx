@@ -55,7 +55,7 @@ const DOMRecommendedAnchorOrientationContext = createContext<DOMAnchorState>({
 
 // This component creates a 0x0 anchor that follows the position of other DOM elements on the website.
 // If the anchor is outside of the viewport, it get's rednered at an unexpected position.
-// It's recommended to check the context value inside the DOMAnchored content to check if cotent should be rendered or not.
+// It's recommended to check the context value inside the DOMAnchored content to check if content should be rendered or not.
 export function DOMAnchor({
   horizontalSafeDistance = 0,
   verticalSafeDistance = 0,

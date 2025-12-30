@@ -1,4 +1,4 @@
-const https = require('https');
+import https from 'https';
 
 export const request = async (ctx) => {
   const { to, subject, body, from } = ctx.arguments;

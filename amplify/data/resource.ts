@@ -37,6 +37,22 @@ const schema = a.schema({
       a.handler.function('slack-notifier')
     )
     .authorization((allow) => [allow.publicApiKey()]),
+
+  // Portfolio analytics mutation
+  trackAnalytics: a
+    .mutation()
+    .arguments({
+      eventType: a.string().required(),
+      page: a.string(),
+      userAgent: a.string(),
+      referrer: a.string(),
+      metadata: a.json(),
+    })
+    .returns(a.string())
+    .handler(
+      a.handler.function('portfolio-analytics')
+    )
+    .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

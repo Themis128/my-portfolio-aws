@@ -1,6 +1,6 @@
-const { generateClient } = require('@aws-amplify/api');
-const { Amplify } = require('aws-amplify');
-const amplifyconfig = require('./amplify_outputs.json');
+import { generateClient } from '@aws-amplify/api';
+import { Amplify } from 'aws-amplify';
+import amplifyconfig from './amplify_outputs.json';
 
 // Configure Amplify
 Amplify.configure(amplifyconfig);
