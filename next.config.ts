@@ -41,6 +41,54 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_DOMAIN: process.env.AMPLIFY_APP_DOMAIN || 'master.dcwmv1pw85f0j.amplifyapp.com',
   },
 
+  // Security headers and CSP
+  async headers() {
+    return [
+      {
+        // Apply to all routes
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()'
+          }
+        ]
+      },
+      {
+        // API routes get stricter CSP
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self'",
+              "style-src 'self' 'unsafe-inline'", // Allow inline styles for Next.js
+              "img-src 'self' data: https:", // Allow data URLs and HTTPS images
+              "font-src 'self'",
+              "connect-src 'self' https://*.appsync-api.eu-central-1.amazonaws.com", // Allow Amplify API
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'"
+            ].join('; ')
+          }
+        ]
+      }
+    ];
+  },
+
   // Webpack optimizations for Amplify
   webpack: (config, { isServer }) => {
     // Optimize bundle splitting for Amplify

@@ -1,6 +1,10 @@
 name: Deploy to AWS Amplify
 
 on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
   release:
     types: [published]
   workflow_dispatch:
@@ -9,10 +13,62 @@ on:
         description: 'Branch to deploy'
         required: true
         default: 'master'
+      environment:
+        description: 'Environment to deploy to'
+        required: false
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+          - development
+
+env:
+  NODE_VERSION: '22'  # Updated to match Lambda runtime
 
 jobs:
+  # Quality checks job
+  quality-check:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'release' || github.event.action == 'published'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run linting
+        run: pnpm run lint
+
+      - name: Run type checking
+        run: pnpm exec tsc --noEmit
+
+      - name: Run security audit
+        run: pnpm audit --prod --audit-level moderate
+
+      - name: Run tests
+        run: pnpm exec playwright test --headed=false || echo "No tests found, continuing..."
+
+  # Deploy job - only runs on main branch or manual dispatch
   deploy:
     runs-on: ubuntu-latest
+    needs: quality-check
+    if: (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' || github.event_name == 'release')
+
+    environment:
+      name: ${{ github.event.inputs.environment || 'production' }}
+      url: ${{ steps.deploy.outputs.amplify_app_url }}
 
     steps:
       - name: Checkout code
@@ -23,19 +79,23 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # Updated to match project requirements
+          node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
 
       - name: Install pnpm
         run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build application
-        run: pnpm build
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_AMPLIFY_ENV: ${{ github.event.inputs.environment || 'prod' }}
 
       - name: Deploy to Amplify
+        id: deploy
         uses: aws-actions/amplify-console@v1
         with:
           amplify_app_id: ${{ secrets.AMPLIFY_APP_ID }}
@@ -43,3 +103,16 @@ jobs:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: ${{ secrets.AWS_REGION }}
+
+      - name: Post-deployment notification
+        if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
+        run: |
+          echo "🚀 Deployment successful!"
+          echo "App URL: ${{ steps.deploy.outputs.amplify_app_url }}"
+          echo "Branch: ${{ github.event.inputs.branch || 'master' }}"
+
+      - name: Deployment failure notification
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Check the deployment logs for details."

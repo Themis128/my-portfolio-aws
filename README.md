@@ -1,96 +1,301 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Themis Baltzakis Portfolio
 
 ![Deploy to AWS Amplify](https://github.com/Themis128/my-portfolio-aws/actions/workflows/deploy.yml/badge.svg)
+![Node.js Version](https://img.shields.io/badge/node-22.x-green)
+![Next.js](https://img.shields.io/badge/Next.js-16.x-black)
+![AWS Amplify](https://img.shields.io/badge/AWS-Amplify-orange)
 
-## Getting Started
+A modern, full-stack portfolio website built with Next.js 16, TypeScript, and AWS Amplify. Features contact forms, analytics tracking, Slack notifications, and email integration.
 
-First, run the development server:
+## 🌟 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **⚡ Next.js 16** with App Router and static export
+- **🎨 Modern UI** with Tailwind CSS and Framer Motion
+- **☁️ AWS Amplify** backend with GraphQL API
+- **📧 Contact Forms** with email and Slack notifications
+- **📊 Analytics** tracking with custom events
+- **🔒 Security** hardened with CSP and security headers
+- **🚀 CI/CD** with GitHub Actions and automated testing
+- **🧪 Testing** with Playwright E2E tests
+
+## 🏗️ Architecture
+
+```
+Frontend (Next.js + TypeScript)
+    ↓ Static Export
+AWS Amplify Hosting + CloudFront
+    ↓ API Routes
+AWS Lambda Functions
+    ↓ Data Layer
+AWS DynamoDB + AppSync GraphQL
+    ↓ External Services
+Email (SES) + Slack + Analytics
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Backend Services
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Contact Handler**: Processes contact form submissions
+- **Email Sender**: Sends emails via Amazon SES
+- **Slack Notifier**: Sends notifications to Slack channels
+- **Portfolio Analytics**: Tracks user interactions and events
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Quick Start
 
-## Project Structure
+### Prerequisites
 
-For information about the project organization and directory structure, see [docs/DIRECTORY_STRUCTURE.md](docs/DIRECTORY_STRUCTURE.md).
+- Node.js 22.x (matches Lambda runtime)
+- pnpm package manager
+- AWS CLI configured (for deployments)
 
-## Learn More
+### Local Development
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Themis128/my-portfolio-aws.git
+   cd my-portfolio-aws
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   # Edit .env.local with your configuration
+   ```
 
-## Google Analytics
+4. **Start development server**
+   ```bash
+   pnpm dev
+   ```
 
-This project includes Google Analytics integration using Vercel Analytics and direct Google Analytics implementation for enhanced mobile app compatibility.
+5. **Open [http://localhost:3000](http://localhost:3000)**
 
-### Configuration
+### Environment Variables
 
-Create a `.env.local` file in the root directory with your Google Analytics measurement ID:
+Create a `.env.local` file with the following variables:
 
 ```env
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-FT79QM66D3
+# Google Analytics (optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# AWS Region (required for local development)
+AWS_REGION=eu-central-1
+
+# Slack Configuration (optional - for notifications)
+SLACK_BOT_TOKEN=xoxb-your-slack-bot-token
+SLACK_SSM_PARAM=/portfolio/slack-bot-token
+
+# Email Configuration (optional - for SES)
+FROM_EMAIL=noreply@yourdomain.com
+
+# Amplify Environment
+AMPLIFY_ENV=dev
+NEXT_PUBLIC_AMPLIFY_ENV=dev
 ```
 
-Replace `G-XXXXXXXXXX` with your actual Google Analytics measurement ID.
+## 📁 Project Structure
 
-### Mobile App Setup
+```
+├── app/                    # Next.js App Router pages
+├── components/             # React components
+│   ├── ui/                # Reusable UI components
+│   └── ...                # Feature components
+├── lib/                   # Utility libraries
+├── amplify/               # AWS Amplify backend
+│   ├── data/             # GraphQL schema and resolvers
+│   ├── functions/        # Lambda functions
+│   └── backend.ts        # Backend configuration
+├── public/                # Static assets
+├── docs/                  # Documentation
+├── .github/               # GitHub Actions workflows
+└── tests/                 # Test files
+```
 
-To use the Google Analytics mobile app to track your portfolio analytics:
+## 🚀 Deployment
 
-1. **Install the Google Analytics app** on your mobile device from the App Store or Google Play Store
-2. **Sign in** with the same Google account that owns the Google Analytics property
-3. **Grant permissions** for the app to access your Google Analytics data
-4. **Select your property** - look for the property with measurement ID `G-FT79QM66D3`
+### Automated Deployment (Recommended)
 
-### What You Can Track with the Mobile App
+The project includes automated CI/CD with GitHub Actions:
 
-- **Real-time visitors**: See who's on your site right now
-- **Page views**: Track which pages are most popular
-- **Traffic sources**: See where your visitors come from
-- **Device breakdown**: Monitor mobile vs desktop traffic
-- **Top pages**: Identify your most visited content
-- **Goal completions**: Track contact form submissions and other conversions
+1. **Push to main branch** - Automatically runs tests and deploys
+2. **Pull requests** - Runs quality checks without deployment
+3. **Manual deployment** - Use GitHub Actions dispatch for specific branches
 
-### Custom Event Tracking
+### Manual Deployment
 
-The analytics setup includes custom event tracking for:
+```bash
+# Install dependencies
+pnpm install
 
-- Contact form submissions
-- Project views
-- Social media clicks
-- File downloads
-- User interactions
+# Build for production
+pnpm build
 
-### How it works
+# Deploy to Amplify (requires AWS CLI)
+pnpm run deploy:amplify
+```
 
-- **Dual tracking**: Uses both Vercel Analytics and direct Google Analytics for comprehensive data
-- **Production only**: Analytics only loads in production builds, not during development
-- **Mobile optimized**: Enhanced tracking for mobile devices and apps
-- **Privacy compliant**: Uses Google's latest privacy-focused analytics
+### Environment-Specific Deployments
 
-For more information, see the [Vercel Analytics documentation](https://vercel.com/docs/analytics) and [Google Analytics Help](https://support.google.com/analytics).
-# Trigger build
-# Second build trigger
-# Third build trigger with Node.js fix
-# Fourth build trigger - simplified config
-# Fifth build trigger - final attempt
-# Sixth build trigger - Node.js fix
-# Seventh build trigger - testing Amplify deployment
-# Eighth build trigger - checking deployment status
-# Build fix
+The CI/CD pipeline supports multiple environments:
+
+- **Production**: `master` branch → production Amplify app
+- **Staging**: Manual deployment to staging environment
+- **Development**: Feature branches for testing
+
+## 🔧 Development
+
+### Available Scripts
+
+```bash
+# Development
+pnpm dev              # Start development server
+pnpm build           # Build for production
+pnpm start           # Start production server
+pnpm lint            # Run ESLint
+pnpm test            # Run tests
+
+# AWS Amplify
+pnpm run deploy:amplify       # Deploy to Amplify
+pnpm run deploy:amplify:simple # Simple deployment script
+
+# Testing
+pnpm exec playwright test     # Run E2E tests
+pnpm exec playwright install  # Install Playwright browsers
+```
+
+### Code Quality
+
+- **ESLint**: Configured with Next.js and TypeScript rules
+- **TypeScript**: Strict type checking enabled
+- **Prettier**: Code formatting (via ESLint)
+- **Security**: Dependency vulnerability scanning
+
+### Testing
+
+```bash
+# Run all tests
+pnpm test
+
+# Run E2E tests
+pnpm exec playwright test
+
+# Run tests in UI mode
+pnpm exec playwright test --ui
+
+# Generate test coverage
+pnpm exec playwright test --coverage
+```
+
+## 🔒 Security
+
+### Content Security Policy (CSP)
+
+The application implements a strict CSP:
+
+- **Default**: `self` only
+- **Scripts**: `self` (no inline scripts)
+- **Styles**: `self` with `unsafe-inline` for Next.js
+- **Images**: `self`, `data:`, and HTTPS sources
+- **API**: Restricted to Amplify AppSync endpoints
+
+### Security Headers
+
+- `X-Frame-Options: DENY`
+- `X-Content-Type-Options: nosniff`
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- `Permissions-Policy: camera=(), microphone=(), geolocation=()`
+
+### Authentication & Authorization
+
+- **API Key Authentication** for GraphQL endpoints
+- **Environment-specific keys** with automatic expiration
+- **Rate limiting** via API Gateway (configurable)
+- **Input validation** on all endpoints
+
+## 📊 Analytics & Monitoring
+
+### Built-in Analytics
+
+- **Contact form tracking**: Submission success/failure
+- **User interactions**: Button clicks, navigation
+- **Performance metrics**: Page load times, errors
+- **Custom events**: Project views, social clicks
+
+### Monitoring
+
+- **CloudWatch Logs**: All Lambda function logs
+- **CloudWatch Metrics**: Custom application metrics
+- **AWS X-Ray**: Distributed tracing (optional)
+- **Error tracking**: Structured error logging
+
+### Google Analytics Integration
+
+For enhanced analytics, configure Google Analytics:
+
+1. Get your measurement ID from Google Analytics
+2. Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in environment variables
+3. Events are automatically tracked in production
+
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** your changes: `git commit -m 'Add amazing feature'`
+4. **Push** to the branch: `git push origin feature/amazing-feature`
+5. **Open** a Pull Request
+
+### Development Guidelines
+
+- Follow the existing code style
+- Add tests for new features
+- Update documentation as needed
+- Ensure all CI checks pass
+
+## 📚 Documentation
+
+- **[Architecture Overview](docs/ARCHITECTURE.md)** - System design and data flow
+- **[API Documentation](docs/BACKEND_CONFIGURATION.md)** - GraphQL API reference
+- **[Deployment Guide](docs/DEPLOYMENT-GUIDE.md)** - Detailed deployment procedures
+- **[Security Guide](docs/SECURITY.md)** - Security measures and best practices
+- **[Directory Structure](docs/DIRECTORY_STRUCTURE.md)** - Project organization
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Build fails with "amplify_outputs.json not found"**
+- Run `amplify pull` to sync backend configuration
+- Ensure you're in the correct Amplify environment
+
+**Lambda functions timeout**
+- Check CloudWatch logs for performance issues
+- Consider increasing memory allocation
+
+**CORS errors**
+- Verify API Gateway CORS configuration
+- Check Next.js headers configuration
+
+### Support
+
+- **Issues**: [GitHub Issues](https://github.com/Themis128/my-portfolio-aws/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Themis128/my-portfolio-aws/discussions)
+- **Documentation**: Check the `docs/` directory
+
+## 📄 License
+
+This project is licensed under the **AGPL v3** license - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Next.js** - The React framework for production
+- **AWS Amplify** - Backend-as-a-Service platform
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Animation library for React
+- **Lucide Icons** - Beautiful icon set
+
+---
+
+**Built with ❤️ by Themis Baltzakis**
