@@ -1,6 +1,13 @@
 import { generateClient } from '@aws-amplify/api';
 import { Amplify } from 'aws-amplify';
-import amplifyconfig from './amplify_outputs.json';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+// Load amplify config (Node.js 22 compatible)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const amplifyconfig = JSON.parse(readFileSync(join(__dirname, 'amplify_outputs.json'), 'utf8'));
 
 // Configure Amplify
 Amplify.configure(amplifyconfig);

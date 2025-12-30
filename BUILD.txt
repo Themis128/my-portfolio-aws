@@ -1,0 +1,172 @@
+2025-12-30T01:16:36.559Z [INFO]: # Build environment configured with Standard build compute type: 8GiB Memory, 4vCPUs, 128GB Disk Space
+2025-12-30T01:16:36.830Z [INFO]: # Retrieving Git provider SSH public keys
+2025-12-30T01:16:39.843Z [INFO]: # Successfully retrieved Git provider SSH public keys
+2025-12-30T01:16:39.905Z [INFO]: # Cloning repository: git@github.com:Themis128/my-portfolio-aws.git
+2025-12-30T01:16:47.521Z [INFO]: Agent pid 459
+2025-12-30T01:16:47.616Z [INFO]: Identity added: /root/.ssh/git_rsa (/root/.ssh/git_rsa)
+                                 Cloning into 'my-portfolio-aws'...
+2025-12-30T01:16:47.617Z [INFO]: # Switching to commit: 50208b088dbac7719df56fa83d97fc1b71f05106
+2025-12-30T01:16:48.126Z [INFO]: Agent pid 470
+2025-12-30T01:16:48.126Z [INFO]: Identity added: /root/.ssh/git_rsa (/root/.ssh/git_rsa)
+                                 Note: switching to '50208b088dbac7719df56fa83d97fc1b71f05106'.
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+                                 changes and commit them, and you can discard any commits you make in this
+                                 state without impacting any branches by switching back to a branch.
+                                 If you want to create a new branch to retain commits you create, you may
+                                 do so (now or later) by using -c with the switch command. Example:
+                                 git switch -c <new-branch-name>
+                                 Or undo this operation with:
+                                 git switch -
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+                                 HEAD is now at 50208b0 fix: Resolve amplify_outputs.json import error in build
+2025-12-30T01:16:48.138Z [INFO]: Successfully cleaned up Git credentials
+2025-12-30T01:16:48.138Z [INFO]: # Checking for Git submodules at: /codebuild/output/src3525138686/src/my-portfolio-aws/.gitmodules
+2025-12-30T01:16:48.148Z [INFO]: # Retrieving environment cache...
+2025-12-30T01:16:48.191Z [WARNING]: ! Unable to write cache: {"code":"ERR_BAD_REQUEST","message":"Request failed with status code 404"})}
+2025-12-30T01:16:48.192Z [INFO]: ---- Setting Up SSM Secrets ----
+2025-12-30T01:16:48.192Z [INFO]: SSM params {"Path":"/amplify/dcwmv1pw85f0j/master/","WithDecryption":true}
+2025-12-30T01:16:48.244Z [WARNING]: !Failed to set up process.env.secrets
+2025-12-30T01:16:49.003Z [INFO]: # No package override configuration found.
+2025-12-30T01:16:49.008Z [INFO]: # Retrieving cache...
+2025-12-30T01:16:49.044Z [INFO]: # Retrieved cache
+2025-12-30T01:16:53.128Z [INFO]: ## Starting Backend Build
+                                 ## Checking for associated backend environment...
+                                 ## No backend environment association found, continuing...
+                                 ## Completed Backend Build
+2025-12-30T01:16:53.134Z [INFO]: {"backendDuration": 0}
+                                 ## Starting Frontend Build
+                                 # Starting phase: preBuild
+                                 # Executing command: echo "=== Starting Frontend preBuild phase ==="
+                                 === Starting Frontend preBuild phase ===
+                                 # Executing command: echo "=== Checking pnpm availability ==="
+                                 === Checking pnpm availability ===
+                                 # Executing command: which pnpm || npm install -g pnpm
+2025-12-30T01:16:53.145Z [WARNING]: /usr/bin/which: no pnpm in (/root/.pyenv/shims:/root/.rvm/gems/ruby-3.2.2/bin:/root/.rvm/gems/ruby-3.2.2@global/bin:/root/.rvm/rubies/ruby-3.2.2/bin:/root/.nvm/versions/node/v22.18.0/bin:/root/bin:/root/.rvm/bin:/root/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/codebuild/user/bin:/root/.rvm/bin:/root/.rvm/bin:/root/.rvm/bin)
+2025-12-30T01:17:09.459Z [INFO]: added 1 package in 12s
+2025-12-30T01:17:09.464Z [INFO]: 1 package is looking for funding
+                                 run `npm fund` for details
+2025-12-30T01:17:09.472Z [INFO]: # Executing command: echo "=== Installing frontend dependencies ==="
+                                 === Installing frontend dependencies ===
+                                 # Executing command: pnpm install --frozen-lockfile
+2025-12-30T01:17:10.014Z [INFO]: Lockfile is up to date, resolution step is skipped
+2025-12-30T01:17:10.083Z [INFO]: Progress: resolved 1, reused 0, downloaded 0, added 0
+2025-12-30T01:17:10.230Z [INFO]: Packages: +1140
+                                 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2025-12-30T01:17:11.084Z [INFO]: Progress: resolved 1140, reused 0, downloaded 34, added 16
+2025-12-30T01:17:12.085Z [INFO]: Progress: resolved 1140, reused 0, downloaded 282, added 287
+2025-12-30T01:17:13.090Z [INFO]: Progress: resolved 1140, reused 0, downloaded 348, added 321
+2025-12-30T01:17:14.092Z [INFO]: Progress: resolved 1140, reused 0, downloaded 378, added 334
+2025-12-30T01:17:15.092Z [INFO]: Progress: resolved 1140, reused 0, downloaded 461, added 391
+2025-12-30T01:17:16.093Z [INFO]: Progress: resolved 1140, reused 0, downloaded 632, added 562
+2025-12-30T01:17:17.147Z [INFO]: Progress: resolved 1140, reused 0, downloaded 632, added 563
+2025-12-30T01:17:18.148Z [INFO]: Progress: resolved 1140, reused 0, downloaded 706, added 674
+2025-12-30T01:17:19.162Z [INFO]: Progress: resolved 1140, reused 0, downloaded 767, added 737
+2025-12-30T01:17:20.163Z [INFO]: Progress: resolved 1140, reused 0, downloaded 795, added 755
+2025-12-30T01:17:21.163Z [INFO]: Progress: resolved 1140, reused 0, downloaded 817, added 762
+2025-12-30T01:17:22.164Z [INFO]: Progress: resolved 1140, reused 0, downloaded 866, added 784
+2025-12-30T01:17:23.164Z [INFO]: Progress: resolved 1140, reused 0, downloaded 939, added 821
+2025-12-30T01:17:24.164Z [INFO]: Progress: resolved 1140, reused 0, downloaded 977, added 837
+2025-12-30T01:17:25.164Z [INFO]: Progress: resolved 1140, reused 0, downloaded 1039, added 910
+2025-12-30T01:17:26.164Z [INFO]: Progress: resolved 1140, reused 0, downloaded 1064, added 921
+2025-12-30T01:17:27.164Z [INFO]: Progress: resolved 1140, reused 0, downloaded 1124, added 941
+2025-12-30T01:17:28.165Z [INFO]: Progress: resolved 1140, reused 0, downloaded 1133, added 1138
+2025-12-30T01:17:29.165Z [INFO]: Progress: resolved 1140, reused 0, downloaded 1134, added 1139
+2025-12-30T01:17:34.664Z [INFO]: Progress: resolved 1140, reused 0, downloaded 1135, added 1139
+2025-12-30T01:17:34.670Z [INFO]: Progress: resolved 1140, reused 0, downloaded 1135, added 1140, done
+2025-12-30T01:17:35.457Z [INFO]: dependencies:
+                                 + @aws-amplify/api 6.3.21
+                                 + @aws-amplify/backend 1.19.0
+                                 + @aws-sdk/client-amplify 3.958.0
+                                 + @aws-sdk/client-ses 3.958.0
+                                 + @radix-ui/react-avatar 1.1.11
+                                 + @radix-ui/react-slot 1.2.4
+                                 + @slack/web-api 7.13.0
+                                 + @types/jspdf 2.0.0
+                                 + @vercel/analytics 1.6.1
+                                 + aws-amplify 6.15.9
+                                 + class-variance-authority 0.7.1
+                                 + clsx 2.1.1
+                                 + dotenv 17.2.3
+                                 + framer-motion 12.23.26
+                                 + jspdf 3.0.4
+                                 + lucide-react 0.562.0
+                                 + motion 12.23.26
+                                 + next 16.1.1
+                                 + react 19.2.3
+                                 + react-dom 19.2.3
+                                 + tailwind-merge 3.4.0
+                                 + tailwindcss-animate 1.0.7
+                                 + tw-animate-css 1.4.0
+                                 devDependencies:
+                                 + @21st-extension/react 0.5.14
+                                 + @21st-extension/toolbar-next 0.5.14
+                                 + @tailwindcss/postcss 4.1.18
+                                 + @types/node 20.19.27
+                                 + @types/react 19.2.7
+                                 + @types/react-dom 19.2.3
+                                 + esbuild 0.27.2
+                                 + eslint 9.39.2
+                                 + eslint-config-next 16.1.1
+                                 + node-fetch 3.3.2
+                                 + serverless 4.29.0
+                                 + serverless-dotenv-plugin 6.0.0
+                                 + serverless-offline 14.4.0
+                                 + tailwindcss 4.1.18
+                                 + typescript 5.9.3
+2025-12-30T01:17:35.470Z [INFO]: ╭ Warning ─────────────────────────────────────────────────────────────────────╮
+                                 │                                                                              │
+                                 │   Ignored build scripts: core-js@2.6.12, core-js@3.47.0, esbuild@0.27.2,     │
+                                 │   serverless@4.29.0.                                                         │
+                                 │   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+                                 │   to run scripts.                                                            │
+                                 │                                                                              │
+                                 ╰──────────────────────────────────────────────────────────────────────────────╯
+2025-12-30T01:17:35.495Z [INFO]: Done in 26s using pnpm v10.26.2
+2025-12-30T01:17:35.524Z [INFO]: # Executing command: echo "=== Frontend preBuild completed successfully ==="
+                                 === Frontend preBuild completed successfully ===
+2025-12-30T01:17:35.525Z [INFO]: # Completed phase: preBuild
+                                 # Starting phase: build
+                                 # Executing command: echo "=== Starting Next.js build ==="
+                                 === Starting Next.js build ===
+                                 # Executing command: pnpm run build
+2025-12-30T01:17:35.842Z [INFO]: > my-app@0.1.0 build /codebuild/output/src3525138686/src/my-portfolio-aws
+                                 > next build
+2025-12-30T01:17:36.773Z [WARNING]: ⚠ Specified "headers" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+2025-12-30T01:17:36.782Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2025-12-30T01:17:36.788Z [INFO]: ▲ Next.js 16.1.1 (Turbopack)
+2025-12-30T01:17:36.788Z [INFO]: - Experiments (use with caution):
+                                 · optimizePackageImports
+2025-12-30T01:17:36.810Z [INFO]: Creating an optimized production build ...
+2025-12-30T01:17:37.378Z [WARNING]: ⚠ Specified "headers" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+2025-12-30T01:17:45.642Z [WARNING]: 
+2025-12-30T01:17:45.648Z [WARNING]: > Build error occurred
+                                    Error: Turbopack build failed with 1 errors:
+                                    ./lib/amplify-client-config.ts:4:1
+                                    Module not found: Can't resolve 'fs'
+                                    [0m [90m 2 |[39m
+                                    [90m 3 |[39m [36mimport[39m { [33mAmplify[39m } [36mfrom[39m [32m'aws-amplify'[39m[33m;[39m
+                                    [31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { readFileSync } [36mfrom[39m [32m'fs'[39m[33m;[39m
+                                    [90m   |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+                                    [90m 5 |[39m [36mimport[39m { fileURLToPath } [36mfrom[39m [32m'url'[39m[33m;[39m
+                                    [90m 6 |[39m [36mimport[39m { dirname[33m,[39m join } [36mfrom[39m [32m'path'[39m[33m;[39m
+                                    [90m 7 |[39m[0m
+                                    Import traces:
+                                    Client Component Browser:
+                                    ./lib/amplify-client-config.ts [Client Component Browser]
+                                    ./components/Contact.tsx [Client Component Browser]
+                                    ./components/Contact.tsx [Server Component]
+                                    ./app/page.tsx [Server Component]
+                                    Client Component SSR:
+                                    ./lib/amplify-client-config.ts [Client Component SSR]
+                                    ./components/Contact.tsx [Client Component SSR]
+                                    ./components/Contact.tsx [Server Component]
+                                    ./app/page.tsx [Server Component]
+                                    https://nextjs.org/docs/messages/module-not-found
+                                    at <unknown> (./lib/amplify-client-config.ts:4:1)
+                                    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+2025-12-30T01:17:45.724Z [INFO]: ELIFECYCLE  Command failed with exit code 1.
+2025-12-30T01:17:45.738Z [ERROR]: !!! Build failed
+2025-12-30T01:17:45.738Z [ERROR]: !!! Error: Command failed with exit code 1
+2025-12-30T01:17:45.739Z [INFO]: # Starting environment caching...
+2025-12-30T01:17:45.739Z [INFO]: # Environment caching completed
+

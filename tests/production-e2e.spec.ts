@@ -245,22 +245,35 @@ test.describe('Backend API Tests - Production', () => {
     expect(createResponse.data.createContact.email).toBe(testContact.email);
     expect(createResponse.data.createContact.message).toBe(testContact.message);
 
-    // Verify the contact was added to the database by checking count (with retry for eventual consistency)
-    let afterResponse = await makeGraphQLRequest(listQuery);
-    let afterCount = afterResponse.data.listContacts.items.length;
-    for (let i = 0; i < 5; i++) {
-      if (afterCount === beforeCount + 1) break;
-      await new Promise(res => setTimeout(res, 1000));
-      afterResponse = await makeGraphQLRequest(listQuery);
-      afterCount = afterResponse.data.listContacts.items.length;
-    }
-    expect(afterCount).toBe(beforeCount + 1);
-
-    // Verify our new contact exists (due to DynamoDB eventual consistency, we check by count rather than exact match)
-    expect(createResponse.data.createContact.id).toBeTruthy();
+    // Verify the contact was created successfully
+    expect(createResponse).toHaveProperty('data');
+    expect(createResponse.data).toHaveProperty('createContact');
+    expect(createResponse.data.createContact).toHaveProperty('id');
     expect(createResponse.data.createContact.name).toBe(testContact.name);
     expect(createResponse.data.createContact.email).toBe(testContact.email);
     expect(createResponse.data.createContact.message).toBe(testContact.message);
+
+    // Verify the contact can be retrieved individually (more reliable than count in parallel tests)
+    const contactId = createResponse.data.createContact.id;
+    const getContactQuery = `
+      query GetContact($id: ID!) {
+        getContact(id: $id) {
+          id
+          name
+          email
+          message
+          createdAt
+        }
+      }
+    `;
+
+    const getResponse = await makeGraphQLRequest(getContactQuery, { id: contactId });
+    expect(getResponse.data.getContact).toBeTruthy();
+    expect(getResponse.data.getContact.id).toBe(contactId);
+    expect(getResponse.data.getContact.name).toBe(testContact.name);
+
+    // Note: Count verification is skipped due to parallel test execution
+    // In a real scenario, you might want to use a unique test environment or sequential execution
   });
 
   test('GraphQL API handles invalid requests', async () => {
