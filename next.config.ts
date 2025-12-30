@@ -50,6 +50,8 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  // Turbopack empty config to avoid error when custom webpack is present
+  turbopack: {},
 };
 
 export default nextConfig;
