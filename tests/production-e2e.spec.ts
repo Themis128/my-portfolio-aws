@@ -1,9 +1,9 @@
 import { expect, Page, test } from '@playwright/test';
 
 // Test configuration for live production website
+// TODO: Update to custom domain once DNS is configured
 const PRODUCTION_URLS = [
-  'https://baltzakisthemis.com',
-  'https://www.baltzakisthemis.com'
+  'https://master.dcwmv1pw85f0j.amplifyapp.com'
 ];
 
 // GraphQL API configuration
@@ -302,7 +302,7 @@ test.describe('Performance Tests - Production', () => {
   test('homepage loads within acceptable time', async ({ page }: { page: Page }) => {
     const startTime = Date.now();
 
-    await page.goto('https://baltzakisthemis.com/');
+    await page.goto('https://master.dcwmv1pw85f0j.amplifyapp.com/');
 
     // Wait for the page to be fully loaded
     await page.waitForLoadState('networkidle');
@@ -315,7 +315,7 @@ test.describe('Performance Tests - Production', () => {
   });
 
     test('contact form submission is responsive', async ({ page }: { page: Page }) => {
-    await page.goto('https://baltzakisthemis.com/');
+    await page.goto('https://master.dcwmv1pw85f0j.amplifyapp.com/');
 
     // Navigate to contact section - handle mobile navigation
     const viewportSize = page.viewportSize();
