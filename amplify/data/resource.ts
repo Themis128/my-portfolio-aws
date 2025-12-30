@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { contactHandler } from '../functions/contact-handler/resource';
 
 const schema = a.schema({
   Contact: a
@@ -11,69 +12,25 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
-  // Contact form mutation - creates contact record and sends notifications
-  sendContact: a
-    .mutation()
+  sendContact: a.mutation()
     .arguments({
       name: a.string().required(),
       email: a.string().required(),
       message: a.string().required(),
     })
     .returns(a.string())
-    .handler(
-      a.handler.function('contact-handler')
-    )
-    .authorization((allow) => [allow.publicApiKey()]),
-
-  // Slack notification mutation
-  sendSlackNotification: a
-    .mutation()
-    .arguments({
-      message: a.string().required(),
-      channel: a.string(),
-    })
-    .returns(a.string())
-    .handler(
-      a.handler.function('slack-notifier')
-    )
-    .authorization((allow) => [allow.publicApiKey()]),
-
-  // Portfolio analytics mutation
-  trackAnalytics: a
-    .mutation()
-    .arguments({
-      eventType: a.string().required(),
-      page: a.string(),
-      userAgent: a.string(),
-      referrer: a.string(),
-      metadata: a.json(),
-    })
-    .returns(a.string())
-    .handler(
-      a.handler.function('portfolio-analytics')
-    )
+    .handler(a.handler.function(contactHandler))
     .authorization((allow) => [allow.publicApiKey()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
 
-// Environment-aware configuration
-const isProduction = process.env.AMPLIFY_ENV === 'prod';
-const isStaging = process.env.AMPLIFY_ENV === 'staging';
-
 export const data = defineData({
   schema,
   authorizationModes: {
     defaultAuthorizationMode: 'apiKey',
-    // Environment-specific API key configuration
     apiKeyAuthorizationMode: {
-      // Production: 30 days, Staging: 7 days, Dev: 1 day
-      expiresInDays: isProduction ? 30 : isStaging ? 7 : 1,
+      expiresInDays: 30,
     },
-  },
-  // Environment-aware logging
-  logging: {
-    level: isProduction ? 'ERROR' : 'INFO', // Less verbose logging in production
-    excludeVerboseContent: true,
   },
 });
