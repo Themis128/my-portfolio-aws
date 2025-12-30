@@ -1,14 +1,34 @@
 version: 1
+backend:
+  phases:
+    preBuild:
+      commands:
+        - echo "=== Starting Backend preBuild phase ==="
+        - echo "=== Checking pnpm availability ==="
+        - which pnpm || npm install -g pnpm
+        - echo "=== Installing backend dependencies ==="
+        - pnpm install --frozen-lockfile
+        - echo "=== Backend preBuild completed successfully ==="
+    build:
+      commands:
+        - echo "=== Starting Backend build ==="
+        - npx ampx generate schema-from-models
+        - echo "=== Backend build completed successfully ==="
+  cache:
+    paths:
+      - node_modules/**/*
+      - ~/.pnpm-store/**/*
+      - amplify_outputs.json
 frontend:
   phases:
     preBuild:
       commands:
-        - echo "=== Starting preBuild phase ==="
+        - echo "=== Starting Frontend preBuild phase ==="
         - echo "=== Checking pnpm availability ==="
         - which pnpm || npm install -g pnpm
-        - echo "=== Installing dependencies ==="
+        - echo "=== Installing frontend dependencies ==="
         - pnpm install --frozen-lockfile
-        - echo "=== PreBuild completed successfully ==="
+        - echo "=== Frontend preBuild completed successfully ==="
     build:
       commands:
         - echo "=== Starting Next.js build ==="
