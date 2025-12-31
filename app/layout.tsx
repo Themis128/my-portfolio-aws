@@ -8,6 +8,7 @@ import AmplifyInitializer from '../components/AmplifyInitializer';
 import '../globals.css';
 import '../lib/amplify'; // Keep empty for static export compatibility
 import { ThemeProvider } from '../lib/theme-context';
+import { Analytics } from '@vercel/analytics/react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -175,6 +176,7 @@ export default function RootLayout({
           See: https://github.com/21st-dev/21st-extension
         */}
         <ToolbarMountController />
+        <Analytics />
       </body>
     </html>
   );
