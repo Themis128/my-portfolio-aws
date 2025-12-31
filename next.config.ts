@@ -9,6 +9,23 @@ const nextConfig: NextConfig = {
   compress: false, // Disable Next.js compression (CloudFront handles this)
   generateEtags: false, // Disable etags (CloudFront handles caching)
 
+  // Redirect root domain to www
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        destination: 'https://www.baltzakisthemis.com/:path*',
+        permanent: true,
+        has: [
+          {
+            type: 'host',
+            value: 'baltzakisthemis.com',
+          },
+        ],
+      },
+    ];
+  },
+
   // Build optimizations for Amplify
   experimental: {
     optimizePackageImports: ['@aws-amplify/ui-react', 'lucide-react'], // Optimize Amplify and icon imports
