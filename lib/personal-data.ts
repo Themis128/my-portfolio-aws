@@ -92,7 +92,7 @@ export function getPersonalDataServer(): PersonalData {
     name: "Themistoklis Baltzakis",
     title: "BCs Computer Science - MSc Data Analytics",
     bio: "Experienced IT professional and data analytics expert with a strong foundation in computer science, cloud computing, and software development. Passionate about leveraging cutting-edge technologies including AI/ML, full-stack development, and infrastructure automation to solve complex problems and drive innovation. Active researcher in data analytics methodologies and VS Code extension development.",
-    email: "tbaltzakis@cloudless.gr",
+    email: "tbaltzakis@baltzakisthemis.com",
     location: "Greece",
     phone: "+30 6977777838",
     website: "https://www.baltzakisthemis.com",

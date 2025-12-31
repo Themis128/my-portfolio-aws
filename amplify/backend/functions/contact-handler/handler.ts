@@ -70,7 +70,7 @@ export const handler = async (event: {
     // Send confirmation email via SES
     try {
       const emailParams = {
-        Source: 'noreply@cloudless.gr',
+        Source: 'noreply@baltzakisthemis.com',
         Destination: {
           ToAddresses: [email],
         },
