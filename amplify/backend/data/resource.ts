@@ -18,7 +18,7 @@ const schema = a.schema({
       email: a.string().required(),
       message: a.string().required(),
     })
-    .returns(a.string())
+    .returns(a.ref('Contact'))
     .handler(a.handler.function(contactHandler))
     .authorization((allow) => [allow.publicApiKey()]),
 });

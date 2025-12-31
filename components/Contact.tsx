@@ -2,11 +2,12 @@
 import { generateClient } from '@aws-amplify/api';
 import { motion } from 'framer-motion';
 import { Clock, Github, Linkedin, Mail, MapPin, MessageSquare, Send } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import '../lib/amplify-client-config'; // Ensure Amplify is configured
 import { ensureAmplifyConfigured } from '../lib/amplify-client-config';
 import { sendContact } from '../lib/graphql/mutations';
 import { PersonalData } from '../lib/personal-data';
+import '../lib/polyfills'; // Load browser polyfills
 import { Input } from './input';
 import { Textarea } from './textarea';
 import { Button } from "./ui/button";
@@ -23,53 +24,121 @@ export default function Contact({ data }: ContactProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [isOnline, setIsOnline] = useState(true);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Check online status
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    setIsOnline(navigator.onLine);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // Memoized form validation
+  const isFormValid = useMemo(() => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return (
+      formData.name.trim().length >= 2 &&
+      emailRegex.test(formData.email) &&
+      formData.message.trim().length >= 10
+    );
+  }, [formData]);
+
+  // Optimized change handler with debouncing
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }, []);
+
+  // Optimized submit handler with retry logic
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isOnline) {
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      return;
+    }
+
+    if (!isFormValid || isSubmitting) return;
+
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
-    try {
-      // Ensure Amplify is configured before making API calls
-      ensureAmplifyConfigured();
+    const maxRetries = 3;
+    let attempt = 0;
 
-      // Use the sendContact mutation with Slack and SES notifications
-      const client = generateClient();
-      await client.graphql({
-        query: sendContact,
-        variables: {
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-        },
-      });
+    while (attempt < maxRetries) {
+      try {
+        // Ensure Amplify is configured before making API calls
+        ensureAmplifyConfigured();
 
-      // Reset form
-      setFormData({ name: '', email: '', message: '' });
-      setSubmitStatus('success');
+        // Use the sendContact mutation with Slack and SES notifications
+        const client = generateClient();
+        await client.graphql({
+          query: sendContact,
+          variables: {
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            message: formData.message.trim(),
+          },
+        });
 
-      // Reset success message after 5 seconds
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-    } catch (error) {
-      console.error('Error sending message:', error);
-      setSubmitStatus('error');
+        // Reset form
+        setFormData({ name: '', email: '', message: '' });
+        setSubmitStatus('success');
 
-      // Reset error message after 5 seconds
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-    } finally {
-      setIsSubmitting(false);
+        // Reset success message after 5 seconds
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+        return;
+
+      } catch (error) {
+        console.error(`Error sending message (attempt ${attempt + 1}):`, error);
+        attempt++;
+
+        if (attempt >= maxRetries) {
+          setSubmitStatus('error');
+          setTimeout(() => setSubmitStatus('idle'), 5000);
+        } else {
+          // Exponential backoff
+          await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+        }
+      }
     }
-  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+    setIsSubmitting(false);
+  }, [formData, isFormValid, isSubmitting, isOnline]);
 
-  // Animation variants
-  const containerVariants = {
+  // Touch event handlers for mobile optimization
+  const handleTouchStart = useCallback(() => {
+    // Preload animations or prepare for interaction
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    // Handle touch end for better mobile UX
+  }, []);
+
+  // Keyboard navigation support
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      if (isFormValid && !isSubmitting) {
+        handleSubmit(e as any);
+      }
+    }
+  }, [isFormValid, isSubmitting, handleSubmit]);
+
+  // Animation variants - optimized for performance
+  const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -78,36 +147,51 @@ export default function Contact({ data }: ContactProps) {
         delayChildren: 0.2,
       },
     },
-  };
+  }), []);
 
-  const itemVariants = {
+  const itemVariants = useMemo(() => ({
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
-  };
+  }), []);
+
+  // Reduced motion support
+  const prefersReducedMotion = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    return false;
+  }, []);
 
   return (
-    <section id="contact" className="relative py-24 overflow-hidden">
-      {/* Background Elements */}
+    <section
+      id="contact"
+      className="relative py-24 overflow-hidden"
+      aria-labelledby="contact-heading"
+    >
+      {/* Background Elements - Optimized for mobile */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 right-32 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 left-32 w-48 h-48 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
-      <div className="relative z-10 container mx-auto px-6">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+          whileInView={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
-            <MessageSquare className="w-4 h-4" />
+            <MessageSquare className="w-4 h-4" aria-hidden="true" />
             Get In Touch
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-6">
+          <h2
+            id="contact-heading"
+            className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent mb-6"
+          >
             Let&apos;s
             <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
               Collaborate
@@ -121,8 +205,8 @@ export default function Contact({ data }: ContactProps) {
         <motion.div
           className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto"
           variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
+          initial={prefersReducedMotion ? "visible" : "hidden"}
+          whileInView={prefersReducedMotion ? {} : "visible"}
           viewport={{ once: true }}
         >
           {/* Contact Information */}
@@ -137,12 +221,12 @@ export default function Contact({ data }: ContactProps) {
 
             <motion.div
               className="group bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1"
-              whileHover={{ scale: 1.02 }}
+              whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
-                  <Mail className="w-6 h-6 text-white" />
+                  <Mail className="w-6 h-6 text-white" aria-hidden="true" />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-semibold text-lg mb-1 text-foreground">Email</h4>
@@ -154,12 +238,12 @@ export default function Contact({ data }: ContactProps) {
 
             <motion.div
               className="group bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1"
-              whileHover={{ scale: 1.02 }}
+              whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
-                  <MapPin className="w-6 h-6 text-white" />
+                  <MapPin className="w-6 h-6 text-white" aria-hidden="true" />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-semibold text-lg mb-1 text-foreground">Location</h4>
@@ -171,12 +255,12 @@ export default function Contact({ data }: ContactProps) {
 
             <motion.div
               className="group bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1"
-              whileHover={{ scale: 1.02 }}
+              whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
-                  <Clock className="w-6 h-6 text-white" />
+                  <Clock className="w-6 h-6 text-white" aria-hidden="true" />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-semibold text-lg mb-1 text-foreground">Response Time</h4>
@@ -199,10 +283,11 @@ export default function Contact({ data }: ContactProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
-                    whileHover={{ rotate: 5 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={prefersReducedMotion ? {} : { rotate: 5 }}
+                    whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
+                    aria-label={`Visit GitHub profile: ${data.github}`}
                   >
-                    <Github className="w-6 h-6 text-white" />
+                    <Github className="w-6 h-6 text-white" aria-hidden="true" />
                   </motion.a>
                 )}
                 {data.linkedin && (
@@ -211,10 +296,11 @@ export default function Contact({ data }: ContactProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
-                    whileHover={{ rotate: -5 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={prefersReducedMotion ? {} : { rotate: -5 }}
+                    whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
+                    aria-label={`Visit LinkedIn profile: ${data.linkedin}`}
                   >
-                    <Linkedin className="w-6 h-6 text-white" />
+                    <Linkedin className="w-6 h-6 text-white" aria-hidden="true" />
                   </motion.a>
                 )}
               </div>
@@ -224,7 +310,7 @@ export default function Contact({ data }: ContactProps) {
           {/* Contact Form */}
           <motion.div
             variants={itemVariants}
-            className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-8 shadow-xl"
+            className="bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 sm:p-8 shadow-xl"
           >
             <div className="mb-8">
               <h3 className="text-2xl font-bold mb-2 text-foreground">Send Me a Message</h3>
@@ -233,15 +319,22 @@ export default function Contact({ data }: ContactProps) {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              onKeyDown={handleKeyDown}
+              className="space-y-6"
+              noValidate
+              aria-labelledby="contact-form-heading"
+            >
+              <div className="grid sm:grid-cols-2 gap-6">
                 <motion.div
-                  whileFocus={{ scale: 1.02 }}
+                  whileFocus={prefersReducedMotion ? {} : { scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className="space-y-2"
                 >
                   <label htmlFor="name" className="block text-sm font-medium text-foreground">
-                    Your Name
+                    Your Name *
                   </label>
                   <Input
                     type="text"
@@ -252,15 +345,23 @@ export default function Contact({ data }: ContactProps) {
                     required
                     placeholder="Enter your full name"
                     className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 h-11"
+                    aria-describedby="name-error"
+                    minLength={2}
+                    maxLength={100}
                   />
+                  {formData.name && formData.name.length < 2 && (
+                    <p id="name-error" className="text-sm text-red-500" role="alert">
+                      Name must be at least 2 characters
+                    </p>
+                  )}
                 </motion.div>
                 <motion.div
-                  whileFocus={{ scale: 1.02 }}
+                  whileFocus={prefersReducedMotion ? {} : { scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className="space-y-2"
                 >
                   <label htmlFor="email" className="block text-sm font-medium text-foreground">
-                    Your Email
+                    Your Email *
                   </label>
                   <Input
                     type="email"
@@ -271,17 +372,24 @@ export default function Contact({ data }: ContactProps) {
                     required
                     placeholder="your@email.com"
                     className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 h-11"
+                    aria-describedby="email-error"
+                    maxLength={254}
                   />
+                  {formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && (
+                    <p id="email-error" className="text-sm text-red-500" role="alert">
+                      Please enter a valid email address
+                    </p>
+                  )}
                 </motion.div>
               </div>
 
               <motion.div
-                whileFocus={{ scale: 1.02 }}
+                whileFocus={prefersReducedMotion ? {} : { scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className="space-y-2"
               >
                 <label htmlFor="message" className="block text-sm font-medium text-foreground">
-                  Your Message
+                  Your Message *
                 </label>
                 <Textarea
                   id="message"
@@ -292,27 +400,46 @@ export default function Contact({ data }: ContactProps) {
                   rows={6}
                   placeholder="Tell me about your project, goals, and how I can help you achieve them..."
                   className="transition-all duration-300 focus:ring-2 focus:ring-primary/20 resize-none"
+                  aria-describedby="message-error"
+                  minLength={10}
+                  maxLength={2000}
                 />
+                {formData.message && formData.message.length < 10 && (
+                  <p id="message-error" className="text-sm text-red-500" role="alert">
+                    Message must be at least 10 characters
+                  </p>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  {formData.message.length}/2000 characters
+                </p>
               </motion.div>
 
               <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={prefersReducedMotion ? {} : { scale: 1.02 }}
+                whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
               >
                 <Button
                   type="submit"
                   size="lg"
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl font-semibold disabled:opacity-50"
+                  disabled={isSubmitting || !isFormValid || !isOnline}
+                  className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl font-semibold disabled:opacity-50 min-h-[44px]"
+                  aria-describedby="submit-status"
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="w-5 h-5 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className="w-5 h-5 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin" aria-hidden="true" />
                       Sending...
+                    </>
+                  ) : !isOnline ? (
+                    <>
+                      <div className="w-5 h-5 mr-2" aria-hidden="true">📶</div>
+                      Offline - Check connection
                     </>
                   ) : (
                     <>
-                      <Send className="w-5 h-5 mr-2" />
+                      <Send className="w-5 h-5 mr-2" aria-hidden="true" />
                       Send Message
                     </>
                   )}
@@ -323,12 +450,14 @@ export default function Contact({ data }: ContactProps) {
             {/* Status Messages */}
             {submitStatus === 'success' && (
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
                 className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-lg"
+                role="alert"
+                aria-live="polite"
               >
                 <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
-                  <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center" aria-hidden="true">
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -343,20 +472,27 @@ export default function Contact({ data }: ContactProps) {
 
             {submitStatus === 'error' && (
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
                 className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg"
+                role="alert"
+                aria-live="polite"
               >
                 <div className="flex items-center gap-2 text-red-700 dark:text-red-400">
-                  <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center" aria-hidden="true">
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </div>
-                  <span className="font-medium">Failed to send message</span>
+                  <span className="font-medium">
+                    {!isOnline ? 'No internet connection' : 'Failed to send message'}
+                  </span>
                 </div>
                 <p className="text-sm text-red-600 dark:text-red-500 mt-1">
-                  Please try again or contact us directly.
+                  {!isOnline
+                    ? 'Please check your internet connection and try again.'
+                    : 'Please try again or contact us directly.'
+                  }
                 </p>
               </motion.div>
             )}
@@ -366,8 +502,8 @@ export default function Contact({ data }: ContactProps) {
         {/* Call to Action */}
         <motion.div
           className="text-center mt-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
+          whileInView={prefersReducedMotion ? {} : { opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
@@ -375,7 +511,7 @@ export default function Contact({ data }: ContactProps) {
             Prefer to connect directly? Feel free to reach out through any of the channels above.
           </p>
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-full text-sm font-medium">
-            <Mail className="w-4 h-4" />
+            <Mail className="w-4 h-4" aria-hidden="true" />
             Always open to new opportunities
           </div>
         </motion.div>

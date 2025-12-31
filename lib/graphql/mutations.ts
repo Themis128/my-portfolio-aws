@@ -20,6 +20,12 @@ export const sendContact = /* GraphQL */ `
     $email: String!
     $message: String!
   ) {
-    sendContact(name: $name, email: $email, message: $message)
+    sendContact(name: $name, email: $email, message: $message) {
+      id
+      name
+      email
+      message
+      createdAt
+    }
   }
 `;

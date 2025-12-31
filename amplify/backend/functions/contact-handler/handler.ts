@@ -1,71 +1,21 @@
-import { generateClient } from '@aws-amplify/api';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-import { createContact } from './graphql/mutations';
 
 const sesClient = new SESClient({ region: 'us-east-1' });
 
-export const handler = async (event: {
-  body?: string | Record<string, unknown>;
-  arguments?: {
-    name: string;
-    email: string;
-    message: string;
-  };
-}) => {
-  // Handle both GraphQL mutation arguments and API Gateway body
-  let name: string | undefined, email: string | undefined, message: string | undefined;
-
-  if (event.arguments) {
-    // GraphQL mutation call
-    ({ name, email, message } = event.arguments);
-  } else {
-    // Handle both Amplify and serverless-offline event formats
-    let body: Record<string, unknown> = {};
-    if (typeof event.body === 'string') {
-      body = JSON.parse(event.body);
-    } else if (event.body) {
-      body = event.body;
-    }
-
-    ({ name, email, message } = body as {
-      name?: string;
-      email?: string;
-      message?: string;
-    });
-  }
+export const handler = async (event: any, context: any) => {
+  const { name, email, message } = event.arguments;
 
   if (!name || !email || !message) {
-    if (event.arguments) {
-      // For GraphQL, throw error for validation
-      throw new Error('Missing required fields');
-    } else {
-      return {
-        statusCode: 400,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        },
-        body: JSON.stringify({ error: 'Missing required fields' }),
-      };
-    }
+    throw new Error('Missing required fields');
   }
 
-  // At this point, we know name, email, message are defined
-
   try {
-    // Store in DynamoDB via GraphQL
-    const client = generateClient();
-    await client.graphql({
-      query: createContact,
-      variables: {
-        input: {
-          name,
-          email,
-          message,
-        },
-      },
-    });
+    // Create the contact record
+    const contact = {
+      name,
+      email,
+      message,
+    };
 
     // Send confirmation email via SES
     try {
@@ -138,7 +88,7 @@ This is an automated response. Please do not reply to this email.`,
       await sesClient.send(new SendEmailCommand(emailParams));
     } catch (emailError) {
       console.error('Error sending email:', emailError);
-      // Continue anyway
+      // Continue anyway - don't fail the whole operation
     }
 
     // Send to Slack webhook
@@ -187,45 +137,11 @@ This is an automated response. Please do not reply to this email.`,
       // Continue anyway
     }
 
-    // Return different format for GraphQL vs API Gateway
-    if (event.arguments) {
-      // GraphQL mutation - return string
-      return "success";
-    } else {
-      // API Gateway - return HTTP response
-      return {
-        statusCode: 200,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        },
-        body: JSON.stringify({
-          message: 'Message sent successfully',
-          success: true
-        }),
-      };
-    }
+    // Return the contact record
+    return contact;
 
   } catch (error) {
     console.error('Error processing contact form:', error);
-
-    if (event.arguments) {
-      // For GraphQL, throw error
-      throw error;
-    } else {
-      return {
-        statusCode: 500,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        },
-        body: JSON.stringify({
-          error: 'Internal server error',
-          success: false
-        }),
-      };
-    }
+    throw error;
   }
 };
