@@ -70,7 +70,7 @@ export const handler = async (event: {
     // Send confirmation email via SES
     try {
       const emailParams = {
-        Source: 'noreply@baltzakisthemis.com',
+        Source: 'noreply@cloudless.gr',
         Destination: {
           ToAddresses: [email],
         },
@@ -91,7 +91,7 @@ For your reference, here's a copy of your message:
 
 Best regards,
 Themistoklis Baltzakis
-www.baltzakisthemis.com
+www.cloudless.gr
 
 ---
 This is an automated response. Please do not reply to this email.`,
@@ -121,7 +121,7 @@ This is an automated response. Please do not reply to this email.`,
 
         <p>Best regards,<br>
         <strong>Themis Baltzakis</strong><br>
-        <a href="https://www.baltzakisthemis.com" style="color: #2563eb;">www.baltzakisthemis.com</a></p>
+        <a href="https://www.cloudless.gr" style="color: #2563eb;">www.cloudless.gr</a></p>
 
         <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
         <p style="font-size: 12px; color: #666;">
