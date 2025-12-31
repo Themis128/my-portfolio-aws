@@ -2,7 +2,7 @@ import { generateClient } from '@aws-amplify/api';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import { createContact } from './graphql/mutations';
 
-const sesClient = new SESClient({ region: 'eu-central-1' });
+const sesClient = new SESClient({ region: 'us-east-1' });
 
 export const handler = async (event: {
   body?: string | Record<string, unknown>;
