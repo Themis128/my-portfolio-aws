@@ -6,9 +6,9 @@ import { Amplify } from 'aws-amplify';
 // This configuration connects to the existing backend API
 const amplifyconfig = {
   data: {
-    url: "https://52sbnvcfvvh6bmnpumczqlfihi.appsync-api.eu-central-1.amazonaws.com/graphql",
+    url: "https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql",
     aws_region: "eu-central-1",
-    api_key: "da2-nz4qfcj7lne3dbeknww64vwala",
+    api_key: "da2-4sp2psirnncn7lgrly3bndxksy",
     default_authorization_type: "API_KEY",
     authorization_types: ["AWS_IAM"],
     model_introspection: {

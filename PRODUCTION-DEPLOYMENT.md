@@ -70,7 +70,7 @@ surge out --domain themis-portfolio.surge.sh
 Your backend is already deployed and working in the Amplify sandbox:
 
 ```
-GraphQL API: https://52sbnvcfvvh6bmnpumczqlfihi.appsync-api.eu-central-1.amazonaws.com/graphql
+GraphQL API: https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql
 API Key: da2-nz4qfcj7lne3dbeknww64vwala
 Region: eu-central-1
 ```
@@ -79,7 +79,7 @@ Region: eu-central-1
 Add these to your hosting platform:
 
 ```env
-NEXT_PUBLIC_GRAPHQL_ENDPOINT=https://52sbnvcfvvh6bmnpumczqlfihi.appsync-api.eu-central-1.amazonaws.com/graphql
+NEXT_PUBLIC_GRAPHQL_ENDPOINT=https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql
 NEXT_PUBLIC_API_KEY=da2-nz4qfcj7lne3dbeknww64vwala
 ```
 

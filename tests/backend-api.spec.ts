@@ -292,7 +292,7 @@ test.describe('MCP Server - File Operations', () => {
 
 // Contact GraphQL Tests
 test.describe('Contact GraphQL - Form Submissions', () => {
-  const GRAPHQL_ENDPOINT = 'https://74de5bh225e2xjbmaux7e6fcsq.appsync-api.eu-central-1.amazonaws.com/graphql';
+  const GRAPHQL_ENDPOINT = 'https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql';
   const API_KEY = 'da2-ht5uhvqma5fcnnxemn47mnbhya';
 
   test('should submit contact form successfully', async ({ request }) => {

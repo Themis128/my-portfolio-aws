@@ -7,8 +7,8 @@ const PRODUCTION_URLS = [
 ];
 
 // GraphQL API configuration
-const GRAPHQL_ENDPOINT = 'https://74de5bh225e2xjbmaux7e6fcsq.appsync-api.eu-central-1.amazonaws.com/graphql';
-const GRAPHQL_API_KEY = 'da2-ht5uhvqma5fcnnxemn47mnbhya';
+const GRAPHQL_ENDPOINT = 'https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql';
+const GRAPHQL_API_KEY = 'da2-4sp2psirnncn7lgrly3bndxksy';
 
 // Helper function to make GraphQL requests
 async function makeGraphQLRequest(query: string, variables?: Record<string, unknown>) {

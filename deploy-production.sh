@@ -61,7 +61,7 @@ case $choice in
         echo "Upload the contents of the 'out' folder to your hosting provider"
         echo ""
         echo "Environment variables to set:"
-        echo "NEXT_PUBLIC_GRAPHQL_ENDPOINT=https://52sbnvcfvvh6bmnpumczqlfihi.appsync-api.eu-central-1.amazonaws.com/graphql"
+        echo "NEXT_PUBLIC_GRAPHQL_ENDPOINT=https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql"
         echo "NEXT_PUBLIC_API_KEY=da2-nz4qfcj7lne3dbeknww64vwala"
         ;;
     *)
@@ -75,7 +75,7 @@ echo "🎉 Deployment completed!"
 echo ""
 echo "📋 Next steps:"
 echo "1. Set environment variables in your hosting platform:"
-echo "   - NEXT_PUBLIC_GRAPHQL_ENDPOINT=https://52sbnvcfvvh6bmnpumczqlfihi.appsync-api.eu-central-1.amazonaws.com/graphql"
+echo "   - NEXT_PUBLIC_GRAPHQL_ENDPOINT=https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql"
 echo "   - NEXT_PUBLIC_API_KEY=da2-nz4qfcj7lne3dbeknww64vwala"
 echo ""
 echo "2. Test your live site:"
