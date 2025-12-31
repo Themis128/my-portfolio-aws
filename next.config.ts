@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Using static export for Amplify compatibility
-  output: 'export',
+  // Reverting to SSR mode for client-side functionality
+  // output: 'export',
   trailingSlash: true,
   reactStrictMode: true,
   // AWS Amplify specific optimizations
