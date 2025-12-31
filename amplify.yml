@@ -20,13 +20,11 @@ frontend:
         - echo "Build environment check:"
         - ls -la
         - NODE_ENV=production pnpm run build
-        - echo "=== Running next export ==="
-        - npx next export
-        - echo "=== Checking for static export output ==="
-        - ls -la out 2>/dev/null || echo "out directory not found"
         - echo "=== Build completed successfully ==="
+        - echo "Build output check:"
+        - ls -la .next
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
