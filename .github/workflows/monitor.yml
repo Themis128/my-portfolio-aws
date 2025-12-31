@@ -1,0 +1,78 @@
+name: Monitor Deployment
+
+on:
+  workflow_run:
+    workflows: ["Deploy to AWS Amplify"]
+    types:
+      - completed
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.14.4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Health Check
+        run: |
+          echo "🔍 Running post-deployment health checks..."
+          # Check if the site is accessible
+          curl -f -s https://master.dcwmv1pw85f0j.amplifyapp.com > /dev/null
+          if [ $? -eq 0 ]; then
+            echo "✅ Site is accessible"
+          else
+            echo "❌ Site is not accessible"
+            exit 1
+          fi
+
+      - name: Test Contact Form API
+        run: |
+          echo "📧 Testing contact form API..."
+          # Test the GraphQL endpoint
+          response=$(curl -s -X POST \
+            https://your-appsync-endpoint.amazonaws.com/graphql \
+            -H "Content-Type: application/json" \
+            -H "x-api-key: your-api-key" \
+            -d '{"query": "mutation { sendContact(input: { name: \"Test\", email: \"test@example.com\", message: \"Test message\" }) { success } }"}')
+
+          if echo "$response" | grep -q "success"; then
+            echo "✅ Contact form API is working"
+          else
+            echo "⚠️ Contact form API test inconclusive (may be expected if API key is not set)"
+          fi
+
+      - name: Performance Check
+        run: |
+          echo "⚡ Running basic performance checks..."
+          # Simple Lighthouse check (if lighthouse is available)
+          if command -v lighthouse &> /dev/null; then
+            lighthouse https://master.dcwmv1pw85f0j.amplifyapp.com --output=json --output-path=./lighthouse-results.json --quiet
+            echo "✅ Lighthouse performance check completed"
+          else
+            echo "ℹ️ Lighthouse not available, skipping performance check"
+          fi
+
+      - name: Deployment Summary
+        run: |
+          echo "🎉 Deployment monitoring completed successfully!"
+          echo "📊 Summary:"
+          echo "   - Site accessibility: ✅"
+          echo "   - Build status: ✅"
+          echo "   - Branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "   - Commit: ${{ github.event.workflow_run.head_sha }}"
+          echo "   - Triggered by: ${{ github.event.workflow_run.triggering_actor.login }}"

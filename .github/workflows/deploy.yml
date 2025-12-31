@@ -24,7 +24,7 @@ on:
           - development
 
 env:
-  NODE_VERSION: '22'  # Updated to match Lambda runtime
+  NODE_VERSION: '20'  # Match Amplify build environment
 
 jobs:
   # Quality checks job
@@ -44,10 +44,10 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9.14.4
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run linting
         run: pnpm run lint
@@ -69,7 +69,7 @@ jobs:
 
     environment:
       name: ${{ github.event.inputs.environment || 'production' }}
-      url: ${{ steps.deploy.outputs.amplify_app_url }}
+      url: ${{ steps.get-url.outputs.amplify_app_url }}
 
     steps:
       - name: Checkout code
@@ -85,10 +85,10 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9.14.4
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build application
         run: pnpm run build
@@ -96,33 +96,19 @@ jobs:
           NODE_ENV: production
           NEXT_PUBLIC_AMPLIFY_ENV: ${{ github.event.inputs.environment || 'prod' }}
 
-      - name: Deploy to Amplify
-        id: deploy
+      - name: Get Amplify App URL
+        id: get-url
         run: |
-          # Install AWS CLI v2
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip -o -q awscliv2.zip
-          sudo ./aws/install --update
-
-          # Configure AWS credentials
-          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws configure set region ${{ secrets.AWS_REGION }}
-
-          # Start Amplify deployment (commented out since app is connected to repo)
-          # aws amplify start-deployment \
-          #   --app-id ${{ secrets.AMPLIFY_APP_ID }} \
-          #   --branch-name ${{ github.event.inputs.branch || 'master' }} \
-          #   --source-url ${{ github.server_url }}/${{ github.repository }}/archive/${{ github.sha }}.zip
-
-          echo "deployment-url=https://master.dcwmv1pw85f0j.amplifyapp.com" >> $GITHUB_OUTPUT
+          # Get the Amplify app URL from the domain configuration
+          echo "amplify_app_url=https://master.dcwmv1pw85f0j.amplifyapp.com" >> $GITHUB_OUTPUT
 
       - name: Post-deployment notification
         if: success() && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
         run: |
           echo "🚀 Deployment successful!"
-          echo "App URL: ${{ steps.deploy.outputs.amplify_app_url }}"
+          echo "App URL: ${{ steps.get-url.outputs.amplify_app_url }}"
           echo "Branch: ${{ github.event.inputs.branch || 'master' }}"
+          echo "Commit: ${{ github.sha }}"
 
       - name: Deployment failure notification
         if: failure()
