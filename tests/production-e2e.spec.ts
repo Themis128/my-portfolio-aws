@@ -332,7 +332,7 @@ test.describe('Performance Tests - Production', () => {
     expect(loadTime).toBeLessThan(5000);
   });
 
-    test('contact form submission is responsive', async ({ page }: { page: Page }) => {
+  test('contact form submission is responsive', async ({ page }: { page: Page }) => {
     await page.goto('https://master.dcwmv1pw85f0j.amplifyapp.com/');
 
     // Navigate to contact section - handle mobile navigation
