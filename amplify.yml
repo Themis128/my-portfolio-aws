@@ -23,6 +23,10 @@ frontend:
       - node_modules/**/*
       - ~/.cache/**/*
 
+# SSR configuration for Next.js
+ssr:
+  enabled: true
+
 # Build optimization
 buildTypes:
   - type: BUILD

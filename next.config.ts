@@ -42,9 +42,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@aws-amplify/ui-react', 'lucide-react'], // Optimize Amplify and icon imports
   },
 
-  // Image optimization (unoptimized for static export)
+  // Image optimization (optimized for SSR)
   images: {
-    unoptimized: true,
+    formats: ['image/webp', 'image/avif'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -55,7 +55,7 @@ const nextConfig: NextConfig = {
       // Allow images from your domain
       {
         protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_DOMAIN || 'master.dcwmv1pw85f0j.amplifyapp.com',
+        hostname: process.env.NEXT_PUBLIC_DOMAIN || 'dfltlhnwu9p09.amplifyapp.com',
         port: '',
         pathname: '/**',
       },
@@ -65,7 +65,7 @@ const nextConfig: NextConfig = {
   // Environment variables that should be available at build time
   env: {
     NEXT_PUBLIC_AMPLIFY_ENV: process.env.AMPLIFY_ENV || 'dev',
-    NEXT_PUBLIC_DOMAIN: process.env.AMPLIFY_APP_DOMAIN || 'master.dcwmv1pw85f0j.amplifyapp.com',
+    NEXT_PUBLIC_DOMAIN: process.env.AMPLIFY_APP_DOMAIN || 'dfltlhnwu9p09.amplifyapp.com',
   },
 
   // Turbopack config: disable for Amplify builds to avoid caching issues
