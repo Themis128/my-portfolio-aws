@@ -10,9 +10,32 @@ const nextConfig: NextConfig = {
   compress: false, // Disable Next.js compression (CloudFront handles this)
   generateEtags: false, // Disable etags (CloudFront handles caching)
 
-  // NOTE: Redirects and headers are not supported with static export (output: 'export')
-  // These must be configured at the CDN level (CloudFront) or hosting provider level (Amplify)
-  // For Amplify, configure redirects in the Amplify Console under "Rewrites and redirects"
+  // Security headers
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()'
+          }
+        ]
+      }
+    ];
+  },
 
   // Build optimizations for Amplify
   experimental: {

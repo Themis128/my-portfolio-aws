@@ -1,0 +1,33 @@
+{
+  "name": "deployment-automation",
+  "version": "2.0.0",
+  "description": "Automated deployment tools for AWS Amplify and CI/CD optimization",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "mcp",
+    "deployment",
+    "aws-amplify",
+    "ci-cd",
+    "automation"
+  ],
+  "author": "Portfolio MCP Optimization",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "@aws-sdk/client-amplify": "^3.0.0",
+    "@aws-sdk/client-cloudwatch": "^3.0.0",
+    "axios": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  }
+}

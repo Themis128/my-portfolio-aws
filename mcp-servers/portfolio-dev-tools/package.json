@@ -1,0 +1,37 @@
+{
+  "name": "portfolio-dev-tools",
+  "version": "2.0.0",
+  "description": "Optimized MCP server for Next.js portfolio development, AWS Amplify deployment, and performance optimization",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "mcp",
+    "portfolio",
+    "nextjs",
+    "aws-amplify",
+    "performance",
+    "seo",
+    "accessibility"
+  ],
+  "author": "Portfolio MCP Optimization",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "lighthouse": "^12.0.0",
+    "puppeteer": "^22.0.0",
+    "webpack-bundle-analyzer": "^4.10.0",
+    "axe-core": "^4.9.0",
+    "pa11y": "^6.2.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  }
+}
