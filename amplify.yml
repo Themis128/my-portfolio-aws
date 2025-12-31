@@ -20,9 +20,11 @@ frontend:
         - echo "Build environment check:"
         - ls -la
         - NODE_ENV=production pnpm run build
+        - echo "=== Running next export ==="
+        - npx next export
+        - echo "=== Checking for static export output ==="
+        - ls -la out 2>/dev/null || echo "out directory not found"
         - echo "=== Build completed successfully ==="
-        - echo "Build output check:"
-        - ls -la out || (echo "out directory not found, checking current directory:" && ls -la && find . -name "out" -type d 2>/dev/null || echo "out directory not found anywhere")
   artifacts:
     baseDirectory: out
     files:
