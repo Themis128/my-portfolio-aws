@@ -68,6 +68,6 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_DOMAIN: process.env.AMPLIFY_APP_DOMAIN || 'master.dcwmv1pw85f0j.amplifyapp.com',
   },
 
-  // Turbopack config: keep empty object to silence Turbopack/webpack conflict
-  turbopack: {},
+  // Turbopack config: disable for Amplify builds to avoid caching issues
+  turbopack: false,
 };

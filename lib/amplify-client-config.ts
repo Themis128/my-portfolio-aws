@@ -79,7 +79,7 @@ const amplifyconfig = {
 
 // Configure Amplify immediately when this module is loaded in the browser
 // This ensures Amplify is configured before any components that use it are rendered
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
   try {
     Amplify.configure(amplifyconfig, {
       ssr: false, // Disable SSR mode for static export
