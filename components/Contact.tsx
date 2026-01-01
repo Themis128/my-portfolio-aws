@@ -80,7 +80,7 @@ export default function Contact({ data }: ContactProps) {
     while (attempt < maxRetries) {
       try {
         // Ensure Amplify is configured before making API calls
-        ensureAmplifyConfigured();
+        await ensureAmplifyConfigured();
 
         // Use the sendContact mutation with Slack and SES notifications
         const client = generateClient();
