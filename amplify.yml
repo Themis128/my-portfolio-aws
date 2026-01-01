@@ -5,20 +5,31 @@ frontend:
       commands:
         - npm install -g pnpm
         - pnpm install --frozen-lockfile
-        - echo "Dependencies installed successfully"
+        - echo "Installing dependencies with pnpm"
+        - echo "=== Checking environment variables ==="
+        - "echo \"NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-NOT_SET}\""
     build:
       commands:
-        - echo "Building Next.js application..."
+        - echo "Building optimized Next.js application..."
         - pnpm run build
         - echo "Build completed successfully"
   artifacts:
-    baseDirectory: .next
+    baseDirectory: .
     files:
-      - '**/*'
+      - '.next/**/*'
+      - 'package.json'
+      - 'next.config.ts'
+      - 'public/**/*'
+      - 'node_modules/**/*'
   cache:
     paths:
       - .next/cache/**/*
       - node_modules/**/*
+      - ~/.cache/**/*
+
+# SSR configuration for Next.js
+ssr:
+  enabled: true
 
 # Build optimization
 buildTypes:
