@@ -7,7 +7,20 @@
 
 A modern, full-stack portfolio website built with Next.js 16, TypeScript, and AWS Amplify. Features contact forms, analytics tracking, Slack notifications, and email integration.
 
-## 🌟 Features
+## � Live Demo
+
+**Portfolio is live and operational!**  
+**Visit:** https://dcwmv1pw85f0j.amplifyapp.com
+
+### Production Features:
+
+- ✅ **Live Contact Form** - Sends messages to Slack
+- ✅ **Global CDN** - Fast worldwide loading
+- ✅ **SSL Security** - HTTPS encryption
+- ✅ **Enterprise Monitoring** - Complete observability suite
+- ✅ **Cost Effective** - Only $1/month hosting
+
+## �🌟 Features
 
 - **⚡ Next.js 16** with App Router and static export
 - **🎨 Modern UI** with Tailwind CSS and Framer Motion
@@ -17,6 +30,7 @@ A modern, full-stack portfolio website built with Next.js 16, TypeScript, and AW
 - **🔒 Security** hardened with CSP and security headers
 - **🚀 CI/CD** with GitHub Actions and automated testing
 - **🧪 Testing** with Playwright E2E tests
+- **⏰ Scheduled Functions** with EventBridge automation
 
 ## 🏗️ Architecture
 
@@ -38,6 +52,8 @@ Email (SES) + Slack + Analytics
 - **Email Sender**: Sends emails via Amazon SES
 - **Slack Notifier**: Sends notifications to Slack channels
 - **Portfolio Analytics**: Tracks user interactions and events
+- **Weekly Digest**: Generates weekly analytics summaries (runs every Sunday)
+- **Daily Reminder**: Sends daily notifications and reminders (multiple schedules)
 
 ## 🚀 Quick Start
 
@@ -50,28 +66,70 @@ Email (SES) + Slack + Analytics
 ### Local Development
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/Themis128/my-portfolio-aws.git
    cd my-portfolio-aws
    ```
 
 2. **Install dependencies**
+
    ```bash
    pnpm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env.local
    # Edit .env.local with your configuration
    ```
 
 4. **Start development server**
+
    ```bash
    pnpm dev
    ```
 
 5. **Open [http://localhost:3000](http://localhost:3000)**
+
+### Local Backend Development
+
+For developing with AWS Amplify backend services locally, use the Amplify sandbox environment:
+
+1. **Start Amplify sandbox**
+
+   ```bash
+   npx ampx sandbox
+   ```
+
+2. **Stream function logs** (optional, for debugging)
+
+   Amplify enables streaming logs from your AWS Lambda functions directly to your terminal:
+
+   ```bash
+   npx ampx sandbox --stream-function-logs
+   ```
+
+   **Filtering logs**: To stream only specific functions, use the `--logs-filter` flag:
+
+   ```bash
+   npx ampx sandbox --stream-function-logs --logs-filter auth
+   ```
+
+   **Writing logs to file**: Save logs to a file instead of terminal output:
+
+   ```bash
+   npx ampx sandbox --stream-function-logs --logs-out-file sandbox.log
+   ```
+
+   Combine filters and file output:
+
+   ```bash
+   npx ampx sandbox --stream-function-logs --logs-filter auth --logs-out-file sandbox-auth.log
+   ```
+
+   **Note**: This feature is only available for Sandbox mode and helps with faster debug iterations and greater insight into function executions.
 
 ### Environment Variables
 
@@ -160,6 +218,9 @@ pnpm test            # Run tests
 # AWS Amplify
 pnpm run deploy:amplify       # Deploy to Amplify
 pnpm run deploy:amplify:simple # Simple deployment script
+
+# Scheduled Functions
+pnpm run test:scheduled       # Test scheduled functions locally
 
 # Testing
 pnpm exec playwright test     # Run E2E tests
@@ -267,14 +328,17 @@ For enhanced analytics, configure Google Analytics:
 ### Common Issues
 
 **Build fails with "amplify_outputs.json not found"**
+
 - Run `amplify pull` to sync backend configuration
 - Ensure you're in the correct Amplify environment
 
 **Lambda functions timeout**
+
 - Check CloudWatch logs for performance issues
 - Consider increasing memory allocation
 
 **CORS errors**
+
 - Verify API Gateway CORS configuration
 - Check Next.js headers configuration
 
@@ -299,4 +363,5 @@ This project is licensed under the **AGPL v3** license - see the [LICENSE](LICEN
 ---
 
 **Built with ❤️ by Themis Baltzakis**
+
 # Deployment test - Tue Dec 30 04:07:23 EET 2025

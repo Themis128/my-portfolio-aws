@@ -8,12 +8,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "docs": "typedoc --entryPointStrategy expand --out docs/api app/ components/ lib/ types/ --name \"My Portfolio AWS\" --readme README.md",
+    "test:scheduled": "node scripts/test-scheduled-functions.js",
     "deploy:amplify": "node deploy-amplify.js",
     "deploy:amplify:simple": "node deploy-amplify-simple.js"
   },
   "dependencies": {
     "@aws-amplify/api": "^6.3.21",
-    "@aws-amplify/backend": "^1.0.0",
+    "@aws-amplify/backend": "^1.19.0",
+    "@aws-amplify/backend-auth": "^1.9.0",
+    "@aws-amplify/ui-react": "^6.13.2",
+    "@aws-amplify/ui-react-ai": "^1.5.0",
     "@aws-sdk/client-amplify": "^3.958.0",
     "@aws-sdk/client-ses": "^3.958.0",
     "@radix-ui/react-avatar": "^1.1.11",
@@ -48,10 +53,12 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "node-fetch": "^3.3.2",
-    "serverless": "^4.29.0",
+    "serverless": "^4.29.3",
     "serverless-dotenv-plugin": "^6.0.0",
     "serverless-offline": "^14.4.0",
+    "snyk": "^1.1301.2",
     "tailwindcss": "^4",
+    "typedoc": "^0.28.15",
     "typescript": "^5"
   }
 }

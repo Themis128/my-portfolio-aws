@@ -19,6 +19,8 @@ frontend:
       - '.next/**/*'
       - 'package.json'
       - 'next.config.ts'
+      - 'public/**/*'
+      - 'node_modules/**/*'
   cache:
     paths:
       - .next/cache/**/*

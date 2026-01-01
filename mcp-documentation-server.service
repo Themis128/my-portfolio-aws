@@ -1,0 +1,30 @@
+[Unit]
+Description=MCP Documentation Server with Gemini AI
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=tbaltzakis
+Group=tbaltzakis
+WorkingDirectory=/home/tbaltzakis/my-portfolio-aws/mcp-servers/documentation-server
+ExecStart=/usr/bin/node /home/tbaltzakis/my-portfolio-aws/mcp-servers/documentation-server/dist/server.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=GEMINI_API_KEY=gen-lang-client-0524292946
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/home/tbaltzakis/my-portfolio-aws/mcp-servers/documentation-server
+ProtectHome=yes
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mcp-documentation-server
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,70 @@
+{
+  "name": "@andrea9293/mcp-documentation-server",
+  "version": "1.12.0",
+  "description": "A TypeScript MCP server for document management and semantic search with embeddings",
+  "main": "dist/server.js",
+  "type": "module",
+  "bin": {
+    "mcp-documentation-server": "dist/server.js"
+  },
+  "homepage": "https://github.com/andrea9293/mcp-documentation-server#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrea9293/mcp-documentation-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andrea9293/mcp-documentation-server/issues"
+  },
+  "scripts": {
+    "build": "tsc && shx chmod +x dist/*.js",
+    "start": "tsx src/server.ts",
+    "dev": "fastmcp dev src/server.ts",
+    "dev:direct": "npx tsx src/server.ts",
+    "dev:build": "npm run build && node dist/server.js",
+    "inspect": "npx fastmcp inspect src/server.ts",
+    "test": "echo \"Warning: no test specified\" && exit 0",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "documentation",
+    "search",
+    "embeddings"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.3",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "@tsconfig/node22": "^22.0.1",
+    "@types/fs-extra": "^11.0.4",
+    "@types/glob": "^8.1.0",
+    "semantic-release": "^24.2.5",
+    "shx": "^0.3.4",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@google/genai": "^1.19.0",
+    "@modelcontextprotocol/sdk": "^1.12.3",
+    "@types/node": "^24.0.1",
+    "@xenova/transformers": "^2.17.2",
+    "dotenv": "^16.5.0",
+    "fastmcp": "^3.24.0",
+    "fs-extra": "^11.3.0",
+    "glob": "^11.0.3",
+    "unpdf": "^1.2.1",
+    "zod": "^3.25.64"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

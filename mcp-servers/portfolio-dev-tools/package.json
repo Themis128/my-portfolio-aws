@@ -20,12 +20,12 @@
   "author": "Portfolio MCP Optimization",
   "license": "MIT",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^0.4.0",
-    "lighthouse": "^12.0.0",
-    "puppeteer": "^22.0.0",
-    "webpack-bundle-analyzer": "^4.10.0",
+    "@modelcontextprotocol/sdk": "^1.25.1",
+    "lighthouse": "^13.0.1",
+    "puppeteer": "^24.34.0",
+    "webpack-bundle-analyzer": "^5.1.0",
     "axe-core": "^4.9.0",
-    "pa11y": "^6.2.3"
+    "pa11y": "^9.0.1"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -8,6 +8,8 @@ import Languages from '../components/Languages';
 import Projects from '../components/Projects';
 import Skills from '../components/Skills';
 import { getPersonalDataServer } from '../lib/personal-data';
+import AIProjectGenerator from '../components/AIProjectGenerator';
+import AIChat from '../components/AIChat';
 
 export default function Home() {
   const personalData = getPersonalDataServer();
@@ -23,6 +25,8 @@ export default function Home() {
       <Languages data={personalData} />
       <Achievements data={personalData} />
       <Projects data={personalData} />
+      <AIProjectGenerator />
+      <AIChat />
       <Contact data={personalData} />
     </div>
   );

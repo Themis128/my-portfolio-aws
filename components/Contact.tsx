@@ -128,11 +128,11 @@ export default function Contact({ data }: ContactProps) {
   }, []);
 
   // Keyboard navigation support
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       if (isFormValid && !isSubmitting) {
-        handleSubmit(e as any);
+        handleSubmit(e);
       }
     }
   }, [isFormValid, isSubmitting, handleSubmit]);

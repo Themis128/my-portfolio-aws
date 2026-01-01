@@ -6,9 +6,10 @@ import Navigation from '../components/Navigation';
 import ToolbarMountController from '../components/ToolbarMountController';
 import AmplifyInitializer from '../components/AmplifyInitializer';
 import '../globals.css';
-import '../lib/amplify'; // Keep empty for static export compatibility
+import '../lib/amplify-client-config'; // Configure Amplify early
 import { ThemeProvider } from '../lib/theme-context';
 import { Analytics } from '@vercel/analytics/react';
+import '@aws-amplify/ui-react/styles.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

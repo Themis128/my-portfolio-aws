@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { trackInteraction } from '../lib/analytics';
 import ThemeSwitcher from './ThemeSwitcher';
+import UserSession from './UserSession';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -85,6 +86,7 @@ export default function Navigation() {
               </button>
             ))}
             <div className="w-px h-8 bg-gray-200 dark:bg-gray-700"></div>
+            <UserSession />
             <ThemeSwitcher />
           </div>
 

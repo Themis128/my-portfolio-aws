@@ -203,19 +203,8 @@ test.describe('Backend API Tests - Production', () => {
 
   test('contact form submission creates database record', async () => {
     // First, get the current count of contacts
-    const listQuery = `
-      query {
-        listContacts {
-          items {
-            id
-          }
-        }
-      }
-    `;
 
-    const beforeResponse = await makeGraphQLRequest(listQuery);
-    const beforeCount = beforeResponse.data.listContacts.items.length;
-
+    // Note: Count is calculated but not used due to parallel test execution
     // Submit a contact form through the website (this will be tested in the UI test above)
     // For this API test, we'll directly create a contact via GraphQL
     const createMutation = `

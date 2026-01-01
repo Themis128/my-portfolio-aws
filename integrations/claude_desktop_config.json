@@ -1,0 +1,61 @@
+{
+  "mcpServers": {
+    "claude-copilot-bridge": {
+      "command": "node",
+      "args": [
+        "index.js"
+      ],
+      "cwd": "/home/tbaltzakis/my-portfolio-aws/mcp-servers/claude-copilot-bridge",
+      "env": {
+        "CLAUDE_API_KEY": "your_claude_api_key_here",
+        "GITHUB_TOKEN": "your_github_token_here",
+        "COPILOT_API_ENDPOINT": "https://api.github.com/copilot",
+        "AWS_REGION": "us-east-1",
+        "AMPLIFY_APP_ID": "your_amplify_app_id_here"
+      }
+    },
+    "claude-agent-orchestrator": {
+      "command": "node",
+      "args": [
+        "orchestrator.js"
+      ],
+      "cwd": "/home/tbaltzakis/my-portfolio-aws/mcp-servers/claude-agent-orchestrator",
+      "env": {
+        "CLAUDE_API_KEY": "your_claude_api_key_here",
+        "MAX_AGENTS": "5",
+        "AGENT_TIMEOUT": "300000"
+      }
+    },
+    "portfolio-dev-tools": {
+      "command": "node",
+      "args": [
+        "index.js"
+      ],
+      "cwd": "/home/tbaltzakis/my-portfolio-aws/mcp-servers/portfolio-dev-tools"
+    },
+    "ai-code-assistant": {
+      "command": "node",
+      "args": [
+        "index.js"
+      ],
+      "cwd": "/home/tbaltzakis/my-portfolio-aws/mcp-servers/ai-code-assistant"
+    },
+    "deployment-automation": {
+      "command": "node",
+      "args": [
+        "index.js"
+      ],
+      "cwd": "/home/tbaltzakis/my-portfolio-aws/mcp-servers/deployment-automation"
+    },
+    "documentation-server": {
+      "command": "node",
+      "args": [
+        "dist/server.js"
+      ],
+      "cwd": "/home/tbaltzakis/my-portfolio-aws/mcp-servers/documentation-server",
+      "env": {
+        "GEMINI_API_KEY": "gen-lang-client-0524292946"
+      }
+    }
+  }
+}

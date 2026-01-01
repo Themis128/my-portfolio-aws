@@ -71,3 +71,5 @@ const nextConfig: NextConfig = {
   // Turbopack config: disable for Amplify builds to avoid caching issues
   // turbopack: false, // Commented out to avoid TypeScript error
 };
+
+export default nextConfig;

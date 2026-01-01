@@ -2,6 +2,32 @@
 
 This guide covers deploying your Next.js portfolio with AWS Amplify Gen 2 backend to AWS Amplify with optimized settings for production.
 
+## Current Architecture Overview
+
+### Hosting Method: AWS Amplify Managed Hosting (NOT S3 Static Website Hosting)
+
+- **Platform**: AWS Amplify's proprietary managed hosting infrastructure
+- **SSR Support**: Full server-side rendering enabled for Next.js
+- **CDN**: Automatic CloudFront integration
+- **Backend**: AWS AppSync GraphQL API with AWS Lambda functions
+- **Storage**: Amazon S3 for assets/logs (NOT website hosting)
+
+### Key Services Configured:
+
+- **AWS Amplify**: Managed hosting with SSR
+- **AWS AppSync**: GraphQL API service
+- **AWS Lambda**: Contact handler function
+- **Amazon S3**: Asset storage and logs
+- **Amazon CloudFront**: Global CDN (auto-configured)
+- **AWS Certificate Manager**: SSL certificates
+
+### Current Status:
+
+- **Live URL**: `https://dcwmv1pw85f0j.amplifyapp.com`
+- **Target Domain**: `baltzakisthemis.com` (DNS verification pending)
+- **Domain Issue**: DNS records point to old CloudFront distribution
+- **Backend**: AppSync GraphQL API active with contact/analytics functionality
+
 ## Prerequisites
 
 1. AWS Account with appropriate permissions
@@ -69,6 +95,7 @@ backend:
 Configure these environment variables in AWS Amplify Console:
 
 ### Build-time Variables
+
 ```env
 NODE_VERSION=20
 PNPM_VERSION=9.14.4
@@ -76,6 +103,7 @@ NEXT_TELEMETRY_DISABLED=1
 ```
 
 ### Runtime Variables
+
 ```env
 # Amplify automatically sets this based on your backend configuration
 AMPLIFY_REST_API_URL=https://your-api-id.execute-api.region.amazonaws.com/prod
@@ -94,6 +122,7 @@ amplify sandbox
 ## Step 6: Create Amplify App
 
 ### Via AWS Console
+
 1. Go to [AWS Amplify Console](https://console.aws.amazon.com/amplify/)
 2. Click "Get Started" → "Connect app"
 3. Choose your Git provider (GitHub)
@@ -101,6 +130,7 @@ amplify sandbox
 5. Amplify will detect the `amplify.yml` and backend configuration automatically
 
 ### Via AWS CLI
+
 ```bash
 aws amplify create-app \
   --name "my-portfolio-aws" \
@@ -111,31 +141,62 @@ aws amplify create-app \
 
 ## Step 8: Backend Configuration
 
-### REST API Setup
-Your backend includes:
-- **Contact Handler Function**: Processes contact form submissions
-- **REST API**: Exposes HTTP endpoints via API Gateway
-- **Email Integration**: Uses Amazon SES for email notifications
-- **Slack Integration**: Sends notifications to Slack channels
+### AppSync GraphQL API Setup (Current Configuration)
+
+Your backend uses AWS AppSync GraphQL API with the following features:
+
+- **GraphQL API**: `https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql`
+- **Authentication**: API Key + AWS IAM
+- **API Key**: `da2-4sp2psirnncn7lgrly3bndxksy`
+- **Data Models**: Contact forms and Analytics tracking
+- **Lambda Integration**: Contact handler function
+
+### GraphQL Schema:
+
+```graphql
+type Contact {
+  id: ID!
+  name: String!
+  email: String!
+  message: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime
+}
+
+type Analytics {
+  id: ID!
+  eventType: String!
+  page: String
+  userAgent: String
+  referrer: String
+  metadata: AWSJSON
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime
+}
+```
+
+### Custom Mutations:
+
+- `sendContact(name, email, message)` - Handle contact form submissions
+- `sendSlackNotification(message, channel)` - Send Slack notifications
+- `trackAnalytics(eventType, page, userAgent, referrer, metadata)` - Track user analytics
 
 ### Environment Variables for Backend
+
 Set these in your Amplify backend environment:
 
 ```env
-# Email Configuration
-FROM_EMAIL=noreply@yourdomain.com
-TO_EMAIL=your-email@yourdomain.com
-
 # Slack Configuration
 SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK
 
-# AWS SES Configuration (automatically configured)
+# AWS Region (automatically set)
 AWS_REGION=eu-central-1
 ```
 
 ## Step 9: Testing Deployment
 
 ### Local Testing
+
 ```bash
 # Test backend locally
 amplify sandbox
@@ -145,7 +206,9 @@ npm run dev
 ```
 
 ### Production Testing
+
 After deployment, test the contact form functionality:
+
 1. Visit your deployed site
 2. Fill out the contact form
 3. Verify email delivery and Slack notifications
@@ -155,19 +218,47 @@ After deployment, test the contact form functionality:
 
 ## Step 5: Custom Domain Setup
 
-### 1. Configure Custom Domain
-1. In Amplify Console, go to your app
-2. Click "Domain management" → "Add domain"
-3. Enter your custom domain (e.g., `your-domain.com`)
-4. Follow DNS verification steps
+### Current Domain Status
 
-### 2. SSL Certificate
-- Amplify automatically provisions SSL certificates via AWS Certificate Manager
-- Ensure your domain is verified before proceeding
+- **Domain**: `baltzakisthemis.com`
+- **Status**: Configured in Amplify but DNS verification failing
+- **Issue**: DNS records point to old CloudFront distribution from previous app
+- **SSL**: Certificate issued and ready
+
+### DNS Records Required
+
+Update your domain registrar (GoDaddy, Namecheap, etc.) with these CNAME records:
+
+```
+Type: CNAME
+Name: _0e039e45538d56139f5cbafb63772fb6.baltzakisthemis.com
+Value: _59aca9eab2554f64622dea83d91f6661.jkddzztszm.acm-validations.aws.
+
+Type: CNAME
+Name: baltzakisthemis.com
+Value: dtxzcxrjfr622.cloudfront.net
+
+Type: CNAME
+Name: www.baltzakisthemis.com
+Value: dtxzcxrjfr622.cloudfront.net
+```
+
+### Verification Steps
+
+1. Add the DNS records above to your domain registrar
+2. Wait 5-30 minutes for DNS propagation
+3. Check domain status in Amplify Console
+4. Look for "verified": true for both subdomains
+
+### Current Access
+
+- **Working**: `https://dcwmv1pw85f0j.amplifyapp.com`
+- **After DNS**: `https://baltzakisthemis.com` and `https://www.baltzakisthemis.com`
 
 ## Step 6: Advanced Configuration
 
 ### 1. Custom Headers
+
 Add security headers in `next.config.ts`:
 
 ```typescript
@@ -211,6 +302,7 @@ module.exports = nextConfig;
 ```
 
 ### 2. Image Optimization
+
 Configure image domains in `next.config.ts`:
 
 ```typescript
@@ -226,15 +318,19 @@ const nextConfig = {
 ## Step 7: Performance Optimization
 
 ### 1. Enable Caching
+
 Configure cache settings in Amplify Console:
+
 - **Build cache**: Enable for faster builds
 - **Browser cache**: Set appropriate TTL values
 
 ### 2. CDN Configuration
+
 - Amplify automatically uses CloudFront for global content delivery
 - Configure cache invalidation for deployments
 
 ### 3. Bundle Optimization
+
 Ensure your `next.config.ts` includes:
 
 ```typescript
@@ -250,22 +346,27 @@ const nextConfig = {
 ## Step 8: Monitoring and Analytics
 
 ### 1. Enable Monitoring
+
 - Set up CloudWatch alarms for performance metrics
 - Configure custom metrics for user engagement
 
 ### 2. Error Tracking
+
 - Integrate with AWS X-Ray for request tracing
 - Set up error reporting with CloudWatch Logs
 
 ## Step 9: CI/CD Pipeline
 
 ### 1. Branch Management
+
 Configure branch-specific settings:
+
 - **Main branch**: Production deployment
 - **Develop branch**: Staging environment
 - **Feature branches**: Preview deployments
 
 ### 2. Build Triggers
+
 - Automatic builds on git push
 - Manual build triggers for specific scenarios
 - Webhook configuration for external triggers
@@ -273,18 +374,16 @@ Configure branch-specific settings:
 ## Step 10: Security Configuration
 
 ### 1. IAM Permissions
+
 Ensure your Amplify service role has minimal required permissions:
+
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:DeleteObject"
-      ],
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
       "Resource": "arn:aws:s3:::your-amplify-app-*/*"
     }
   ]
@@ -292,6 +391,7 @@ Ensure your Amplify service role has minimal required permissions:
 ```
 
 ### 2. WAF Integration
+
 - Set up AWS WAF for DDoS protection
 - Configure rate limiting rules
 - Add bot protection
@@ -299,18 +399,21 @@ Ensure your Amplify service role has minimal required permissions:
 ## Deployment Commands
 
 ### Manual Deployment
+
 ```bash
 # Trigger build and deploy
 aws amplify start-deployment --app-id your-app-id --branch-name main
 ```
 
 ### Status Check
+
 ```bash
 # Check deployment status
 aws amplify get-app --app-id your-app-id
 ```
 
 ### Rollback
+
 ```bash
 # Rollback to previous version
 aws amplify create-deployment --app-id your-app-id --branch-name main
@@ -321,16 +424,19 @@ aws amplify create-deployment --app-id your-app-id --branch-name main
 ### Common Issues
 
 1. **Build Failures**:
+
    - Check Node.js version compatibility
    - Verify pnpm installation
    - Review build logs in Amplify Console
 
 2. **Environment Variables**:
+
    - Ensure all required variables are set
    - Check variable names match code references
    - Verify sensitive variables are properly secured
 
 3. **Custom Domain Issues**:
+
    - Verify DNS records are correctly configured
    - Check SSL certificate status
    - Ensure domain is not blocked by regional restrictions
@@ -356,11 +462,13 @@ aws amplify get-job --app-id your-app-id --branch-name main --job-id job-id
 ## Cost Optimization
 
 ### 1. Resource Monitoring
+
 - Set up AWS Budgets alerts
 - Monitor Amplify usage metrics
 - Review CloudFront costs
 
 ### 2. Optimization Strategies
+
 - Use appropriate instance sizes for builds
 - Configure build timeouts appropriately
 - Implement efficient caching strategies

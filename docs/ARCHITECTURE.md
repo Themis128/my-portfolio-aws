@@ -9,27 +9,55 @@ The system consists of several main components interacting with each other:
 ```
 ┌─────────────────┐    HTTP/HTTPS    ┌─────────────────┐
 │  Browser        │◄───────────────►│  AWS Amplify    │
-│  (Portfolio)    │   Static Hosting │  (Frontend)     │
+│  (Portfolio)    │   Managed Hosting │  (Frontend)     │
 └─────────────────┘                  └─────────────────┘
         │                                        │
         │                                        │ CloudFront CDN
         ▼                                        ▼
 ┌─────────────────┐                     ┌─────────────────┐
-│  Next.js App     │                     │  AWS S3         │
-│  (SSR/SSG)       │                     │  (Assets)       │
+│  Next.js App     │                     │  AWS AppSync    │
+│  (SSR Enabled)   │◄───────────────────►│  GraphQL API    │
 └─────────────────┘                     └─────────────────┘
         │                                        │
-        │                                        │ Route 53 DNS
+        │                                        │ AWS Lambda
         ▼                                        ▼
 ┌─────────────────┐                     ┌─────────────────┐
-│  TypeScript     │                     │  AWS Certificate│
-│  (TypeScript)   │                     │  Manager        │
+│  AWS S3         │                     │  Contact Handler │
+│  (Assets/Logs)  │                     │  (Serverless)    │
 └─────────────────┘                     └─────────────────┘
 ```
+
+## Hosting Architecture
+
+### AWS Amplify Managed Hosting (NOT S3 Static Website Hosting)
+
+**Key Points:**
+
+- **Hosting Type**: AWS Amplify's proprietary managed hosting infrastructure
+- **NOT S3**: Does not use S3 buckets for website hosting
+- **SSR Support**: Full server-side rendering for Next.js
+- **CDN**: Automatic CloudFront integration
+- **Auto-scaling**: Built-in scaling and high availability
+
+**Why NOT S3 Static Hosting:**
+
+- Next.js requires server-side rendering (SSR)
+- Dynamic API routes and contact forms
+- Real-time data fetching from GraphQL
+- Serverless function integration
+- Build optimization and performance features
+
+**S3 Buckets Used For:**
+
+- Static asset storage (images, documents)
+- Deployment artifacts and logs
+- Backup and archival data
+- NOT website hosting
 
 ## Project Structure
 
 The project is organized as a monorepo using:
+
 - **pnpm workspaces** - dependency management
 - **Turbo** - build system and caching
 - **TypeScript** - primary development language
@@ -75,6 +103,7 @@ my-portfolio-aws/
 **Purpose**: Modern React application built with Next.js App Router, providing a responsive portfolio interface.
 
 **Key Features**:
+
 - **Server-Side Rendering (SSR)** - Fast initial page loads
 - **Static Site Generation (SSG)** - Optimized performance
 - **TypeScript** - Type-safe development
@@ -82,6 +111,7 @@ my-portfolio-aws/
 - **Dark/Light Theme** - User preference support
 
 **Architecture**:
+
 ```
 Next.js App Router
 ├── app/layout.tsx        # Root layout with theme provider
@@ -95,6 +125,7 @@ Next.js App Router
 **Purpose**: Reusable React components built with ShadCN UI and custom implementations.
 
 **Key Components**:
+
 - **ModernAboutNew.tsx** - Enhanced about section with animations
 - **Projects.tsx** - Featured projects display
 - **ThemeSwitcher.tsx** - Theme toggle functionality
@@ -102,6 +133,7 @@ Next.js App Router
 - **Hero.tsx** - Hero section with call-to-action
 
 **Technology Stack**:
+
 - **ShadCN UI** - Component library
 - **Tailwind CSS** - Utility-first CSS framework
 - **Framer Motion** - Smooth animations
@@ -112,11 +144,13 @@ Next.js App Router
 **Purpose**: Centralized data management and utility functions.
 
 **Key Features**:
+
 - **Personal Data** - Professional information and portfolio content
 - **Theme Context** - Global theme state management
 - **Utility Functions** - Helper functions for formatting and processing
 
 **Data Structure**:
+
 ```typescript
 interface PersonalData {
   name: string;
@@ -134,12 +168,14 @@ interface PersonalData {
 **Purpose**: Model Context Protocol server for AI integration and file processing.
 
 **Key Features**:
+
 - **PDF Content Extraction** - Extract text from PDF files
 - **Cross-Platform File Access** - Bridge Windows and Linux file systems
 - **AI Integration** - Support for MCP-compatible AI tools
 - **Path Resolution** - Intelligent file path handling
 
 **Architecture**:
+
 ```
 MCP Server
 ├── index.js              # Main server implementation
@@ -150,24 +186,37 @@ MCP Server
 
 ### 5. Cloud Infrastructure
 
-**Purpose**: AWS-based hosting and content delivery.
+**Purpose**: AWS-based hosting, APIs, and serverless backend.
 
-**AWS Services**:
-- **AWS Amplify** - Frontend hosting and CI/CD
-- **Amazon S3** - Static asset storage
-- **CloudFront** - Global content delivery network
-- **Route 53** - DNS management
-- **AWS Certificate Manager** - SSL/TLS certificates
+**AWS Services Used:**
 
-**Deployment Features**:
-- **Automatic Deployment** - Git-triggered builds
-- **Custom Domain** - Professional domain configuration
-- **HTTPS** - Secure connections
-- **Global CDN** - Fast content delivery worldwide
+- **AWS Amplify** - Managed hosting infrastructure (NOT S3 static hosting)
+- **Amazon CloudFront** - Global CDN (automatically configured)
+- **AWS AppSync** - Managed GraphQL API service
+- **AWS Lambda** - Serverless functions for contact handling
+- **Amazon S3** - Object storage for assets, logs, and data (NOT hosting)
+- **AWS Certificate Manager** - SSL/TLS certificates (managed)
+- **Amazon Route 53** - DNS management (external)
+
+**Hosting Clarification:**
+
+- **NOT S3 Static Website Hosting**: S3 buckets are for storage only
+- **Amplify Managed Hosting**: Proprietary hosting with SSR support
+- **Server-Side Rendering**: Next.js SSR enabled for dynamic content
+- **API Integration**: GraphQL API with Lambda resolvers
+- **Global Distribution**: CloudFront CDN for worldwide performance
+
+**S3 Bucket Purposes:**
+
+- `baltzakisthemis.com` - Static assets and images
+- `amplify-my-portfolio-prod-025114-deployment` - Build artifacts
+- `*-logs-*` - Access and application logs
+- `cdk-*` - Infrastructure deployment assets
 
 ## Development Workflow
 
 ### 1. Local Development
+
 ```
 1. Clone repository
 2. Install dependencies: pnpm install
@@ -177,6 +226,7 @@ MCP Server
 ```
 
 ### 2. Code Quality
+
 - **ESLint** - JavaScript/TypeScript linting
 - **Biome** - Fast linter and formatter
 - **TypeScript** - Type checking
@@ -184,16 +234,34 @@ MCP Server
 - **Husky** - Git hooks for pre-commit checks
 
 ### 3. Build and Deployment
+
 ```
 1. Build application: npm run build
 2. Deploy to AWS Amplify: Automatic via Git push
-3. CDN distribution via CloudFront
-4. SSL certificate management
+3. Amplify builds Next.js with SSR enabled
+4. Deploy to Amplify's managed hosting (NOT S3)
+5. CloudFront CDN automatically configured
+6. SSL certificate management via AWS Certificate Manager
 ```
+
+**Current Deployment Status:**
+
+- **Live URL**: `https://dcwmv1pw85f0j.amplifyapp.com`
+- **Target Domain**: `baltzakisthemis.com` (DNS verification pending)
+- **Domain Issue**: DNS records point to old CloudFront distribution
+- **SSL Status**: Certificate issued, DNS verification needed
+
+**Domain Resolution Required:**
+Update DNS records to point to new CloudFront distribution:
+
+- `baltzakisthemis.com CNAME dtxzcxrjfr622.cloudfront.net`
+- `www.baltzakisthemis.com CNAME dtxzcxrjfr622.cloudfront.net`
+- `_0e039e45538d56139f5cbafb63772fb6.baltzakisthemis.com CNAME _59aca9eab2554f64622dea83d91f6661.jkddzztszm.acm-validations.aws.`
 
 ## Technology Stack
 
 ### Frontend
+
 - **Next.js 16** - React framework with App Router
 - **TypeScript** - Type-safe JavaScript
 - **Tailwind CSS** - Utility-first CSS
@@ -202,6 +270,7 @@ MCP Server
 - **Lucide React** - Icons
 
 ### Development Tools
+
 - **pnpm** - Package manager
 - **Turbo** - Build system
 - **ESLint** - Linting
@@ -210,27 +279,40 @@ MCP Server
 - **Playwright** - E2E testing
 
 ### Cloud Services
-- **AWS Amplify** - Frontend hosting
-- **Amazon S3** - Asset storage
-- **CloudFront** - CDN
-- **Route 53** - DNS
-- **AWS Certificate Manager** - SSL/TLS
+
+- **AWS Amplify** - Managed hosting infrastructure (SSR-enabled)
+- **AWS AppSync** - Managed GraphQL API service
+- **AWS Lambda** - Serverless function runtime
+- **Amazon S3** - Object storage (assets, logs, data)
+- **Amazon CloudFront** - Global CDN (auto-configured)
+- **AWS Certificate Manager** - SSL/TLS certificates
+- **Amazon Route 53** - DNS management
+
+### Backend Services
+
+- **GraphQL API** - AppSync with API Key + IAM authentication
+- **Contact Handler** - Lambda function for form submissions
+- **Analytics Tracking** - GraphQL mutations for user behavior
+- **Slack Notifications** - Automated notifications system
 
 ## Performance Optimizations
 
 ### 1. Next.js Features
+
 - **Server-Side Rendering** - Fast initial loads
 - **Static Site Generation** - Optimized for content
 - **Image Optimization** - Automatic image optimization
 - **Code Splitting** - Bundle optimization
 
 ### 2. Frontend Optimizations
+
 - **Lazy Loading** - Component-level code splitting
 - **Image Optimization** - WebP format with fallbacks
 - **CSS-in-JS** - Scoped styles with Tailwind
 - **Bundle Analysis** - Size monitoring
 
 ### 3. Cloud Optimizations
+
 - **CDN Caching** - Global content delivery
 - **Compression** - Gzip/Brotli compression
 - **SSL/TLS** - Secure, fast connections
@@ -281,6 +363,7 @@ The system consists of several main components interacting with each other:
 ## Monorepo Structure
 
 The project is organized as a monorepo using:
+
 - **pnpm workspaces** - dependency management
 - **Turbo** - build system and caching
 - **TypeScript** - primary development language
@@ -315,6 +398,7 @@ The project is organized as a monorepo using:
 **Purpose**: Extension for code editors (VSCode, Cursor, Windsurf) that provides the connection between toolbar and AI agents.
 
 **Key Features**:
+
 - Launch HTTP/WebSocket server for toolbar communication
 - AI agent integration through MCP (Model Context Protocol)
 - Automatic toolbar setup in projects
@@ -322,6 +406,7 @@ The project is organized as a monorepo using:
 - Telemetry and analytics
 
 **Архитектура**:
+
 ```
 Extension
 ├── activation/          # Активация расширения
@@ -335,6 +420,7 @@ Extension
 ```
 
 **Протоколы коммуникации**:
+
 - **HTTP REST API** - базовая коммуникация с toolbar
 - **WebSocket** - реальное время обновления через SRPC
 - **Server-Sent Events (SSE)** - потоковая передача данных
@@ -345,6 +431,7 @@ Extension
 **Назначение**: Браузерная панель инструментов, которая внедряется в веб-приложения для визуального взаимодействия с кодом.
 
 **Ключевые возможности**:
+
 - Выбор DOM элементов на странице
 - Визуальная аннотация элементов
 - Отправка промптов AI агентам с контекстом
@@ -352,12 +439,14 @@ Extension
 - Плагинная архитектура
 
 **Технологии**:
+
 - **Preact** - легковесная альтернатива React
 - **Shadow DOM** - изоляция стилей от основного приложения
 - **Tailwind CSS** - стилизация
 - **Framer Motion** - анимации
 
 **Архитектура**:
+
 ```
 Toolbar Core
 ├── components/         # UI компоненты
@@ -375,12 +464,14 @@ Toolbar Core
 **Назначение**: Simple RPC система для типизированной коммуникации между toolbar и расширением через WebSocket.
 
 **Особенности**:
+
 - Типизированные контракты с Zod валидацией
 - Автоматическая серializация/десериализация
 - Поддержка потоковых обновлений
 - Обработка ошибок и переподключений
 
 **Архитектура**:
+
 ```
 SRPC
 ├── core.ts            # Базовые типы и WebSocket мост
@@ -395,12 +486,14 @@ SRPC
 **Назначение**: Расширения функциональности toolbar для конкретных фреймворков.
 
 **Возможности плагинов**:
+
 - Анализ DOM элементов с учетом фреймворка
 - Извлечение метаданных компонентов
 - Генерация контекстной информации для AI
 - Кастомные аннотации элементов
 
 **Пример React плагина**:
+
 ```typescript
 export const ReactPlugin: ToolbarPlugin = {
   displayName: 'React',
@@ -410,10 +503,12 @@ export const ReactPlugin: ToolbarPlugin = {
   onContextElementHover: getSelectedElementAnnotation,
   onContextElementSelect: getSelectedElementAnnotation,
   onPromptSend: (prompt) => ({
-    contextSnippets: [{
-      promptContextName: 'elements-react-component-info',
-      content: getSelectedElementsPrompt(prompt.contextElements),
-    }]
+    contextSnippets: [
+      {
+        promptContextName: 'elements-react-component-info',
+        content: getSelectedElementsPrompt(prompt.contextElements),
+      },
+    ],
   }),
 };
 ```
@@ -421,6 +516,7 @@ export const ReactPlugin: ToolbarPlugin = {
 ## Поток данных
 
 ### 1. Инициализация
+
 ```
 1. VSCode Extension активируется
 2. Запускается HTTP сервер на порту 5746+
@@ -430,6 +526,7 @@ export const ReactPlugin: ToolbarPlugin = {
 ```
 
 ### 2. Взаимодействие с UI
+
 ```
 1. Пользователь выбирает элемент на странице
 2. Плагины анализируют элемент
@@ -441,6 +538,7 @@ export const ReactPlugin: ToolbarPlugin = {
 ```
 
 ### 3. Система плагинов
+
 ```
 1. Toolbar загружает плагины из конфигурации
 2. При наведении/выборе элемента вызываются хуки плагинов
@@ -452,18 +550,21 @@ export const ReactPlugin: ToolbarPlugin = {
 ## Технологические решения
 
 ### Коммуникация
+
 - **WebSocket** - основной канал связи с расширением
 - **SRPC** - типизированная RPC система поверх WebSocket
 - **Zod** - валидация и типизация контрактов
 - **Server-Sent Events** - потоковая передача от агентов
 
 ### UI и Frontend
+
 - **Preact** - легковесная библиотека для toolbar
 - **Shadow DOM** - изоляция стилей
 - **Tailwind CSS** - утилитарный CSS фреймворк
 - **Framer Motion** - библиотека анимаций
 
 ### Сборка и разработка
+
 - **Turbo** - monorepo система сборки
 - **pnpm** - пакетный менеджер
 - **Vite** - сборщик для фронтенда
@@ -471,6 +572,7 @@ export const ReactPlugin: ToolbarPlugin = {
 - **TypeScript** - типизация
 
 ### AI интеграция
+
 - **MCP (Model Context Protocol)** - стандарт коммуникации с AI
 - Поддержка агентов: Cursor, Cline, GitHub Copilot, Windsurf, Roo Code
 
@@ -485,16 +587,19 @@ export const ReactPlugin: ToolbarPlugin = {
 ## Развертывание
 
 ### VSCode Extension
+
 - Публикуется в VS Code Marketplace
 - Автоматическая активация при запуске редактора
 - Поддерживает auto-update
 
 ### Toolbar
+
 - Устанавливается как npm пакет
 - Интегрируется в существующие приложения
 - Работает только в development режиме
 
 ### Плагины
+
 - Отдельные npm пакеты для каждого фреймворка
 - Подключаются через конфигурацию toolbar
 - Могут быть кастомными для проекта

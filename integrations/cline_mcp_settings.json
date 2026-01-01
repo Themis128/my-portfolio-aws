@@ -1,0 +1,966 @@
+{
+  "version": "2.1.0",
+  "name": "Optimized Portfolio MCP",
+  "description": "Optimized MCP server configuration for portfolio development, AWS deployment, and AI-assisted development",
+  "servers": {
+    "portfolio-dev-tools": {
+      "name": "Portfolio Development Tools",
+      "description": "Specialized tools for Next.js portfolio development, AWS Amplify deployment, and performance optimization",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/portfolio-dev-tools",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "analyze_portfolio_performance",
+          "description": "Analyze portfolio website performance metrics, Core Web Vitals, and optimization opportunities",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "Portfolio URL to analyze"
+              },
+              "include_lighthouse": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include Lighthouse performance audit"
+              },
+              "include_bundle_analysis": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include bundle size analysis"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        },
+        {
+          "name": "optimize_nextjs_build",
+          "description": "Optimize Next.js build configuration for better performance and smaller bundle sizes",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "analyze_current_config": {
+                "type": "boolean",
+                "default": true,
+                "description": "Analyze current next.config.ts"
+              },
+              "optimize_images": {
+                "type": "boolean",
+                "default": true,
+                "description": "Optimize image loading and processing"
+              },
+              "enable_compression": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable gzip/brotli compression"
+              },
+              "tree_shaking": {
+                "type": "boolean",
+                "default": true,
+                "description": "Optimize tree shaking for smaller bundles"
+              }
+            }
+          }
+        },
+        {
+          "name": "aws_amplify_optimizer",
+          "description": "Optimize AWS Amplify deployment configuration and performance",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "analyze_current_setup": {
+                "type": "boolean",
+                "default": true,
+                "description": "Analyze current Amplify configuration"
+              },
+              "optimize_build_settings": {
+                "type": "boolean",
+                "default": true,
+                "description": "Optimize build settings for faster deployments"
+              },
+              "enable_caching": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable CloudFront caching optimizations"
+              },
+              "security_headers": {
+                "type": "boolean",
+                "default": true,
+                "description": "Configure security headers"
+              }
+            }
+          }
+        },
+        {
+          "name": "seo_content_optimizer",
+          "description": "Optimize portfolio content for better SEO performance",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "content_type": {
+                "type": "string",
+                "enum": [
+                  "homepage",
+                  "about",
+                  "projects",
+                  "contact",
+                  "blog"
+                ],
+                "description": "Type of content to optimize"
+              },
+              "current_content": {
+                "type": "string",
+                "description": "Current content to analyze and optimize"
+              },
+              "target_keywords": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Target keywords for SEO optimization"
+              },
+              "include_schema_markup": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include structured data markup"
+              }
+            },
+            "required": [
+              "content_type",
+              "current_content"
+            ]
+          }
+        },
+        {
+          "name": "accessibility_auditor",
+          "description": "Audit portfolio for accessibility compliance and provide improvement recommendations",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "Portfolio URL to audit"
+              },
+              "component_analysis": {
+                "type": "boolean",
+                "default": true,
+                "description": "Analyze individual components for accessibility"
+              },
+              "generate_report": {
+                "type": "boolean",
+                "default": true,
+                "description": "Generate detailed accessibility report"
+              },
+              "auto_fix_suggestions": {
+                "type": "boolean",
+                "default": true,
+                "description": "Provide automated fix suggestions"
+              }
+            },
+            "required": [
+              "url"
+            ]
+          }
+        }
+      ]
+    },
+    "ai_code_assistant": {
+      "name": "AI Code Assistant",
+      "description": "Advanced AI-powered code assistance with portfolio-specific optimizations",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/ai-code-assistant",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "generate_portfolio_component",
+          "description": "Generate optimized React components specifically for portfolio websites",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "component_type": {
+                "type": "string",
+                "enum": [
+                  "hero",
+                  "about",
+                  "projects",
+                  "contact",
+                  "navigation",
+                  "footer",
+                  "skills",
+                  "experience"
+                ],
+                "description": "Type of portfolio component to generate"
+              },
+              "design_style": {
+                "type": "string",
+                "enum": [
+                  "modern",
+                  "minimal",
+                  "creative",
+                  "professional",
+                  "tech"
+                ],
+                "description": "Design style preference"
+              },
+              "responsive": {
+                "type": "boolean",
+                "default": true,
+                "description": "Make component fully responsive"
+              },
+              "accessibility": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include accessibility features"
+              },
+              "animations": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include smooth animations"
+              }
+            },
+            "required": [
+              "component_type"
+            ]
+          }
+        },
+        {
+          "name": "optimize_component_performance",
+          "description": "Optimize React components for better performance and user experience",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "component_code": {
+                "type": "string",
+                "description": "Component code to optimize"
+              },
+              "optimization_type": {
+                "type": "string",
+                "enum": [
+                  "rendering",
+                  "bundle-size",
+                  "accessibility",
+                  "seo",
+                  "all"
+                ],
+                "description": "Type of optimization to apply"
+              },
+              "add_memo": {
+                "type": "boolean",
+                "default": true,
+                "description": "Add React.memo where appropriate"
+              },
+              "lazy_loading": {
+                "type": "boolean",
+                "default": true,
+                "description": "Implement lazy loading for heavy components"
+              }
+            },
+            "required": [
+              "component_code"
+            ]
+          }
+        },
+        {
+          "name": "generate_api_routes",
+          "description": "Generate optimized Next.js API routes for portfolio functionality",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "route_type": {
+                "type": "string",
+                "enum": [
+                  "contact-form",
+                  "newsletter",
+                  "analytics",
+                  "sitemap",
+                  "rss"
+                ],
+                "description": "Type of API route to generate"
+              },
+              "database_integration": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "aws-dynamodb",
+                  "mongodb",
+                  "postgresql"
+                ],
+                "description": "Database integration preference"
+              },
+              "authentication": {
+                "type": "boolean",
+                "default": false,
+                "description": "Include authentication"
+              },
+              "validation": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include input validation"
+              },
+              "error_handling": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include comprehensive error handling"
+              }
+            },
+            "required": [
+              "route_type"
+            ]
+          }
+        },
+        {
+          "name": "code_review_portfolio",
+          "description": "AI-powered code review specifically optimized for portfolio projects",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Code to review"
+              },
+              "context": {
+                "type": "string",
+                "enum": [
+                  "frontend",
+                  "backend",
+                  "styling",
+                  "config",
+                  "deployment"
+                ],
+                "description": "Code context for specialized review"
+              },
+              "focus_areas": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "performance",
+                    "accessibility",
+                    "seo",
+                    "security",
+                    "maintainability",
+                    "best-practices"
+                  ]
+                },
+                "description": "Areas to focus the review on"
+              },
+              "include_fixes": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include suggested code fixes"
+              }
+            },
+            "required": [
+              "code",
+              "context"
+            ]
+          }
+        }
+      ]
+    },
+    "deployment_automation": {
+      "name": "Deployment Automation",
+      "description": "Automated deployment tools for AWS Amplify and CI/CD optimization",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/deployment-automation",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "amplify_deployment_optimizer",
+          "description": "Optimize and automate AWS Amplify deployments",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "app_id": {
+                "type": "string",
+                "description": "AWS Amplify App ID"
+              },
+              "branch": {
+                "type": "string",
+                "default": "master",
+                "description": "Branch to optimize deployment for"
+              },
+              "enable_preview": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable preview deployments for PRs"
+              },
+              "optimize_build_time": {
+                "type": "boolean",
+                "default": true,
+                "description": "Optimize build times"
+              },
+              "enable_caching": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable advanced caching strategies"
+              }
+            },
+            "required": [
+              "app_id"
+            ]
+          }
+        },
+        {
+          "name": "ci_cd_pipeline_generator",
+          "description": "Generate optimized CI/CD pipelines for portfolio deployment",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "platform": {
+                "type": "string",
+                "enum": [
+                  "github-actions",
+                  "gitlab-ci",
+                  "jenkins",
+                  "circle-ci"
+                ],
+                "description": "CI/CD platform to generate pipeline for"
+              },
+              "deployment_target": {
+                "type": "string",
+                "enum": [
+                  "amplify",
+                  "vercel",
+                  "netlify",
+                  "aws-s3",
+                  "github-pages"
+                ],
+                "description": "Deployment target platform"
+              },
+              "include_testing": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include automated testing in pipeline"
+              },
+              "include_security_scans": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include security scanning"
+              },
+              "performance_monitoring": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include performance monitoring"
+              }
+            },
+            "required": [
+              "platform",
+              "deployment_target"
+            ]
+          }
+        },
+        {
+          "name": "monitoring_dashboard_setup",
+          "description": "Set up comprehensive monitoring and analytics for portfolio",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "analytics_provider": {
+                "type": "string",
+                "enum": [
+                  "google-analytics",
+                  "plausible",
+                  "vercel-analytics",
+                  "custom"
+                ],
+                "description": "Analytics provider to integrate"
+              },
+              "error_tracking": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable error tracking and reporting"
+              },
+              "performance_monitoring": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable performance monitoring"
+              },
+              "user_analytics": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable user behavior analytics"
+              },
+              "real_time_alerts": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable real-time alerting for issues"
+              }
+            },
+            "required": [
+              "analytics_provider"
+            ]
+          }
+        }
+      ]
+    },
+    "claude-copilot-bridge": {
+      "name": "Claude Copilot Bridge",
+      "description": "Advanced Claude Desktop integration with GitHub Copilot and AWS Amplify development tools",
+      "server_type": "stdio",
+      "command": "node index.js",
+      "working_directory": "./mcp-servers/claude-copilot-bridge",
+      "enabled": true,
+      "tools": [
+        {
+          "name": "generate_code_with_claude",
+          "description": "Generate code using Claude Desktop models with GitHub Copilot context",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "prompt": {
+                "type": "string",
+                "description": "Code generation prompt"
+              },
+              "language": {
+                "type": "string",
+                "description": "Programming language"
+              },
+              "context": {
+                "type": "string",
+                "description": "Code context from GitHub Copilot"
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Related file paths for context"
+              }
+            },
+            "required": [
+              "prompt"
+            ]
+          }
+        },
+        {
+          "name": "review_code_with_claude",
+          "description": "Review code using Claude Desktop models",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Code to review"
+              },
+              "language": {
+                "type": "string",
+                "description": "Programming language"
+              },
+              "review_type": {
+                "type": "string",
+                "enum": [
+                  "security",
+                  "performance",
+                  "best-practices",
+                  "general"
+                ],
+                "description": "Type of code review"
+              }
+            },
+            "required": [
+              "code"
+            ]
+          }
+        },
+        {
+          "name": "copilot_suggestions_enhanced",
+          "description": "Get enhanced GitHub Copilot suggestions using Claude Desktop",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "current_code": {
+                "type": "string",
+                "description": "Current code context"
+              },
+              "cursor_position": {
+                "type": "number",
+                "description": "Cursor position in code"
+              },
+              "file_path": {
+                "type": "string",
+                "description": "Current file path"
+              },
+              "enhancement_type": {
+                "type": "string",
+                "enum": [
+                  "autocomplete",
+                  "refactor",
+                  "optimize",
+                  "document"
+                ],
+                "description": "Type of enhancement needed"
+              }
+            },
+            "required": [
+              "current_code",
+              "file_path"
+            ]
+          }
+        },
+        {
+          "name": "sync_copilot_workspace",
+          "description": "Sync workspace context between Claude Desktop and GitHub Copilot",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "workspace_path": {
+                "type": "string",
+                "description": "Workspace directory path"
+              },
+              "sync_type": {
+                "type": "string",
+                "enum": [
+                  "files",
+                  "settings",
+                  "extensions"
+                ],
+                "description": "What to sync"
+              }
+            },
+            "required": [
+              "workspace_path"
+            ]
+          }
+        },
+        {
+          "name": "amplify_project_analyzer",
+          "description": "Analyze AWS Amplify project structure, configuration, and identify optimization opportunities",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "project_path": {
+                "type": "string",
+                "description": "Path to Amplify project root"
+              },
+              "analyze_type": {
+                "type": "string",
+                "enum": [
+                  "full",
+                  "backend",
+                  "frontend",
+                  "hosting",
+                  "performance"
+                ],
+                "default": "full",
+                "description": "Type of analysis to perform"
+              },
+              "include_recommendations": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include actionable recommendations"
+              }
+            },
+            "required": [
+              "project_path"
+            ]
+          }
+        },
+        {
+          "name": "amplify_backend_optimizer",
+          "description": "Optimize AWS Amplify backend configuration for better performance and cost efficiency",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "backend_path": {
+                "type": "string",
+                "description": "Path to Amplify backend directory"
+              },
+              "optimization_focus": {
+                "type": "string",
+                "enum": [
+                  "performance",
+                  "cost",
+                  "security",
+                  "scalability"
+                ],
+                "default": "performance",
+                "description": "Primary optimization focus"
+              },
+              "apply_changes": {
+                "type": "boolean",
+                "default": false,
+                "description": "Apply recommended changes automatically"
+              }
+            },
+            "required": [
+              "backend_path"
+            ]
+          }
+        },
+        {
+          "name": "amplify_deployment_troubleshooter",
+          "description": "Diagnose and resolve AWS Amplify deployment issues",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "app_id": {
+                "type": "string",
+                "description": "AWS Amplify App ID"
+              },
+              "branch_name": {
+                "type": "string",
+                "default": "main",
+                "description": "Branch name to troubleshoot"
+              },
+              "error_logs": {
+                "type": "string",
+                "description": "Deployment error logs (optional)"
+              },
+              "include_fixes": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include suggested fixes"
+              }
+            },
+            "required": [
+              "app_id"
+            ]
+          }
+        },
+        {
+          "name": "amplify_auth_configurator",
+          "description": "Configure and optimize AWS Amplify authentication settings",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "auth_config": {
+                "type": "object",
+                "description": "Current authentication configuration"
+              },
+              "auth_type": {
+                "type": "string",
+                "enum": [
+                  "cognito",
+                  "custom",
+                  "social"
+                ],
+                "default": "cognito",
+                "description": "Authentication provider type"
+              },
+              "security_level": {
+                "type": "string",
+                "enum": [
+                  "basic",
+                  "standard",
+                  "advanced"
+                ],
+                "default": "standard",
+                "description": "Security requirements level"
+              },
+              "generate_code": {
+                "type": "boolean",
+                "default": true,
+                "description": "Generate authentication code snippets"
+              }
+            }
+          }
+        },
+        {
+          "name": "amplify_api_gateway_manager",
+          "description": "Manage and optimize AWS Amplify API Gateway configurations",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "api_config": {
+                "type": "object",
+                "description": "Current API Gateway configuration"
+              },
+              "optimization_type": {
+                "type": "string",
+                "enum": [
+                  "performance",
+                  "security",
+                  "cost",
+                  "monitoring"
+                ],
+                "default": "performance",
+                "description": "Type of optimization to apply"
+              },
+              "include_cors": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include CORS configuration"
+              },
+              "generate_endpoints": {
+                "type": "boolean",
+                "default": true,
+                "description": "Generate API endpoint code"
+              }
+            }
+          }
+        },
+        {
+          "name": "amplify_database_optimizer",
+          "description": "Optimize AWS Amplify database configurations and schemas",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "database_type": {
+                "type": "string",
+                "enum": [
+                  "dynamodb",
+                  "rds",
+                  "aurora"
+                ],
+                "description": "Database type"
+              },
+              "schema_path": {
+                "type": "string",
+                "description": "Path to database schema file"
+              },
+              "optimization_goals": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "performance",
+                    "cost",
+                    "scalability",
+                    "security"
+                  ]
+                },
+                "default": [
+                  "performance"
+                ],
+                "description": "Optimization goals"
+              },
+              "generate_migrations": {
+                "type": "boolean",
+                "default": true,
+                "description": "Generate database migration scripts"
+              }
+            },
+            "required": [
+              "database_type"
+            ]
+          }
+        },
+        {
+          "name": "amplify_hosting_optimizer",
+          "description": "Optimize AWS Amplify hosting configuration for better performance",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "hosting_config": {
+                "type": "object",
+                "description": "Current hosting configuration"
+              },
+              "optimization_focus": {
+                "type": "string",
+                "enum": [
+                  "speed",
+                  "seo",
+                  "caching",
+                  "cdn"
+                ],
+                "default": "speed",
+                "description": "Primary optimization focus"
+              },
+              "include_cloudfront": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include CloudFront optimization"
+              },
+              "generate_config": {
+                "type": "boolean",
+                "default": true,
+                "description": "Generate optimized configuration files"
+              }
+            }
+          }
+        },
+        {
+          "name": "amplify_environment_manager",
+          "description": "Manage AWS Amplify environments and deployments",
+          "input_schema": {
+            "type": "object",
+            "properties": {
+              "app_id": {
+                "type": "string",
+                "description": "AWS Amplify App ID"
+              },
+              "action": {
+                "type": "string",
+                "enum": [
+                  "list",
+                  "create",
+                  "delete",
+                  "promote",
+                  "rollback"
+                ],
+                "description": "Environment management action"
+              },
+              "environment_name": {
+                "type": "string",
+                "description": "Environment name (for create/delete/promote actions)"
+              },
+              "source_branch": {
+                "type": "string",
+                "description": "Source branch for promotion"
+              },
+              "include_variables": {
+                "type": "boolean",
+                "default": true,
+                "description": "Include environment variables in management"
+              }
+            },
+            "required": [
+              "app_id",
+              "action"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "branding": {
+    "company_name": "Portfolio Optimization Suite",
+    "tagline": "AI-Powered Portfolio Development & Deployment",
+    "primary_color": "#3B82F6",
+    "secondary_color": "#1D4ED8",
+    "logo_path": "public/logo.png",
+    "favicon_path": "public/favicon.ico",
+    "theme": {
+      "font_family": "Inter, system-ui, sans-serif",
+      "border_radius": "8px",
+      "shadow": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "transition": "all 0.2s ease-in-out"
+    }
+  },
+  "optimization_settings": {
+    "performance": {
+      "enable_caching": true,
+      "compression_enabled": true,
+      "image_optimization": true,
+      "code_splitting": true
+    },
+    "monitoring": {
+      "error_tracking": true,
+      "performance_metrics": true,
+      "user_analytics": true,
+      "real_time_alerts": true
+    },
+    "ai_assistance": {
+      "code_generation": true,
+      "code_review": true,
+      "performance_optimization": true,
+      "seo_optimization": true
+    }
+  },
+  "metadata": {
+    "created_at": "2025-12-31T10:00:00Z",
+    "version": "2.1.0",
+    "author": "Portfolio MCP Optimization",
+    "license": "MIT",
+    "optimized_for": "Next.js Portfolio on AWS Amplify",
+    "last_updated": "2025-12-31T12:00:00Z",
+    "mcp_sdk_version": "1.25.1"
+  }
+}

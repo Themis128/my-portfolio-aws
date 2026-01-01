@@ -1,25 +1,30 @@
-"use client";
+'use client';
 
-import { ReactPlugin } from "@21st-extension/react";
-import { TwentyFirstToolbar } from "@21st-extension/toolbar-next";
-import { useState } from "react";
+import { ReactPlugin } from '@21st-extension/react';
+import { TwentyFirstToolbar } from '@21st-extension/toolbar-next';
+import { useEffect, useState } from 'react';
 
-const STORAGE_KEY = "21st-toolbar-enabled";
+const STORAGE_KEY = '21st-toolbar-enabled';
 
 export default function ToolbarMountController() {
   // Default behavior: enabled in development or when NEXT_PUBLIC_ENABLE_21ST_TOOLBAR=true
   const showByDefault =
-    process.env.NODE_ENV === "development" ||
-    process.env.NEXT_PUBLIC_ENABLE_21ST_TOOLBAR === "true";
+    process.env.NODE_ENV === 'development' ||
+    process.env.NEXT_PUBLIC_ENABLE_21ST_TOOLBAR === 'true';
 
-  const [mounted, setMounted] = useState<boolean>(() => {
+  const [mounted, setMounted] = useState<boolean>(showByDefault);
+
+  useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored !== null ? stored === "true" : showByDefault;
+      if (stored !== null) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMounted(stored === 'true');
+      }
     } catch {
-      return showByDefault;
+      // ignore
     }
-  });
+  }, []);
 
   const toggle = () => {
     const next = !mounted;
@@ -32,7 +37,7 @@ export default function ToolbarMountController() {
   };
 
   // Don't render anything unless in development
-  if (process.env.NODE_ENV !== "development") {
+  if (process.env.NODE_ENV !== 'development') {
     return null;
   }
 
@@ -45,7 +50,7 @@ export default function ToolbarMountController() {
           className="px-3 py-2 bg-slate-800 text-white rounded shadow"
           aria-pressed={mounted}
         >
-          {mounted ? "Hide 21st Toolbar" : "Show 21st Toolbar"}
+          {mounted ? 'Hide 21st Toolbar' : 'Show 21st Toolbar'}
         </button>
       </div>
 
