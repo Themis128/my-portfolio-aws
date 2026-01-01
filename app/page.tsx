@@ -16,6 +16,7 @@ export default function Home() {
 
   return (
     <div className="bg-white dark:bg-gray-900">
+      {/* Feature branch deployment test - this comment shows in feature/test-branch-deployments */}
       <div id="hero-anchor"></div>
       <Hero data={personalData} />
       <About data={personalData} />
