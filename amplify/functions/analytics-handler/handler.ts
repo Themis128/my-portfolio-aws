@@ -32,7 +32,7 @@ export const handler = async (event: {
     });
 
     const result = await new Promise((resolve, reject) => {
-      const endpoint = process.env.AMPLIFY_DATA_GRAPHQL_ENDPOINT || 'https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql';
+      const endpoint = process.env.AMPLIFY_DATA_GRAPHQL_ENDPOINT || 'https://kl4own6nqnegdfliofccu5klza.appsync-api.eu-central-1.amazonaws.com/graphql';
       const apiKey = process.env.AMPLIFY_DATA_API_KEY || 'da2-4sp2psirnncn7lgrly3bndxksy';
 
       const url = new URL(endpoint);
