@@ -29,6 +29,9 @@ const config = {
     '<rootDir>/tests/',
     '<rootDir>/scripts/',
   ],
+  modulePathIgnorePatterns: [
+    '<rootDir>/assets/',
+  ],
   transformIgnorePatterns: [
     '/node_modules/(?!(@aws-amplify|@radix-ui|lucide-react|framer-motion)/)',
   ],

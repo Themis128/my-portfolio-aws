@@ -10,7 +10,7 @@
     "lint": "eslint",
     "lint:css": "stylelint '**/*.{css,scss}'",
     "docs": "typedoc --entryPointStrategy expand --out docs/api app/ components/ lib/ types/ --name \"My Portfolio AWS\" --readme README.md",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --coverage --watchAll=false",
