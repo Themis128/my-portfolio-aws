@@ -1,25 +1,4 @@
- 
-GitHub
-[Themis128/my-portfolio-aws] 🔍 Proactive Application Monitoring workflow run
- 
-
- 
-🔍 Proactive Application Monitoring: Some jobs were not successful
- 
-View workflow run
- 
-🔧 Backend Health Check	
-🔍 Proactive Application Monitoring / 🔧 Backend Health Check
-Succeeded in 4 seconds
-
-🏥 Health Check	
-🔍 Proactive Application Monitoring / 🏥 Health Check
-Failed in 9 seconds
-
-annotations for 🔍 Proactive Application Monitoring / 🏥 Health Check 1
-🧹 Cleanup Old Artifacts	
-🔍 Proactive Application Monitoring / 🧹 Cleanup Old Artifacts
-Skippename: Deploy Full-Stack to AWS Amplify
+name: Deploy Full-Stack to AWS Amplify
 
 on:
   push:
