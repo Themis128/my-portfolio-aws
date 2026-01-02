@@ -40,8 +40,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.14.4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -196,8 +198,10 @@ jobs:
           ref: ${{ github.event.inputs.rollback_version || github.sha }}
           fetch-depth: 0
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.14.4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
