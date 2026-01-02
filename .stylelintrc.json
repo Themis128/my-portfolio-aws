@@ -1,14 +1,7 @@
 {
-  "extends": ["stylelint-config-standard"],
   "ignoreFiles": [
-    "aws/**",
-    "node_modules/**",
-    "dist/**",
-    "build/**",
-    "**/*.min.css",
-    "playwright-report/**",
-    "test-results/**",
-    "coverage/**"
+    "**/*",
+    "!globals.css"
   ],
   "rules": {
     "at-rule-no-unknown": [
@@ -21,14 +14,13 @@
           "responsive",
           "screen",
           "layer",
-          "theme"
+          "theme",
+          "plugin",
+          "custom-variant",
+          "source"
         ]
       }
     ],
-    "declaration-block-trailing-semicolon": null,
-    "no-descending-specificity": null,
-    "selector-class-pattern": null,
-    "custom-property-pattern": null,
     "property-no-unknown": [
       true,
       {
@@ -36,19 +28,6 @@
           "/^--/"
         ]
       }
-    ],
-    "hue-degree-notation": null,
-    "lightness-notation": null,
-    "rule-empty-line-before": null,
-    "comment-empty-line-before": null,
-    "selector-id-pattern": null,
-    "declaration-block-single-line-max-declarations": null,
-    "shorthand-property-no-redundant-values": null,
-    "selector-pseudo-element-colon-notation": null,
-    "function-url-quotes": null,
-    "property-no-deprecated": null,
-    "length-zero-no-unit": null,
-    "declaration-block-no-duplicate-properties": null,
-    "no-duplicate-selectors": null
+    ]
   }
 }

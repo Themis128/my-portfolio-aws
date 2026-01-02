@@ -136,7 +136,6 @@ jobs:
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
           NEXT_PUBLIC_ENVIRONMENT: staging
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Deploy to Staging
         uses: aws-actions/configure-aws-credentials@v4
@@ -154,9 +153,8 @@ jobs:
 
       - name: Deploy Backend to Staging
         run: |
+          echo "🚀 Deploying backend to staging..."
           npx ampx pipeline-deploy \
-            --app-id ${{ env.PRODUCTION_APP_ID }} \
-            --branch-name staging \
             --outputs-format json \
             --outputs-out-dir ./staging_outputs
 
@@ -166,9 +164,10 @@ jobs:
           sleep 60  # Wait for deployment
 
           # Check if staging site is accessible
-          curl -f -s https://staging.dcwmv1pw85f0j.amplifyapp.com > /dev/null
+          STAGING_URL="https://staging.dcwmv1pw85f0j.amplifyapp.com"
+          curl -f -s "$STAGING_URL" > /dev/null
           if [ $? -eq 0 ]; then
-            echo "✅ Staging site is accessible"
+            echo "✅ Staging site is accessible: $STAGING_URL"
           else
             echo "❌ Staging site is not accessible"
             exit 1
@@ -181,7 +180,7 @@ jobs:
     if: |
       (needs.quality-gate.outputs.test-results == 'passed' &&
        needs.staging-validation.result == 'success') ||
-      github.event.inputs.force_deploy == 'true'
+      (github.event.inputs.force_deploy == true)
     runs-on: ubuntu-latest
     environment: production
 
@@ -189,6 +188,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.rollback_version || github.sha }}
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -210,7 +210,6 @@ jobs:
           NODE_OPTIONS: "--max-old-space-size=4096"
           NEXT_PUBLIC_ENVIRONMENT: production
           NEXT_TELEMETRY_DISABLED: "1"
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Performance baseline check
         run: |
@@ -239,8 +238,6 @@ jobs:
         run: |
           echo "🚀 Deploying backend to production..."
           npx ampx pipeline-deploy \
-            --app-id ${{ env.PRODUCTION_APP_ID }} \
-            --branch-name ${{ env.PRODUCTION_BRANCH }} \
             --outputs-format json \
             --outputs-out-dir ./production_outputs
 
@@ -311,7 +308,7 @@ jobs:
   # Rollback job (manual trigger)
   rollback:
     name: 🔄 Rollback Production
-    if: failure() && github.ref == 'refs/heads/main'
+    if: failure() && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     environment: production
 
