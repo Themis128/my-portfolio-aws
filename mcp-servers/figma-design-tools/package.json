@@ -1,0 +1,44 @@
+{
+  "name": "figma-design-tools-mcp",
+  "version": "1.0.0",
+  "description": "Comprehensive MCP server for Figma design integration, UI/UX development, and design-to-code workflows",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "mcp",
+    "figma",
+    "design",
+    "ui-ux",
+    "design-system",
+    "prototyping",
+    "design-to-code",
+    "accessibility",
+    "component-development"
+  ],
+  "author": "Figma Design Tools MCP",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.1",
+    "axios": "^1.6.0",
+    "sharp": "^0.33.0",
+    "puppeteer": "^24.34.0",
+    "lighthouse": "^13.0.1",
+    "axe-core": "^4.9.0",
+    "pa11y": "^9.0.1",
+    "chroma-js": "^2.4.2",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.3.10",
+    "mime-types": "^2.1.35"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  }
+}

@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "lint:css": "stylelint '**/*.{css,scss}'",
     "docs": "typedoc --entryPointStrategy expand --out docs/api app/ components/ lib/ types/ --name \"My Portfolio AWS\" --readme README.md",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -90,6 +91,8 @@
     "serverless-dotenv-plugin": "^6.0.0",
     "serverless-offline": "^14.4.0",
     "snyk": "^1.1301.2",
+    "stylelint": "^16.26.1",
+    "stylelint-config-standard": "^39.0.1",
     "tailwindcss": "^4",
     "typedoc": "^0.28.15",
     "typescript": "^5"

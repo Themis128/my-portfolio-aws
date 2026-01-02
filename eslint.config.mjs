@@ -31,6 +31,12 @@ const eslintConfig = defineConfig([
     '21st-extension-main/**',
     'assets/**',
     'docs/**',
+    // Test and report files:
+    'playwright-report/**',
+    'test-results/**',
+    'coverage/**',
+    '**/*.test.js',
+    '**/*.spec.js',
   ]),
 ]);
 

@@ -57,7 +57,7 @@ const nextConfig: NextConfig = {
       // Allow images from your domain
       {
         protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_DOMAIN || 'dfltlhnwu9p09.amplifyapp.com',
+        hostname: process.env.NEXT_PUBLIC_DOMAIN || 'dcwmv1pw85f0j.amplifyapp.com',
         port: '',
         pathname: '/**',
       },
@@ -67,7 +67,7 @@ const nextConfig: NextConfig = {
   // Environment variables that should be available at build time
   env: {
     NEXT_PUBLIC_AMPLIFY_ENV: process.env.AMPLIFY_ENV || 'dev',
-    NEXT_PUBLIC_DOMAIN: process.env.AMPLIFY_APP_DOMAIN || 'dfltlhnwu9p09.amplifyapp.com',
+    NEXT_PUBLIC_DOMAIN: process.env.AMPLIFY_APP_DOMAIN || 'dcwmv1pw85f0j.amplifyapp.com',
   },
 
   // Turbopack config: disable for Amplify builds to avoid caching issues

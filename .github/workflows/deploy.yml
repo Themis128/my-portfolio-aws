@@ -91,7 +91,7 @@ jobs:
     - name: Deploy Frontend to Amplify
       run: |
         aws amplify start-deployment \
-          --app-id dfltlhnwu9p09 \
+          --app-id dcwmv1pw85f0j \
           --branch-name ${{ github.ref_name }} \
           --source-dir .
 
@@ -99,7 +99,7 @@ jobs:
       run: |
         echo "🚀 Deploying Amplify Gen 2 backend..."
         npx ampx pipeline-deploy \
-          --app-id dfltlhnwu9p09 \
+          --app-id dcwmv1pw85f0j \
           --branch-name ${{ github.ref_name }} \
           --outputs-format json \
           --outputs-out-dir ./amplify_outputs
@@ -143,6 +143,6 @@ jobs:
     - name: Comment PR with preview URL
       uses: aws-actions/amplify-preview-actions@v1
       with:
-        amplify_app_id: dfltlhnwu9p09
+        amplify_app_id: dcwmv1pw85f0j
         github_token: ${{ secrets.GITHUB_TOKEN }}
         pull_request_number: ${{ github.event.number }}

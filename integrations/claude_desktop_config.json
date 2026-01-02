@@ -56,6 +56,30 @@
       "env": {
         "GEMINI_API_KEY": "gen-lang-client-0524292946"
       }
+    },
+    "figma-design-tools": {
+      "command": "node",
+      "args": [
+        "index.js"
+      ],
+      "cwd": "/home/tbaltzakis/my-portfolio-aws/mcp-servers/figma-design-tools",
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "your_figma_access_token_here"
+      }
+    },
+    "auto-favicon": {
+      "command": "node",
+      "args": [
+        "index.js"
+      ],
+      "cwd": "/home/tbaltzakis/my-portfolio-aws/mcp-servers/branding-servers/auto-favicon"
+    },
+    "image-gen": {
+      "command": "node",
+      "args": [
+        "index.js"
+      ],
+      "cwd": "/home/tbaltzakis/my-portfolio-aws/mcp-servers/branding-servers/image-gen"
     }
   }
 }

@@ -15,7 +15,7 @@ on:
 
 env:
   NODE_VERSION: '20'
-  DEV_APP_ID: dfltlhnwu9p09
+  DEV_APP_ID: dcwmv1pw85f0j
   DEV_BRANCH: develop
 
 jobs:
@@ -129,7 +129,7 @@ jobs:
           sleep 30  # Wait for deployment
 
           TARGET_BRANCH="${{ steps.target-branch.outputs.branch }}"
-          BRANCH_URL="${TARGET_BRANCH//[^a-zA-Z0-9]/-}.dfltlhnwu9p09.amplifyapp.com"
+          BRANCH_URL="${TARGET_BRANCH//[^a-zA-Z0-9]/-}.dcwmv1pw85f0j.amplifyapp.com"
 
           # Check if dev site is accessible
           curl -f -s "https://$BRANCH_URL" > /dev/null
@@ -145,7 +145,7 @@ jobs:
         with:
           script: |
             const targetBranch = '${{ steps.target-branch.outputs.branch }}';
-            const branchUrl = `https://${targetBranch.replace(/[^a-zA-Z0-9]/g, '-')}.dfltlhnwu9p09.amplifyapp.com`;
+            const branchUrl = `https://${targetBranch.replace(/[^a-zA-Z0-9]/g, '-')}.dcwmv1pw85f0j.amplifyapp.com`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,

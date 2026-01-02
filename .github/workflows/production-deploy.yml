@@ -17,7 +17,7 @@ on:
 
 env:
   NODE_VERSION: '20'
-  PRODUCTION_APP_ID: dfltlhnwu9p09
+  PRODUCTION_APP_ID: dcwmv1pw85f0j
   PRODUCTION_BRANCH: master
 
 jobs:
@@ -136,6 +136,7 @@ jobs:
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
           NEXT_PUBLIC_ENVIRONMENT: staging
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Deploy to Staging
         uses: aws-actions/configure-aws-credentials@v4
@@ -165,7 +166,7 @@ jobs:
           sleep 60  # Wait for deployment
 
           # Check if staging site is accessible
-          curl -f -s https://staging.dfltlhnwu9p09.amplifyapp.com > /dev/null
+          curl -f -s https://staging.dcwmv1pw85f0j.amplifyapp.com > /dev/null
           if [ $? -eq 0 ]; then
             echo "✅ Staging site is accessible"
           else
@@ -209,6 +210,7 @@ jobs:
           NODE_OPTIONS: "--max-old-space-size=4096"
           NEXT_PUBLIC_ENVIRONMENT: production
           NEXT_TELEMETRY_DISABLED: "1"
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Performance baseline check
         run: |

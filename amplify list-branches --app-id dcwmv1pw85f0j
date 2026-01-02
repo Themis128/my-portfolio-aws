@@ -1,0 +1,348 @@
+[4mSTART-DEPLOYMENT[24m()                                          [4mSTART-DEPLOYMENT[24m()
+
+[1mNAME[0m
+       start-deployment -
+
+[1mDESCRIPTION[0m
+       Starts a deployment for a manually deployed app. Manually deployed apps
+       are not connected to a Git repository.
+
+       The maximum duration between the [1mCreateDeployment [22mcall and the [1mStartDe-[0m
+       [1mployment  [22mcall  cannot exceed 8 hours. If the duration exceeds 8 hours,
+       the [1mStartDeployment [22mcall and the associated [1mJob [22mwill fail.
+
+       See also: AWS API Documentation
+
+[1mSYNOPSIS[0m
+            start-deployment
+          --app-id <value>
+          --branch-name <value>
+          [--job-id <value>]
+          [--source-url <value>]
+          [--source-url-type <value>]
+          [--cli-input-json | --cli-input-yaml]
+          [--generate-cli-skeleton <value>]
+          [--debug]
+          [--endpoint-url <value>]
+          [--no-verify-ssl]
+          [--no-paginate]
+          [--output <value>]
+          [--query <value>]
+          [--profile <value>]
+          [--region <value>]
+          [--version <value>]
+          [--color <value>]
+          [--no-sign-request]
+          [--ca-bundle <value>]
+          [--cli-read-timeout <value>]
+          [--cli-connect-timeout <value>]
+          [--cli-binary-format <value>]
+          [--no-cli-pager]
+          [--cli-auto-prompt]
+          [--no-cli-auto-prompt]
+
+[1mOPTIONS[0m
+       [1m--app-id [22m(string) [required]
+          The unique ID for an Amplify app.
+
+          Constraints:
+
+          +o min: [1m1[0m
+
+          +o max: [1m20[0m
+
+          +o pattern: [1md[a-z0-9]+[0m
+
+       [1m--branch-name [22m(string) [required]
+          The name of the branch to use for the deployment job.
+
+          Constraints:
+
+          +o min: [1m1[0m
+
+          +o max: [1m255[0m
+
+          +o pattern: [1m(?s).+[0m
+
+       [1m--job-id [22m(string)
+          The job ID for this deployment that is generated  by  the  [1mCreateDe-[0m
+          [1mployment [22mrequest.
+
+          Constraints:
+
+          +o max: [1m255[0m
+
+          +o pattern: [1m[0-9]+[0m
+
+       [1m--source-url [22m(string)
+          The source URL for the deployment that is used when calling [1mStartDe-[0m
+          [1mployment  [22mwithout [1mCreateDeployment [22m. The source URL can be either an
+          HTTP GET URL that is publicly accessible and downloads a single .zip
+          file, or an Amazon S3 bucket and prefix.
+
+          Constraints:
+
+          +o max: [1m3000[0m
+
+          +o pattern: [1m^(s3|https|http)://.*[0m
+
+       [1m--source-url-type [22m(string)
+          The type of source specified by the [1msourceURL [22m. If the value is  [1mZIP[0m
+          ,  the  source  is  a .zip file. If the value is [1mBUCKET_PREFIX [22m, the
+          source is an Amazon S3 bucket and prefix. If no value is  specified,
+          the default is [1mZIP [22m.
+
+          Possible values:
+
+          +o [1mZIP[0m
+
+          +o [1mBUCKET_PREFIX[0m
+
+       [1m--cli-input-json  [22m|  [1m--cli-input-yaml [22m(string) Reads arguments from the
+       JSON string provided. The JSON string follows the  format  provided  by
+       [1m--generate-cli-skeleton[22m. If other arguments are provided on the command
+       line,  those  values  will override the JSON-provided values. It is not
+       possible to pass arbitrary binary values using a JSON-provided value as
+       the string will be taken literally. This may  not  be  specified  along
+       with [1m--cli-input-yaml[22m.
+
+       [1m--generate-cli-skeleton  [22m(string)  Prints  a  JSON skeleton to standard
+       output without sending an API request. If provided with no value or the
+       value [1minput[22m, prints a sample input JSON that can be used as an argument
+       for [1m--cli-input-json[22m. Similarly, if provided [1myaml-input [22mit will print a
+       sample input YAML that can be used with [1m--cli-input-yaml[22m.  If  provided
+       with  the  value  [1moutput[22m, it validates the command inputs and returns a
+       sample output JSON for that command. The generated JSON skeleton is not
+       stable between versions of the AWS CLI and there are no backwards  com-
+       patibility guarantees in the JSON skeleton generated.
+
+[1mGLOBAL OPTIONS[0m
+       [1m--debug [22m(boolean)
+
+       Turn on debug logging.
+
+       [1m--endpoint-url [22m(string)
+
+       Override command's default URL with the given URL.
+
+       [1m--no-verify-ssl [22m(boolean)
+
+       By  default, the AWS CLI uses SSL when communicating with AWS services.
+       For each SSL connection, the AWS CLI will verify SSL certificates. This
+       option overrides the default behavior of verifying SSL certificates.
+
+       [1m--no-paginate [22m(boolean)
+
+       Disable automatic pagination. If automatic pagination is disabled,  the
+       AWS CLI will only make one call, for the first page of results.
+
+       [1m--output [22m(string)
+
+       The formatting style for command output.
+
+       +o json
+
+       +o text
+
+       +o table
+
+       +o yaml
+
+       +o yaml-stream
+
+       [1m--query [22m(string)
+
+       A JMESPath query to use in filtering the response data.
+
+       [1m--profile [22m(string)
+
+       Use a specific profile from your credential file.
+
+       [1m--region [22m(string)
+
+       The region to use. Overrides config/env settings.
+
+       [1m--version [22m(string)
+
+       Display the version of this tool.
+
+       [1m--color [22m(string)
+
+       Turn on/off color output.
+
+       +o on
+
+       +o off
+
+       +o auto
+
+       [1m--no-sign-request [22m(boolean)
+
+       Do  not  sign requests. Credentials will not be loaded if this argument
+       is provided.
+
+       [1m--ca-bundle [22m(string)
+
+       The CA certificate bundle to use when verifying SSL certificates. Over-
+       rides config/env settings.
+
+       [1m--cli-read-timeout [22m(int)
+
+       The maximum socket read time in seconds. If the value is set to 0,  the
+       socket  read  will be blocking and not timeout. The default value is 60
+       seconds.
+
+       [1m--cli-connect-timeout [22m(int)
+
+       The maximum socket connect time in seconds. If the value is set  to  0,
+       the  socket connect will be blocking and not timeout. The default value
+       is 60 seconds.
+
+       [1m--cli-binary-format [22m(string)
+
+       The formatting style to be used for binary blobs. The default format is
+       base64. The base64 format expects binary blobs  to  be  provided  as  a
+       base64  encoded string. The raw-in-base64-out format preserves compati-
+       bility with AWS CLI V1 behavior and binary values must be passed liter-
+       ally. When providing contents from a file that map  to  a  binary  blob
+       [1mfileb:// [22mwill always be treated as binary and use the file contents di-
+       rectly  regardless of the [1mcli-binary-format [22msetting. When using [1mfile://[0m
+       the file contents will need to properly formatted  for  the  configured
+       [1mcli-binary-format[22m.
+
+       +o base64
+
+       +o raw-in-base64-out
+
+       [1m--no-cli-pager [22m(boolean)
+
+       Disable cli pager for output.
+
+       [1m--cli-auto-prompt [22m(boolean)
+
+       Automatically prompt for CLI input parameters.
+
+       [1m--no-cli-auto-prompt [22m(boolean)
+
+       Disable automatically prompt for CLI input parameters.
+
+[1mOUTPUT[0m
+       jobSummary -> (structure)
+          The summary for the job.
+
+          jobArn -> (string) [required]
+              The Amazon Resource Name (ARN) for the job.
+
+              Constraints:
+
+              +o max: [1m1000[0m
+
+          jobId -> (string) [required]
+              The unique ID for the job.
+
+              Constraints:
+
+              +o max: [1m255[0m
+
+              +o pattern: [1m[0-9]+[0m
+
+          commitId -> (string) [required]
+              The  commit  ID  from  a third-party repository provider for the
+              job.
+
+              Constraints:
+
+              +o max: [1m255[0m
+
+              +o pattern: [1m(?s).*[0m
+
+          commitMessage -> (string) [required]
+              The commit message from a third-party  repository  provider  for
+              the job.
+
+              Constraints:
+
+              +o max: [1m10000[0m
+
+              +o pattern: [1m(?s).*[0m
+
+          commitTime -> (timestamp) [required]
+              The commit date and time for the job.
+
+          startTime -> (timestamp) [required]
+              The start date and time for the job.
+
+          status -> (string) [required]
+              The current status for the job.
+
+              Possible values:
+
+              +o [1mCREATED[0m
+
+              +o [1mPENDING[0m
+
+              +o [1mPROVISIONING[0m
+
+              +o [1mRUNNING[0m
+
+              +o [1mFAILED[0m
+
+              +o [1mSUCCEED[0m
+
+              +o [1mCANCELLING[0m
+
+              +o [1mCANCELLED[0m
+
+          endTime -> (timestamp)
+              The end date and time for the job.
+
+          jobType -> (string) [required]
+              The type for the job. If the value is [1mRELEASE [22m, the job was man-
+              ually  released  from its source by using the [1mStartJob [22mAPI. This
+              value is available only for apps that are connected to a reposi-
+              tory.
+
+              If the value is [1mRETRY [22m, the job was manually retried  using  the
+              [1mStartJob  [22mAPI.  If the value is [1mWEB_HOOK [22m, the job was automati-
+              cally triggered by webhooks. If the value is [1mMANUAL [22m, the job is
+              for a manually deployed app. Manually deployed apps are not con-
+              nected to a Git repository.
+
+              Possible values:
+
+              +o [1mRELEASE[0m
+
+              +o [1mRETRY[0m
+
+              +o [1mMANUAL[0m
+
+              +o [1mWEB_HOOK[0m
+
+              Constraints:
+
+              +o max: [1m10[0m
+
+          sourceUrl -> (string)
+              The source URL for the files to deploy. The source  URL  can  be
+              either an HTTP GET URL that is publicly accessible and downloads
+              a single .zip file, or an Amazon S3 bucket and prefix.
+
+              Constraints:
+
+              +o max: [1m3000[0m
+
+              +o pattern: [1m^(s3|https|http)://.*[0m
+
+          sourceUrlType -> (string)
+              The  type of source specified by the [1msourceURL [22m. If the value is
+              [1mZIP [22m, the source is a .zip file. If the value is [1mBUCKET_PREFIX [22m,
+              the source is an Amazon S3 bucket and prefix.  If  no  value  is
+              specified, the default is [1mZIP [22m.
+
+              Possible values:
+
+              +o [1mZIP[0m
+
+              +o [1mBUCKET_PREFIX[0m
+
+                                                            [4mSTART-DEPLOYMENT[24m()

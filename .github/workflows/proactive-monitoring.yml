@@ -53,13 +53,13 @@ jobs:
               echo "environment=production" >> $GITHUB_OUTPUT
               ;;
             "staging")
-              echo "url=https://staging.dfltlhnwu9p09.amplifyapp.com" >> $GITHUB_OUTPUT
-              echo "api_url=https://staging.dfltlhnwu9p09.amplifyapp.com/api" >> $GITHUB_OUTPUT
+              echo "url=https://staging.dcwmv1pw85f0j.amplifyapp.com" >> $GITHUB_OUTPUT
+              echo "api_url=https://staging.dcwmv1pw85f0j.amplifyapp.com/api" >> $GITHUB_OUTPUT
               echo "environment=staging" >> $GITHUB_OUTPUT
               ;;
             "development")
-              echo "url=https://develop.dfltlhnwu9p09.amplifyapp.com" >> $GITHUB_OUTPUT
-              echo "api_url=https://develop.dfltlhnwu9p09.amplifyapp.com/api" >> $GITHUB_OUTPUT
+              echo "url=https://develop.dcwmv1pw85f0j.amplifyapp.com" >> $GITHUB_OUTPUT
+              echo "api_url=https://develop.dcwmv1pw85f0j.amplifyapp.com/api" >> $GITHUB_OUTPUT
               echo "environment=development" >> $GITHUB_OUTPUT
               ;;
           esac
