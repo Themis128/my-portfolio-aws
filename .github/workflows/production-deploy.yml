@@ -62,10 +62,39 @@ jobs:
 
           # E2E tests (if configured)
           if [ -f "playwright.config.ts" ]; then
-            npx playwright install-deps
-            npx playwright test
+            echo "🎭 Installing Playwright browsers..."
+            npx playwright install --with-deps
+
+            echo "🔍 Checking API connectivity before tests..."
+            # Check if AppSync endpoint is accessible
+            if grep -q "appsync-api" playwright.config.ts 2>/dev/null; then
+              echo "⚠️ AppSync endpoint detected in Playwright config"
+              echo "🔧 Testing API connectivity..."
+
+              # Extract AppSync endpoint from config (basic grep)
+              APPSYNC_URL=$(grep -o "https://[a-zA-Z0-9.-]*\.appsync-api\.[a-z0-9-]*\.amazonaws\.com" playwright.config.ts || echo "")
+
+              if [ -n "$APPSYNC_URL" ]; then
+                echo "🌐 Testing AppSync endpoint: $APPSYNC_URL"
+                if curl -f -s --max-time 10 "$APPSYNC_URL" > /dev/null 2>&1; then
+                  echo "✅ AppSync endpoint is accessible"
+                else
+                  echo "⚠️ AppSync endpoint not accessible - tests may fail"
+                  echo "💡 This might be expected if the API is private or not deployed"
+                fi
+              fi
+            fi
+
+            echo "🧪 Running Playwright tests..."
+            # Run tests with better error output
+            npx playwright test --reporter=line || {
+              echo "❌ Playwright tests failed"
+              echo "🔍 Check the test output above for API connectivity issues"
+              E2E_EXIT_CODE=1
+            }
             E2E_EXIT_CODE=$?
           else
+            echo "ℹ️ No Playwright config found, skipping E2E tests"
             E2E_EXIT_CODE=0
           fi
 
