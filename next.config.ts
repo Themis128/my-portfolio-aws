@@ -2,8 +2,8 @@ import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable static export for Amplify hosting
-  output: 'export',
+  // Enable SSR for API routes and dynamic features
+  // output: 'export', // Disabled for SSR
   trailingSlash: true,
   reactStrictMode: true,
   // AWS Amplify specific optimizations

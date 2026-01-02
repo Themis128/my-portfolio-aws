@@ -7,14 +7,14 @@ frontend:
         - pnpm install --frozen-lockfile
         - echo "Installing dependencies with pnpm"
         - echo "=== Checking environment variables ==="
-        - "echo \"NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-NOT_SET}\""
+        - 'echo "NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-NOT_SET}"'
     build:
       commands:
         - echo "Building optimized Next.js application..."
         - pnpm run build
         - echo "Build completed successfully"
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
@@ -28,17 +28,17 @@ buildTypes:
   - type: BUILD
     computeType: BUILD_GENERAL1_3XLARGE
     environmentVariables:
-      NEXT_TELEMETRY_DISABLED: "1"
-      NODE_OPTIONS: "--max-old-space-size=20480"
-      GENERATE_SOURCEMAP: "false"
-      NEXT_WEBPACK_USEPOLLING: "false"
+      NEXT_TELEMETRY_DISABLED: '1'
+      NODE_OPTIONS: '--max-old-space-size=20480'
+      GENERATE_SOURCEMAP: 'false'
+      NEXT_WEBPACK_USEPOLLING: 'false'
 
-# Static export configuration for Next.js
-# ssr:
-#   enabled: true
-#   runtime:
-#     type: "nodejs"
-#     version: "18"
+# SSR configuration enabled for API routes
+ssr:
+  enabled: true
+  runtime:
+    type: "nodejs"
+    version: "18"
 
 # Preview deployments
 preview:
