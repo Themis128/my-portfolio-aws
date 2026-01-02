@@ -19,7 +19,7 @@ Failed in 9 seconds
 annotations for 🔍 Proactive Application Monitoring / 🏥 Health Check 1
 🧹 Cleanup Old Artifacts	
 🔍 Proactive Application Monitoring / 🧹 Cleanup Old Artifacts
-Skippedname: Deploy Full-Stack to AWS Amplify
+Skippename: Deploy Full-Stack to AWS Amplify
 
 on:
   push:
@@ -114,27 +114,33 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-central-1
-    - name: Deploy Frontend to Amplify
+    - name: Start Amplify Release Job
+      id: start-deployment
       run: |
-        aws amplify start-deployment \
-          --app-id dcwmv1pw85f0j \
-          --branch-name ${{ github.ref_name }} \
-          --source-dir .
-
-    - name: Deploy Backend to Amplify
+        JOB_ID=$(aws amplify start-job --app-id dcwmv1pw85f0j --branch-name ${{ github.ref_name }} --job-type RELEASE --query 'jobSummary.jobId' --output text)
+        echo "job_id=$JOB_ID" >> $GITHUB_OUTPUT
+        echo "Started deployment job: $JOB_ID"
+    - name: Monitor Deployment Status
       run: |
-        echo "🚀 Deploying Amplify Gen 2 backend..."
-        npx ampx pipeline-deploy \
-          --app-id dcwmv1pw85f0j \
-          --branch-name ${{ github.ref_name }} \
-          --outputs-format json \
-          --outputs-out-dir ./amplify_outputs
-
-    - name: Upload Amplify Outputs
-      uses: actions/upload-artifact@v4
-      with:
-        name: amplify-outputs
-        path: ./amplify_outputs/amplify_outputs.json
+        JOB_ID=${{ steps.start-deployment.outputs.job_id }}
+        echo "Monitoring deployment job $JOB_ID..."
+        for i in {1..60}; do  # Monitor for up to 30 minutes
+          STATUS=$(aws amplify get-job --app-id dcwmv1pw85f0j --branch-name ${{ github.ref_name }} --job-id $JOB_ID --query 'job.summary.status' --output text 2>/dev/null || echo "UNKNOWN")
+          echo "$(date '+%H:%M:%S') - Status: $STATUS"
+          if [[ "$STATUS" == "SUCCEED" ]]; then
+            echo "✅ Deployment succeeded!"
+            exit 0
+          elif [[ "$STATUS" == "FAILED" ]]; then
+            echo "❌ Deployment failed."
+            exit 1
+          elif [[ "$STATUS" == "CANCELLED" ]]; then
+            echo "⚠️ Deployment cancelled."
+            exit 1
+          fi
+          sleep 30
+        done
+        echo "⏰ Deployment monitoring timed out"
+        exit 1
 
   preview:
     if: github.event_name == 'pull_request'

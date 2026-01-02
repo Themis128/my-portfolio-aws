@@ -1,0 +1,35 @@
+{
+  "name": "github-actions-monitor",
+  "version": "1.0.0",
+  "description": "MCP server for real-time monitoring and automated fixing of GitHub Actions workflows and issues",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "mcp",
+    "github",
+    "actions",
+    "ci-cd",
+    "monitoring",
+    "automation"
+  ],
+  "author": "Portfolio MCP Integration",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.1",
+    "@octokit/rest": "^20.0.2",
+    "@octokit/webhooks": "^12.0.3",
+    "axios": "^1.7.9",
+    "ws": "^8.16.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "."
+  }
+}
