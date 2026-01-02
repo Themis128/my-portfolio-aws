@@ -217,10 +217,7 @@ export default function ModernAbout({ data }: ModernAboutProps) {
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
   const isStatsInView = useInView(statsRef, { once: false, amount: 0.3 });
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
+  const { scrollYProgress } = useScroll();
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);

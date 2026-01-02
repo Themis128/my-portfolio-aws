@@ -1,0 +1,163 @@
+name: 🛠️ Development Deployment
+
+on:
+  push:
+    branches: [ develop, dev, feature/* ]
+  pull_request:
+    branches: [ develop, dev ]
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: 'Target branch for deployment'
+        required: false
+        default: 'develop'
+        type: string
+
+env:
+  NODE_VERSION: '20'
+  DEV_APP_ID: dfltlhnwu9p09
+  DEV_BRANCH: develop
+
+jobs:
+  # Quick validation for development
+  dev-validation:
+    name: 🔍 Development Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.14.4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run basic tests
+        run: |
+          echo "🧪 Running basic test validation..."
+          pnpm run test -- --watchAll=false --passWithNoTests
+
+      - name: Run linting
+        run: pnpm lint
+
+      - name: Type checking
+        run: npx tsc --noEmit --skipLibCheck
+
+  # Development deployment
+  dev-deploy:
+    name: 🚀 Development Deployment
+    needs: dev-validation
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.14.4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build for development
+        run: pnpm run build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
+          NEXT_PUBLIC_ENVIRONMENT: development
+          NEXT_PUBLIC_DEBUG: "true"
+
+      - name: Deploy to Development
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+
+      - name: Determine target branch
+        id: target-branch
+        run: |
+          if [ "${{ github.event.inputs.target_branch }}" != "" ]; then
+            echo "branch=${{ github.event.inputs.target_branch }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.head_ref }}" != "" ]; then
+            # For PRs, use the head branch name
+            echo "branch=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          else
+            echo "branch=${{ env.DEV_BRANCH }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy Frontend to Development
+        run: |
+          TARGET_BRANCH="${{ steps.target-branch.outputs.branch }}"
+          echo "🚀 Deploying frontend to development branch: $TARGET_BRANCH"
+
+          aws amplify start-deployment \
+            --app-id ${{ env.DEV_APP_ID }} \
+            --branch-name "$TARGET_BRANCH" \
+            --source-dir .
+
+      - name: Deploy Backend to Development
+        run: |
+          TARGET_BRANCH="${{ steps.target-branch.outputs.branch }}"
+          echo "🚀 Deploying backend to development branch: $TARGET_BRANCH"
+
+          npx ampx sandbox \
+            --identifier "dev-$TARGET_BRANCH" \
+            --outputs-format json \
+            --outputs-out-dir ./dev_outputs \
+            --once
+
+      - name: Development Health Check
+        run: |
+          echo "🏥 Running development health checks..."
+          sleep 30  # Wait for deployment
+
+          TARGET_BRANCH="${{ steps.target-branch.outputs.branch }}"
+          BRANCH_URL="${TARGET_BRANCH//[^a-zA-Z0-9]/-}.dfltlhnwu9p09.amplifyapp.com"
+
+          # Check if dev site is accessible
+          curl -f -s "https://$BRANCH_URL" > /dev/null
+          if [ $? -eq 0 ]; then
+            echo "✅ Development site is accessible: https://$BRANCH_URL"
+          else
+            echo "⚠️ Development site not yet accessible (may take time to deploy)"
+          fi
+
+      - name: Comment on PR with dev URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const targetBranch = '${{ steps.target-branch.outputs.branch }}';
+            const branchUrl = `https://${targetBranch.replace(/[^a-zA-Z0-9]/g, '-')}.dfltlhnwu9p09.amplifyapp.com`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚀 **Development deployment ready!**\n\n🌐 **Preview URL:** ${branchUrl}\n\n📋 **Branch:** ${targetBranch}\n\n⚡ This deployment includes both frontend and backend changes.`
+            });
+
+      - name: Upload development artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-deployment-${{ steps.target-branch.outputs.branch }}
+          path: |
+            dev_outputs/
+            .next/

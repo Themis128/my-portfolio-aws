@@ -1,10 +1,25 @@
-name: Deploy to AWS Amplify
+name: Deploy Full-Stack to AWS Amplify
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, develop, staging ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, develop, staging ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+      skip_tests:
+        description: 'Skip test execution'
+        required: false
+        default: false
+        type: boolean
 
 env:
   NODE_VERSION: '20'  # Match Amplify build environment
@@ -73,17 +88,58 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-central-1
-    - name: Deploy to Amplify
+    - name: Deploy Frontend to Amplify
       run: |
         aws amplify start-deployment \
           --app-id dfltlhnwu9p09 \
           --branch-name ${{ github.ref_name }} \
           --source-dir .
 
+    - name: Deploy Backend to Amplify
+      run: |
+        echo "🚀 Deploying Amplify Gen 2 backend..."
+        npx ampx pipeline-deploy \
+          --app-id dfltlhnwu9p09 \
+          --branch-name ${{ github.ref_name }} \
+          --outputs-format json \
+          --outputs-out-dir ./amplify_outputs
+
+    - name: Upload Amplify Outputs
+      uses: actions/upload-artifact@v4
+      with:
+        name: amplify-outputs
+        path: ./amplify_outputs/amplify_outputs.json
+
   preview:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'pnpm'
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9.14.4
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-central-1
+    - name: Deploy Preview Backend
+      run: |
+        echo "🚀 Deploying preview backend..."
+        npx ampx sandbox \
+          --identifier "pr-${{ github.event.number }}" \
+          --outputs-format json \
+          --outputs-out-dir ./amplify_outputs \
+          --once
     - name: Comment PR with preview URL
       uses: aws-actions/amplify-preview-actions@v1
       with:

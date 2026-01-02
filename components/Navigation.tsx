@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { trackInteraction } from '../lib/analytics';
@@ -23,7 +23,7 @@ export default function Navigation() {
     trackInteraction('navigation_click', 'navigation', sectionId);
 
     let element;
-    
+
     // Special handling for home navigation
     if (sectionId === 'hero') {
       element = document.getElementById('hero-anchor');
@@ -34,16 +34,17 @@ export default function Navigation() {
     } else {
       element = document.getElementById(sectionId);
     }
-    
+
     if (element) {
       // Calculate offset for fixed navigation bar
       const navbarHeight = 80; // Approximate height of navigation bar
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
-      
+      const offsetPosition =
+        elementPosition + window.pageYOffset - navbarHeight;
+
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
     setIsMobileMenuOpen(false);
@@ -55,15 +56,30 @@ export default function Navigation() {
     { name: 'Skills', id: 'skills' },
     { name: 'Experience', id: 'experience' },
     { name: 'Projects', id: 'projects' },
+    { name: 'AI Generator', href: '/ai-generator' },
     { name: 'Contact', id: 'contact' },
-  ];
+  ] as const;
+
+  const handleNavigation = (item: (typeof navItems)[number]) => {
+    if ('href' in item) {
+      // Navigate to a different page
+      trackInteraction('navigation_click', 'navigation', item.href);
+      // eslint-disable-next-line react-hooks/immutability
+      window.location.href = item.href;
+    } else {
+      // Scroll to section on same page
+      scrollToSection(item.id);
+    }
+  };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled
-        ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700'
-        : 'bg-transparent'
-    }`}>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700'
+          : 'bg-transparent'
+      }`}
+    >
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Image
@@ -71,23 +87,25 @@ export default function Navigation() {
             alt="Themis Baltzakis Logo"
             width={32}
             height={32}
-            className="h-8 w-auto dark:brightness-0 dark:invert transition-all duration-300"
+            className="h-8 w-8 dark:brightness-0 dark:invert transition-all duration-300"
           />
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                key={item.name}
+                onClick={() => handleNavigation(item)}
                 className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 font-medium relative group font-mono nav-accent"
               >
                 {item.name}
               </button>
             ))}
             <div className="w-px h-8 bg-gray-200 dark:bg-gray-700"></div>
-            <UserSession />
-            <ThemeSwitcher />
+            <div className="flex items-center gap-2">
+              <UserSession />
+              <ThemeSwitcher />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -95,11 +113,26 @@ export default function Navigation() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
-            <svg className="w-6 h-6 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-6 h-6 text-gray-700 dark:text-gray-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               )}
             </svg>
           </button>
@@ -111,8 +144,8 @@ export default function Navigation() {
             <div className="flex flex-col space-y-4 pt-4">
               {navItems.map((item) => (
                 <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
+                  key={item.name}
+                  onClick={() => handleNavigation(item)}
                   className="text-left text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-all duration-300 font-medium relative group"
                 >
                   {item.name}

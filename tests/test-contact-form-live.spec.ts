@@ -23,6 +23,7 @@ test.describe('Contact Form - Live Production Test', () => {
 
     // Scroll to contact section and click the Contact navigation button
     await page.locator('nav button').filter({ hasText: 'Contact' }).click();
+    await page.waitForTimeout(2000); // Wait for scroll
     await expect(page.locator('#contact')).toBeInViewport();
 
     // Wait a bit for any animations
@@ -131,6 +132,7 @@ test.describe('Contact Form - Live Production Test', () => {
 
     // Navigate to contact section
     await page.locator('nav button').filter({ hasText: 'Contact' }).click();
+    await page.waitForTimeout(2000); // Wait for scroll
     await expect(page.locator('#contact')).toBeInViewport();
 
     // Try to submit empty form

@@ -1,7 +1,17 @@
 import { Amplify } from 'aws-amplify';
 
+// Define proper types
+interface AmplifyConfig {
+  [key: string]: unknown;
+}
+
+interface AmplifyOutputs {
+  default?: AmplifyConfig;
+  [key: string]: unknown;
+}
+
 // Dynamic import to handle build-time issues
-const loadAmplifyConfig = async () => {
+const loadAmplifyConfig = async (): Promise<AmplifyConfig> => {
   try {
     // Try multiple possible locations for amplify_outputs.json
     const possiblePaths = [
@@ -10,7 +20,7 @@ const loadAmplifyConfig = async () => {
       './amplify/amplify_outputs.json'
     ];
 
-    let amplifyconfig = null;
+    let amplifyconfig: AmplifyOutputs | null = null;
     let loadedPath = '';
 
     for (const path of possiblePaths) {
@@ -44,10 +54,10 @@ const loadAmplifyConfig = async () => {
 
 // Configure Amplify immediately when this module is loaded
 // This ensures Amplify is configured before any components that use it are rendered
-let amplifyConfigPromise: Promise<any> | null = null;
-let cachedConfig: any = null;
+let amplifyConfigPromise: Promise<AmplifyConfig> | null = null;
+let cachedConfig: AmplifyConfig | null = null;
 
-const configureAmplify = async () => {
+const configureAmplify = async (): Promise<AmplifyConfig> => {
   if (cachedConfig) return cachedConfig;
   if (amplifyConfigPromise) return amplifyConfigPromise;
 
@@ -60,13 +70,14 @@ const configureAmplify = async () => {
 configureAmplify().catch(console.error);
 
 // Export the configuration for use in components if needed
-export const getAmplifyConfig = () => cachedConfig;
+export const getAmplifyConfig = (): AmplifyConfig | null => cachedConfig;
 
 // Export a function to ensure Amplify is configured (for use in components)
-export const ensureAmplifyConfigured = async () => {
+export const ensureAmplifyConfigured = async (): Promise<void> => {
   await configureAmplify();
 };
 
 // For backward compatibility, export a default config object
 // This will be populated after configuration
-export default {};
+const defaultConfig: AmplifyConfig = {};
+export default defaultConfig;

@@ -99,3 +99,7 @@ test-serverless.js
 
 # Archive files
 *.zip
+
+# MCP Configurations (contain secrets)
+integrations/claude_desktop_config.json
+integrations/cline_mcp_settings.json

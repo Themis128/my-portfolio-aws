@@ -1,15 +1,18 @@
+import '@aws-amplify/ui-react/styles.css';
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import AmplifyInitializer from '../components/AmplifyInitializer';
 import DevConsoleFilter from '../components/DevConsoleFilter';
 import DevListenerPatch from '../components/DevListenerPatch';
+import InstallPrompt from '../components/InstallPrompt';
 import Navigation from '../components/Navigation';
 import ToolbarMountController from '../components/ToolbarMountController';
-import AmplifyInitializer from '../components/AmplifyInitializer';
 import '../globals.css';
 import '../lib/amplify-client-config'; // Configure Amplify early
 import { ThemeProvider } from '../lib/theme-context';
-import { Analytics } from '@vercel/analytics/react';
-import '@aws-amplify/ui-react/styles.css';
+import '../styles/app.css'; // Custom styles
+// import '@aws-amplify/ui-react-ai/styles.css'; // AI UI styles - removed as package may not have styles
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -23,7 +26,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'Themistoklis Baltzakis - Systems and Network Engineer',
-  description: 'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
+  description:
+    'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
   authors: [{ name: 'Themistoklis Baltzakis' }],
   creator: 'Themistoklis Baltzakis',
   publisher: 'Themistoklis Baltzakis',
@@ -39,7 +43,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Themistoklis Baltzakis - Systems and Network Engineer',
-    description: 'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
+    description:
+      'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
     url: 'https://your-portfolio-domain.com',
     siteName: 'Themistoklis Baltzakis Portfolio',
     locale: 'en_US',
@@ -48,7 +53,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Themistoklis Baltzakis - Systems and Network Engineer',
-    description: 'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
+    description:
+      'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
     creator: '@your-twitter-handle', // Replace with your Twitter handle
   },
   robots: {
@@ -72,6 +78,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* PWA Meta Tags */}
+        <meta name="theme-color" content="#000000" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta
+          name="apple-mobile-web-app-title"
+          content="TBaltzakis Portfolio"
+        />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/cloudless-favicon.ico" />
+
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <>
@@ -165,9 +183,13 @@ export default function RootLayout({
         <AmplifyInitializer />
         <ThemeProvider>
           {/* Global tech overlay */}
-          <div className="site-tech-overlay pointer-events-none fixed inset-0 z-0" aria-hidden="true" />
+          <div
+            className="site-tech-overlay pointer-events-none fixed inset-0 z-0"
+            aria-hidden="true"
+          />
           <Navigation />
           {children}
+          <InstallPrompt />
         </ThemeProvider>
         {process.env.NODE_ENV === 'development' && <DevListenerPatch />}
         {process.env.NODE_ENV === 'development' && <DevConsoleFilter />}

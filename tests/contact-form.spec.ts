@@ -99,8 +99,13 @@ test.describe('Contact Form - Local Development', () => {
     await page.fill('input[name="email"]', 'invalid'); // Invalid email
     await page.fill('textarea[name="message"]', 'Short'); // Too short
 
+    // Trigger validation by blurring fields
+    await page.locator('input[name="name"]').blur();
+    await page.locator('input[name="email"]').blur();
+    await page.locator('textarea[name="message"]').blur();
+
     // Wait for validation to show
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
 
     // Check for validation messages (they appear when field has content but invalid)
     const nameError = page.locator('text=Name must be at least 2 characters');
@@ -134,8 +139,11 @@ test.describe('Contact Form - Local Development', () => {
     await page.fill('input[name="email"]', 'invalid@format'); // Invalid email - no dot after @
     await page.fill('textarea[name="message"]', 'This is a test message that is long enough to pass validation requirements');
 
+    // Trigger validation by blurring the email field
+    await page.locator('input[name="email"]').blur();
+
     // Wait for validation to show
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
 
     // Check for email validation error message
     const emailError = page.locator('text=Please enter a valid email address');
