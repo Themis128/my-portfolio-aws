@@ -1,62 +1,86 @@
-2026-01-02T11:36:45.943Z [INFO]: # Build environment configured with Large build compute type: 16GiB Memory, 8vCPUs, 128GB Disk Space
-2026-01-02T11:36:46.620Z [INFO]: # Cloning repository: git@github.com:Themis128/my-portfolio-aws.git
-2026-01-02T11:36:51.017Z [INFO]: 
-2026-01-02T11:36:51.106Z [INFO]: Cloning into 'my-portfolio-aws'...
-2026-01-02T11:36:51.106Z [INFO]: # Checking for Git submodules at: /codebuild/output/src3752884957/src/my-portfolio-aws/.gitmodules
-2026-01-02T11:36:51.115Z [INFO]: # Retrieving environment cache...
-2026-01-02T11:36:51.179Z [INFO]: # Retrieved environment cache
-2026-01-02T11:36:51.180Z [INFO]: ---- Setting Up SSM Secrets ----
-2026-01-02T11:36:51.180Z [INFO]: SSM params {"Path":"/amplify/dcwmv1pw85f0j/master/","WithDecryption":true}
-2026-01-02T11:36:52.006Z [INFO]: # No package override configuration found.
-2026-01-02T11:36:52.011Z [INFO]: # Retrieving cache...
-2026-01-02T11:36:52.045Z [INFO]: # Retrieved cache
-2026-01-02T11:36:57.208Z [INFO]: ## Starting Backend Build
+2026-01-02T20:19:55.201Z [INFO]: # Build environment configured with XLarge build compute type: 72GiB Memory, 36vCPUs, 256GB Disk Space
+2026-01-02T20:19:55.886Z [INFO]: # Cloning repository: git@github.com:Themis128/my-portfolio-aws.git
+2026-01-02T20:20:00.251Z [INFO]: 
+2026-01-02T20:20:00.335Z [INFO]: Cloning into 'my-portfolio-aws'...
+2026-01-02T20:20:00.335Z [INFO]: # Switching to commit: c461dcca76bfc0cc87001c3db91be2baa71f0b49
+2026-01-02T20:20:00.512Z [INFO]: Note: switching to 'c461dcca76bfc0cc87001c3db91be2baa71f0b49'.
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+                                 changes and commit them, and you can discard any commits you make in this
+                                 state without impacting any branches by switching back to a branch.
+                                 If you want to create a new branch to retain commits you create, you may
+                                 do so (now or later) by using -c with the switch command. Example:
+                                 git switch -c <new-branch-name>
+                                 Or undo this operation with:
+                                 git switch -
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+                                 HEAD is now at c461dcc Switch back to SSR to enable API routes and sync contact form with backend
+2026-01-02T20:20:00.560Z [INFO]: Successfully cleaned up Git credentials
+2026-01-02T20:20:00.560Z [INFO]: # Checking for Git submodules at: /codebuild/output/src2989213604/src/my-portfolio-aws/.gitmodules
+2026-01-02T20:20:00.574Z [INFO]: # Retrieving environment cache...
+2026-01-02T20:20:00.642Z [INFO]: # Retrieved environment cache
+2026-01-02T20:20:00.642Z [INFO]: ---- Setting Up SSM Secrets ----
+2026-01-02T20:20:00.642Z [INFO]: SSM params {"Path":"/amplify/dcwmv1pw85f0j/master/","WithDecryption":true}
+2026-01-02T20:20:01.381Z [INFO]: # No package override configuration found.
+2026-01-02T20:20:01.387Z [INFO]: # Retrieving cache...
+2026-01-02T20:20:01.433Z [INFO]: # Retrieved cache
+2026-01-02T20:20:06.818Z [INFO]: ## Starting Backend Build
                                  ## Checking for associated backend environment...
                                  ## No backend environment association found, continuing...
                                  ## Completed Backend Build
-2026-01-02T11:36:57.213Z [INFO]: {"backendDuration": 0}
+2026-01-02T20:20:06.823Z [INFO]: {"backendDuration": 0}
                                  ## Starting Frontend Build
                                  # Starting phase: preBuild
                                  # Executing command: npm install -g pnpm
-2026-01-02T11:37:13.698Z [INFO]: added 1 package in 12s
+2026-01-02T20:20:23.342Z [INFO]: added 1 package in 12s
                                  1 package is looking for funding
-2026-01-02T11:37:13.703Z [INFO]: run `npm fund` for details
-2026-01-02T11:37:13.704Z [INFO]: # Executing command: pnpm install --frozen-lockfile
-2026-01-02T11:37:14.259Z [INFO]: Lockfile is up to date, resolution step is skipped
-2026-01-02T11:37:14.356Z [INFO]: Progress: resolved 1, reused 0, downloaded 0, added 0
-2026-01-02T11:37:14.573Z [INFO]: Packages: +1954
+2026-01-02T20:20:23.348Z [INFO]: run `npm fund` for details
+2026-01-02T20:20:23.377Z [INFO]: # Executing command: pnpm install --frozen-lockfile
+2026-01-02T20:20:23.962Z [INFO]: Lockfile is up to date, resolution step is skipped
+2026-01-02T20:20:24.057Z [INFO]: Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-01-02T20:20:24.368Z [INFO]: Packages: +1968
                                  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-2026-01-02T11:37:15.360Z [INFO]: Progress: resolved 1954, reused 0, downloaded 65, added 28
-2026-01-02T11:37:16.358Z [INFO]: Progress: resolved 1954, reused 0, downloaded 292, added 290
-2026-01-02T11:37:17.387Z [INFO]: Progress: resolved 1954, reused 0, downloaded 390, added 347
-2026-01-02T11:37:18.387Z [INFO]: Progress: resolved 1954, reused 0, downloaded 626, added 619
-2026-01-02T11:37:19.388Z [INFO]: Progress: resolved 1954, reused 0, downloaded 708, added 703
-2026-01-02T11:37:20.388Z [INFO]: Progress: resolved 1954, reused 0, downloaded 791, added 742
-2026-01-02T11:37:21.389Z [INFO]: Progress: resolved 1954, reused 0, downloaded 881, added 807
-2026-01-02T11:37:22.390Z [INFO]: Progress: resolved 1954, reused 0, downloaded 975, added 845
-2026-01-02T11:37:23.391Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1074, added 951
-2026-01-02T11:37:24.392Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1167, added 982
-2026-01-02T11:37:25.391Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1272, added 1030
-2026-01-02T11:37:26.393Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1307, added 1036
-2026-01-02T11:37:27.393Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1387, added 1107
-2026-01-02T11:37:28.395Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1480, added 1200
-2026-01-02T11:37:29.396Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1592, added 1298
-2026-01-02T11:37:30.407Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1702, added 1393
-2026-01-02T11:37:31.408Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1806, added 1610
-2026-01-02T11:37:32.408Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1907, added 1764
-2026-01-02T11:37:33.334Z [INFO]: Progress: resolved 1954, reused 0, downloaded 1949, added 1954, done
-2026-01-02T11:37:34.102Z [INFO]: .../node_modules/core-js-pure postinstall$ node -e "try{require('./postinstall')}catch(e){}"
-2026-01-02T11:37:34.128Z [INFO]: .../node_modules/@sentry/cli postinstall$ node ./scripts/install.js
-2026-01-02T11:37:34.154Z [INFO]: .../node_modules/core-js-pure postinstall: Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
-2026-01-02T11:37:34.154Z [INFO]: .../node_modules/core-js-pure postinstall: The project needs your help! Please consider supporting core-js:
-2026-01-02T11:37:34.155Z [INFO]: .../node_modules/core-js-pure postinstall: > https://opencollective.com/core-js
-2026-01-02T11:37:34.155Z [INFO]: .../node_modules/core-js-pure postinstall: > https://patreon.com/zloirock
-2026-01-02T11:37:34.155Z [INFO]: .../node_modules/core-js-pure postinstall: > https://boosty.to/zloirock
-2026-01-02T11:37:34.155Z [INFO]: .../node_modules/core-js-pure postinstall: > bitcoin: bc1qlea7544qtsmj2rayg0lthvza9fau63ux0fstcz
-2026-01-02T11:37:34.155Z [INFO]: .../node_modules/core-js-pure postinstall: I highly recommend reading this: https://github.com/zloirock/core-js/blob/master/docs/2023-02-14-so-whats-next.md
-2026-01-02T11:37:34.157Z [INFO]: .../node_modules/core-js-pure postinstall: Done
-2026-01-02T11:37:34.208Z [INFO]: .../node_modules/@sentry/cli postinstall: Done
-2026-01-02T11:37:34.561Z [INFO]: dependencies:
+2026-01-02T20:20:25.058Z [INFO]: Progress: resolved 1968, reused 0, downloaded 65, added 16
+2026-01-02T20:20:26.058Z [INFO]: Progress: resolved 1968, reused 0, downloaded 250, added 41
+2026-01-02T20:20:27.058Z [INFO]: Progress: resolved 1968, reused 0, downloaded 353, added 56
+2026-01-02T20:20:28.059Z [INFO]: Progress: resolved 1968, reused 0, downloaded 562, added 84
+2026-01-02T20:20:29.060Z [INFO]: Progress: resolved 1968, reused 0, downloaded 708, added 107
+2026-01-02T20:20:30.060Z [INFO]: Progress: resolved 1968, reused 0, downloaded 836, added 123
+2026-01-02T20:20:31.062Z [INFO]: Progress: resolved 1968, reused 0, downloaded 943, added 136
+2026-01-02T20:20:32.063Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1078, added 156
+2026-01-02T20:20:33.063Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1265, added 180
+2026-01-02T20:20:34.062Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1407, added 191
+2026-01-02T20:20:35.062Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1542, added 206
+2026-01-02T20:20:36.063Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1771, added 256
+2026-01-02T20:20:37.062Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1935, added 291
+2026-01-02T20:20:38.062Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1948, added 368
+2026-01-02T20:20:39.063Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1954, added 424
+2026-01-02T20:20:40.063Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1955, added 614
+2026-01-02T20:20:41.063Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1956, added 734
+2026-01-02T20:20:42.064Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1958, added 923
+2026-01-02T20:20:43.065Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1958, added 986
+2026-01-02T20:20:44.065Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1958, added 1114
+2026-01-02T20:20:45.066Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1958, added 1323
+2026-01-02T20:20:46.067Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1959, added 1574
+2026-01-02T20:20:47.067Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1960, added 1947
+2026-01-02T20:20:48.068Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1962, added 1958
+2026-01-02T20:20:49.068Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1962, added 1961
+2026-01-02T20:20:50.069Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1962, added 1962
+2026-01-02T20:20:51.070Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1963, added 1965
+2026-01-02T20:20:52.071Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1963, added 1966
+2026-01-02T20:20:53.194Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1963, added 1967
+2026-01-02T20:20:53.259Z [INFO]: Progress: resolved 1968, reused 0, downloaded 1963, added 1968, done
+2026-01-02T20:20:54.171Z [INFO]: .../node_modules/core-js-pure postinstall$ node -e "try{require('./postinstall')}catch(e){}"
+2026-01-02T20:20:54.204Z [INFO]: .../node_modules/@sentry/cli postinstall$ node ./scripts/install.js
+2026-01-02T20:20:54.237Z [INFO]: .../node_modules/core-js-pure postinstall: Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+2026-01-02T20:20:54.238Z [INFO]: .../node_modules/core-js-pure postinstall: The project needs your help! Please consider supporting core-js:
+2026-01-02T20:20:54.238Z [INFO]: .../node_modules/core-js-pure postinstall: > https://opencollective.com/core-js
+                                 .../node_modules/core-js-pure postinstall: > https://patreon.com/zloirock
+2026-01-02T20:20:54.238Z [INFO]: .../node_modules/core-js-pure postinstall: > https://boosty.to/zloirock
+2026-01-02T20:20:54.238Z [INFO]: .../node_modules/core-js-pure postinstall: > bitcoin: bc1qlea7544qtsmj2rayg0lthvza9fau63ux0fstcz
+2026-01-02T20:20:54.238Z [INFO]: .../node_modules/core-js-pure postinstall: I highly recommend reading this: https://github.com/zloirock/core-js/blob/master/docs/2023-02-14-so-whats-next.md
+2026-01-02T20:20:54.240Z [INFO]: .../node_modules/core-js-pure postinstall: Done
+2026-01-02T20:20:54.313Z [INFO]: .../node_modules/@sentry/cli postinstall: Done
+2026-01-02T20:20:54.653Z [INFO]: dependencies:
                                  + @aws-amplify/api 6.3.21
                                  + @aws-amplify/backend 1.19.0
                                  + @aws-amplify/backend-auth 1.9.0
@@ -131,9 +155,10 @@
                                  + stylelint 16.26.1
                                  + stylelint-config-standard 39.0.1
                                  + tailwindcss 4.1.18
+                                 + ts-node 10.9.2
                                  + typedoc 0.28.15
                                  + typescript 5.9.3
-2026-01-02T11:37:34.585Z [INFO]: ╭ Warning ─────────────────────────────────────────────────────────────────────╮
+2026-01-02T20:20:54.683Z [INFO]: ╭ Warning ─────────────────────────────────────────────────────────────────────╮
                                  │                                                                              │
                                  │   Ignored build scripts: core-js@2.6.12, core-js@3.47.0, esbuild@0.27.2,     │
                                  │   serverless@4.29.3, snyk@1.1301.2.                                          │
@@ -141,40 +166,58 @@
                                  │   to run scripts.                                                            │
                                  │                                                                              │
                                  ╰──────────────────────────────────────────────────────────────────────────────╯
-2026-01-02T11:37:34.633Z [INFO]: Done in 20.9s using pnpm v10.27.0
-2026-01-02T11:37:34.691Z [INFO]: # Executing command: echo "Installing dependencies with pnpm"
+2026-01-02T20:20:54.752Z [INFO]: Done in 31.3s using pnpm v10.27.0
+2026-01-02T20:20:54.811Z [INFO]: # Executing command: echo "Installing dependencies with pnpm"
                                  Installing dependencies with pnpm
-2026-01-02T11:37:34.692Z [INFO]: # Executing command: echo "=== Checking environment variables ==="
+                                 # Executing command: echo "=== Checking environment variables ==="
                                  === Checking environment variables ===
                                  # Executing command: echo "NEXT_PUBLIC_GA_MEASUREMENT_ID: ${NEXT_PUBLIC_GA_MEASUREMENT_ID:-NOT_SET}"
-                                 NEXT_PUBLIC_GA_MEASUREMENT_ID: NOT_SET
+2026-01-02T20:20:54.811Z [INFO]: NEXT_PUBLIC_GA_MEASUREMENT_ID: NOT_SET
                                  # Completed phase: preBuild
                                  # Starting phase: build
                                  # Executing command: echo "Building optimized Next.js application..."
                                  Building optimized Next.js application...
                                  # Executing command: pnpm run build
-2026-01-02T11:37:35.001Z [INFO]: > my-app@0.1.0 build /codebuild/output/src3752884957/src/my-portfolio-aws
+2026-01-02T20:20:55.144Z [INFO]: > my-app@0.1.0 build /codebuild/output/src2989213604/src/my-portfolio-aws
                                  > next build
-2026-01-02T11:37:36.671Z [WARNING]: [@sentry/nextjs] DEPRECATION WARNING: disableLogger is deprecated and will be removed in a future version. Use webpack.treeshake.removeDebugLogging instead.
-2026-01-02T11:37:36.679Z [WARNING]: [@sentry/nextjs] DEPRECATION WARNING: automaticVercelMonitors is deprecated and will be removed in a future version. Use webpack.automaticVercelMonitors instead.
-                                    [@sentry/nextjs] DEPRECATION WARNING: reactComponentAnnotation is deprecated and will be removed in a future version. Use webpack.reactComponentAnnotation instead.
-2026-01-02T11:37:36.688Z [WARNING]: ⚠ Invalid next.config.ts options detected:
-                                    ⚠     Unrecognized key(s) in object: '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21'
-                                    ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
-2026-01-02T11:37:36.689Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
-2026-01-02T11:37:36.694Z [INFO]: ▲ Next.js 16.1.1 (Turbopack)
-2026-01-02T11:37:36.694Z [INFO]: - Experiments (use with caution):
-2026-01-02T11:37:36.695Z [INFO]: · clientTraceMetadata
-2026-01-02T11:37:36.695Z [INFO]: 
-2026-01-02T11:37:36.718Z [INFO]: Creating an optimized production build ...
-2026-01-02T11:37:38.145Z [WARNING]: [@sentry/nextjs] DEPRECATION WARNING: disableLogger is deprecated and will be removed in a future version. Use webpack.treeshake.removeDebugLogging instead.
-2026-01-02T11:37:38.157Z [WARNING]: [@sentry/nextjs] DEPRECATION WARNING: automaticVercelMonitors is deprecated and will be removed in a future version. Use webpack.automaticVercelMonitors instead.
-2026-01-02T11:37:38.157Z [WARNING]: [@sentry/nextjs] DEPRECATION WARNING: reactComponentAnnotation is deprecated and will be removed in a future version. Use webpack.reactComponentAnnotation instead.
-                                    [@sentry/nextjs] DEPRECATION WARNING: disableLogger is deprecated and will be removed in a future version. Use webpack.treeshake.removeDebugLogging instead.
-                                    [@sentry/nextjs] DEPRECATION WARNING: automaticVercelMonitors is deprecated and will be removed in a future version. Use webpack.automaticVercelMonitors instead.
-                                    [@sentry/nextjs] DEPRECATION WARNING: reactComponentAnnotation is deprecated and will be removed in a future version. Use webpack.reactComponentAnnotation instead.
-2026-01-02T11:37:46.354Z [INFO]: ✓ Compiled successfully in 8.2s
-2026-01-02T11:37:46.360Z [INFO]: Running next.config.js provided runAfterProductionCompile ...
-2026-01-02T11:37:46.522Z [INFO]: ✓ Completed runAfterProductionCompile in 167ms
-2026-01-02T11:37:46.522Z [INFO]: Running TypeScript ...
-2026-01-02T11:38:01.060Z [INFO]: Collecting page data using 7 workers ...
+2026-01-02T20:20:56.372Z [INFO]: ⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2026-01-02T20:20:56.388Z [INFO]: ▲ Next.js 16.1.1 (Turbopack)
+                                 - Experiments (use with caution):
+2026-01-02T20:20:56.388Z [INFO]: · clientTraceMetadata
+                                 · optimizePackageImports
+2026-01-02T20:20:56.401Z [INFO]: Creating an optimized production build ...
+2026-01-02T20:21:02.986Z [INFO]: ✓ Compiled successfully in 5.7s
+2026-01-02T20:21:02.991Z [INFO]: Running next.config.js provided runAfterProductionCompile ...
+2026-01-02T20:21:03.198Z [INFO]: ✓ Completed runAfterProductionCompile in 211ms
+2026-01-02T20:21:03.198Z [INFO]: Running TypeScript ...
+2026-01-02T20:21:16.647Z [INFO]: Collecting page data using 35 workers ...
+2026-01-02T20:21:17.566Z [INFO]: Generating static pages using 35 workers (0/4) ...
+2026-01-02T20:21:18.080Z [INFO]: Generating static pages using 35 workers (1/4)
+2026-01-02T20:21:18.080Z [INFO]: Generating static pages using 35 workers (2/4)
+                                 Generating static pages using 35 workers (3/4)
+                                 ✓ Generating static pages using 35 workers (4/4) in 514.1ms
+2026-01-02T20:21:18.104Z [INFO]: Finalizing page optimization ...
+2026-01-02T20:21:18.120Z [INFO]: 
+2026-01-02T20:21:18.122Z [INFO]: Route (app)
+                                 ┌ ○ /
+                                 ├ ○ /_not-found
+                                 └ ○ /ai-generator
+2026-01-02T20:21:18.122Z [INFO]: ○  (Static)  prerendered as static content
+2026-01-02T20:21:18.174Z [INFO]: # Executing command: echo "Build completed successfully"
+                                 Build completed successfully
+                                 # Completed phase: build
+                                 ## Completed Frontend Build
+2026-01-02T20:21:18.191Z [INFO]: ## Build completed successfully
+2026-01-02T20:21:18.192Z [INFO]: # Starting caching...
+2026-01-02T20:21:18.196Z [INFO]: # Creating cache artifact...
+2026-01-02T20:24:09.959Z [INFO]: # Created cache artifact
+2026-01-02T20:24:10.059Z [INFO]: # Uploading cache artifact...
+2026-01-02T20:24:10.061Z [WARNING]: ! Unable to write cache: File size must be less than 5GB)}
+2026-01-02T20:24:10.120Z [INFO]: # Starting build artifact upload process...
+2026-01-02T20:24:10.543Z [INFO]: # Uploading build artifact '__artifacts.zip'...
+2026-01-02T20:24:10.715Z [INFO]: # Build artifact upload completed
+2026-01-02T20:24:10.715Z [INFO]: # Starting environment caching...
+2026-01-02T20:24:10.715Z [INFO]: # Uploading environment cache artifact...
+2026-01-02T20:24:10.804Z [INFO]: # Uploaded environment cache artifact
+2026-01-02T20:24:10.804Z [INFO]: # Environment caching completed
+
