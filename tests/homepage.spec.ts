@@ -35,7 +35,7 @@ test('homepage loads correctly', async ({ page }: { page: Page }) => {
         // At least check if we have some navigation
         expect(buttonCount).toBeGreaterThan(0);
       }
-    } catch (error) {
+    } catch {
       console.log('⚠️ Navigation not fully loaded, but page is accessible');
       // Don't fail the test for navigation issues
     }
@@ -43,7 +43,7 @@ test('homepage loads correctly', async ({ page }: { page: Page }) => {
     // Mobile navigation - check for hamburger menu (optional)
     try {
       await expect(page.locator('button.md\\:hidden, .mobile-menu, .hamburger')).toBeVisible({ timeout: 3000 });
-    } catch (error) {
+    } catch {
       console.log('⚠️ Mobile navigation not found, but page is still accessible');
       // Don't fail for missing mobile navigation
     }
@@ -82,7 +82,7 @@ test('navigation works', async ({ page }: { page: Page }) => {
           console.log('✅ Navigation items are clickable');
           // Note: We don't actually click to avoid breaking the test if sections don't exist
         }
-      } catch (error) {
+      } catch {
         console.log('⚠️ Navigation items found but may not be fully functional');
       }
     }
@@ -90,7 +90,7 @@ test('navigation works', async ({ page }: { page: Page }) => {
     // Test passes if navigation elements are present
     expect(buttonCount).toBeGreaterThanOrEqual(0);
 
-  } catch (error) {
+  } catch {
     console.log('⚠️ Navigation not found or not loading properly, but page is accessible');
     // Don't fail the test - navigation might not be implemented yet
     expect(true).toBe(true);

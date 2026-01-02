@@ -106,7 +106,7 @@ test.describe('Contact Form - Local Development', () => {
         await contactSection.scrollIntoViewIfNeeded();
         console.log('✅ Scrolled to contact section');
       }
-    } catch (error) {
+    } catch {
       console.log('⚠️ Could not scroll to contact section - testing form directly');
     }
 
@@ -154,7 +154,7 @@ test.describe('Contact Form - Local Development', () => {
         await contactSection.scrollIntoViewIfNeeded();
         console.log('✅ Scrolled to contact section');
       }
-    } catch (error) {
+    } catch {
       console.log('⚠️ Could not scroll to contact section - testing form directly');
     }
 

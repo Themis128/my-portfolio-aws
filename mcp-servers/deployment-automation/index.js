@@ -10,6 +10,13 @@ const {
   ListToolsRequestSchema,
   McpError,
 } = require('@modelcontextprotocol/sdk/types.js');
+const {
+  AmplifyClient,
+  CreateDomainAssociationCommand,
+  ListDomainAssociationsCommand,
+  GetDomainAssociationCommand,
+  DeleteDomainAssociationCommand,
+} = require('@aws-sdk/client-amplify');
 
 class DeploymentAutomationServer {
   constructor() {
@@ -38,10 +45,8 @@ class DeploymentAutomationServer {
           return await this.handleAmplifyDeploymentOptimizer(args);
         case 'ci_cd_pipeline_generator':
           return await this.handleCiCdPipelineGenerator(args);
-        case 'monitoring_dashboard_setup':
-          return await this.handleMonitoringDashboardSetup(args);
-        default:
-          throw new McpError(ErrorCode.MethodNotFound, `Unknown tool: ${name}`);
+        case 'amplify_domain_manager':
+          return await this.handleAmplifyDomainManager(args);
       }
     });
   }
@@ -127,44 +132,38 @@ class DeploymentAutomationServer {
             },
           },
           {
-            name: 'monitoring_dashboard_setup',
+            name: 'amplify_domain_manager',
             description:
-              'Set up comprehensive monitoring and analytics for portfolio',
+              'Create, update, and manage AWS Amplify domain associations',
             inputSchema: {
               type: 'object',
               properties: {
-                analytics_provider: {
+                action: {
                   type: 'string',
-                  enum: [
-                    'google-analytics',
-                    'plausible',
-                    'vercel-analytics',
-                    'custom',
-                  ],
-                  description: 'Analytics provider to integrate',
+                  enum: ['create', 'list', 'get', 'delete'],
+                  description: 'Action to perform on domain association',
                 },
-                error_tracking: {
-                  type: 'boolean',
-                  default: true,
-                  description: 'Enable error tracking and reporting',
+                app_id: {
+                  type: 'string',
+                  description: 'AWS Amplify App ID',
                 },
-                performance_monitoring: {
-                  type: 'boolean',
-                  default: true,
-                  description: 'Enable performance monitoring',
+                domain_name: {
+                  type: 'string',
+                  description: 'Domain name for association',
                 },
-                user_analytics: {
-                  type: 'boolean',
-                  default: true,
-                  description: 'Enable user behavior analytics',
-                },
-                real_time_alerts: {
-                  type: 'boolean',
-                  default: true,
-                  description: 'Enable real-time alerting for issues',
+                sub_domains: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      branchName: { type: 'string' },
+                      prefix: { type: 'string' },
+                    },
+                  },
+                  description: 'Subdomain configurations',
                 },
               },
-              required: ['analytics_provider'],
+              required: ['action', 'app_id'],
             },
           },
         ],
@@ -968,16 +967,214 @@ This CI/CD pipeline provides a robust, scalable, and secure deployment process o
     }
   }
 
-  async handleMonitoringDashboardSetup(args) {
-    const {
-      analytics_provider,
-      error_tracking = true,
-      performance_monitoring = true,
-      user_analytics = true,
-      real_time_alerts = true,
-    } = args;
+  async handleAmplifyDomainManager(args) {
+    const { action, app_id, domain_name, sub_domains } = args;
 
     try {
+      const client = new AmplifyClient({ region: 'eu-central-1' });
+
+      switch (action) {
+        case 'create': {
+          if (!domain_name || !sub_domains) {
+            throw new Error(
+              'domain_name and sub_domains are required for create action'
+            );
+          }
+
+          const command = new CreateDomainAssociationCommand({
+            appId: app_id,
+            domainName: domain_name,
+            subDomainSettings: sub_domains,
+          });
+
+          const result = await client.send(command);
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `## Domain Association Created Successfully
+
+**App ID:** \`${app_id}\`
+**Domain:** \`${domain_name}\`
+**Status:** ${result.domainAssociation.domainStatus}
+
+### Subdomains Configured:
+${result.domainAssociation.subDomains
+  .map(
+    (sub) =>
+      `- **${sub.subDomainSetting.prefix || '(root)'}**: ${sub.dnsRecord} (${
+        sub.verified ? 'Verified' : 'Pending'
+      })`
+  )
+  .join('\n')}
+
+### Certificate Information:
+- **Type:** ${result.domainAssociation.certificate?.type || 'N/A'}
+- **Status:** ${
+                  result.domainAssociation.certificateVerificationDNSRecord
+                    ? 'DNS Verification Required'
+                    : 'N/A'
+                }
+
+### Next Steps:
+1. **DNS Configuration:** Update your DNS records with the provided values
+2. **Verification:** Wait for domain verification (may take 5-15 minutes)
+3. **SSL Certificate:** Certificate will be issued automatically once verified
+
+### DNS Records to Add:
+\`\`\`
+${result.domainAssociation.subDomains
+  .map((sub) => `${sub.dnsRecord}`)
+  .join('\n')}
+\`\`\`
+
+${
+  result.domainAssociation.certificateVerificationDNSRecord
+    ? `### Certificate Verification Record:
+\`\`\`
+${result.domainAssociation.certificateVerificationDNSRecord}
+\`\`\`
+`
+    : ''
+}`,
+              },
+            ],
+          };
+        }
+
+        case 'list': {
+          const command = new ListDomainAssociationsCommand({
+            appId: app_id,
+          });
+
+          const result = await client.send(command);
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `## Domain Associations for App ${app_id}
+
+**Total Domains:** ${result.domainAssociations.length}
+
+${result.domainAssociations
+  .map(
+    (domain) => `### ${domain.domainName}
+- **Status:** ${domain.domainStatus}
+- **Subdomains:** ${domain.subDomains.length}
+- **Certificate:** ${domain.certificate?.type || 'None'}
+
+**Subdomain Details:**
+${domain.subDomains
+  .map(
+    (sub) =>
+      `- ${sub.subDomainSetting.prefix || '(root)'}: ${sub.dnsRecord} (${
+        sub.verified ? '✅ Verified' : '⏳ Pending'
+      })`
+  )
+  .join('\n')}
+`
+  )
+  .join('\n---\n')}`,
+              },
+            ],
+          };
+        }
+
+        case 'get': {
+          if (!domain_name) {
+            throw new Error('domain_name is required for get action');
+          }
+
+          const command = new GetDomainAssociationCommand({
+            appId: app_id,
+            domainName: domain_name,
+          });
+
+          const result = await client.send(command);
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `## Domain Association Details
+
+**App ID:** \`${app_id}\`
+**Domain:** \`${domain_name}\`
+**Status:** ${result.domainAssociation.domainStatus}
+
+### Subdomains:
+${result.domainAssociation.subDomains
+  .map(
+    (sub) => `#### ${sub.subDomainSetting.prefix || 'Root Domain'}
+- **DNS Record:** \`${sub.dnsRecord}\`
+- **Verified:** ${sub.verified ? '✅ Yes' : '❌ No'}
+- **CloudFront Distribution:** ${sub.dnsRecord.split(' ').pop()}
+`
+  )
+  .join('\n')}
+
+### Certificate:
+- **Type:** ${result.domainAssociation.certificate?.type || 'N/A'}
+- **Verification Record:** ${
+                  result.domainAssociation.certificateVerificationDNSRecord ||
+                  'N/A'
+                }
+
+### Current DNS Records Needed:
+\`\`\`
+${result.domainAssociation.subDomains.map((sub) => sub.dnsRecord).join('\n')}
+\`\`\``,
+              },
+            ],
+          };
+        }
+
+        case 'delete': {
+          if (!domain_name) {
+            throw new Error('domain_name is required for delete action');
+          }
+
+          const command = new DeleteDomainAssociationCommand({
+            appId: app_id,
+            domainName: domain_name,
+          });
+
+          await client.send(command);
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `## Domain Association Deleted
+
+**App ID:** \`${app_id}\`
+**Domain:** \`${domain_name}\`
+
+The domain association has been successfully deleted. DNS records pointing to the old CloudFront distribution will need to be updated or removed.`,
+              },
+            ],
+          };
+        }
+
+        default:
+          throw new Error(`Unknown action: ${action}`);
+      }
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InternalError,
+        `Failed to manage Amplify domain: ${error.message}`
+      );
+    }
+  }
+
+  async handleMonitoringDashboardSetup(args) {
+    try {
+      const {
+        analytics_provider = 'google-analytics',
+        error_tracking = true,
+        performance_monitoring = true,
+        user_analytics = true,
+        real_time_alerts = true,
+      } = args;
+
       const analyticsConfigs = {
         'google-analytics': {
           setup: `// Google Analytics 4 Setup

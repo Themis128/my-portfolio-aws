@@ -1,0 +1,553 @@
+[4mCREATE-DOMAIN-ASSOCIATION[24m()                        [4mCREATE-DOMAIN-ASSOCIATION[24m()
+
+[1mNAME[0m
+       create-domain-association -
+
+[1mDESCRIPTION[0m
+       Creates  a new domain association for an Amplify app. This action asso-
+       ciates a custom domain with the Amplify app
+
+       See also: AWS API Documentation
+
+[1mSYNOPSIS[0m
+            create-domain-association
+          --app-id <value>
+          --domain-name <value>
+          [--enable-auto-sub-domain | --no-enable-auto-sub-domain]
+          --sub-domain-settings <value>
+          [--auto-sub-domain-creation-patterns <value>]
+          [--auto-sub-domain-iam-role <value>]
+          [--certificate-settings <value>]
+          [--cli-input-json | --cli-input-yaml]
+          [--generate-cli-skeleton <value>]
+          [--debug]
+          [--endpoint-url <value>]
+          [--no-verify-ssl]
+          [--no-paginate]
+          [--output <value>]
+          [--query <value>]
+          [--profile <value>]
+          [--region <value>]
+          [--version <value>]
+          [--color <value>]
+          [--no-sign-request]
+          [--ca-bundle <value>]
+          [--cli-read-timeout <value>]
+          [--cli-connect-timeout <value>]
+          [--cli-binary-format <value>]
+          [--no-cli-pager]
+          [--cli-auto-prompt]
+          [--no-cli-auto-prompt]
+
+[1mOPTIONS[0m
+       [1m--app-id [22m(string) [required]
+          The unique ID for an Amplify app.
+
+          Constraints:
+
+          +o min: [1m1[0m
+
+          +o max: [1m20[0m
+
+          +o pattern: [1md[a-z0-9]+[0m
+
+       [1m--domain-name [22m(string) [required]
+          The domain name for the domain association.
+
+          Constraints:
+
+          +o max: [1m64[0m
+
+          +o pattern:
+            [1m^(((?!-)[A-Za-z0-9-]{0,62}[A-Za-z0-9])\.)+((?!-)[A-Za-z0-9-]{1,62}[A-Za-z0-9])(\.)?$[0m
+
+       [1m--enable-auto-sub-domain [22m| [1m--no-enable-auto-sub-domain [22m(boolean)
+          Enables the automated creation of subdomains for branches.
+
+       [1m--sub-domain-settings [22m(list) [required]
+          The setting for the subdomain.
+
+          Constraints:
+
+          +o max: [1m500[0m
+
+          (structure)
+              Describes the settings for the subdomain.
+
+              prefix -> (string) [required]
+                 The prefix setting for the subdomain.
+
+                 Constraints:
+
+                 +o max: [1m255[0m
+
+                 +o pattern: [1m(?s).*[0m
+
+              branchName -> (string) [required]
+                 The branch name setting for the subdomain.
+
+                 Constraints:
+
+                 +o min: [1m1[0m
+
+                 +o max: [1m255[0m
+
+                 +o pattern: [1m(?s).+[0m
+
+       Shorthand Syntax:
+
+          prefix=string,branchName=string ...
+
+       JSON Syntax:
+
+          [
+            {
+              "prefix": "string",
+              "branchName": "string"
+            }
+            ...
+          ]
+
+       [1m--auto-sub-domain-creation-patterns [22m(list)
+          Sets the branch patterns for automatic subdomain creation.
+
+          (string)
+              Constraints:
+
+              +o min: [1m1[0m
+
+              +o max: [1m2048[0m
+
+              +o pattern: [1m(?s).+[0m
+
+       Syntax:
+
+          "string" "string" ...
+
+       [1m--auto-sub-domain-iam-role [22m(string)
+          The required AWS Identity and Access Management (IAM)  service  role
+          for the Amazon Resource Name (ARN) for automatically creating subdo-
+          mains.
+
+          Constraints:
+
+          +o max: [1m1000[0m
+
+          +o pattern: [1m^$|^arn:aws:iam::\d{12}:role.+[0m
+
+       [1m--certificate-settings [22m(structure)
+          The  type  of  SSL/TLS certificate to use for your custom domain. If
+          you don't specify a certificate type, Amplify uses the default  cer-
+          tificate that it provisions and manages for you.
+
+          type -> (string) [required]
+              The certificate type.
+
+              Specify  [1mAMPLIFY_MANAGED [22mto use the default certificate that Am-
+              plify provisions for you.
+
+              Specify [1mCUSTOM [22mto use your own certificate that you have already
+              added to Certificate Manager in your  Amazon  Web  Services  ac-
+              count.  Make sure you request (or import) the certificate in the
+              US East (N. Virginia) Region (us-east-1). For  more  information
+              about  using  ACM,  see  [4mImporting[24m [4mcertificates[24m [4minto[24m [4mCertificate[0m
+              [4mManager[24m in the [4mACM[24m [4mUser[24m [4mguide[24m .
+
+              Possible values:
+
+              +o [1mAMPLIFY_MANAGED[0m
+
+              +o [1mCUSTOM[0m
+
+          customCertificateArn -> (string)
+              The Amazon resource name (ARN) for the custom  certificate  that
+              you have already added to Certificate Manager in your Amazon Web
+              Services account.
+
+              This  field is required only when the certificate type is [1mCUSTOM[0m
+              .
+
+              Constraints:
+
+              +o min: [1m0[0m
+
+              +o max: [1m1000[0m
+
+              +o pattern: [1m^arn:aws:acm:[a-z0-9-]+:\d{12}:certificate\/.+$[0m
+
+       Shorthand Syntax:
+
+          type=string,customCertificateArn=string
+
+       JSON Syntax:
+
+          {
+            "type": "AMPLIFY_MANAGED"|"CUSTOM",
+            "customCertificateArn": "string"
+          }
+
+       [1m--cli-input-json [22m| [1m--cli-input-yaml [22m(string) Reads arguments  from  the
+       JSON  string  provided.  The JSON string follows the format provided by
+       [1m--generate-cli-skeleton[22m. If other arguments are provided on the command
+       line, those values will override the JSON-provided values.  It  is  not
+       possible to pass arbitrary binary values using a JSON-provided value as
+       the  string  will  be  taken literally. This may not be specified along
+       with [1m--cli-input-yaml[22m.
+
+       [1m--generate-cli-skeleton [22m(string) Prints a  JSON  skeleton  to  standard
+       output without sending an API request. If provided with no value or the
+       value [1minput[22m, prints a sample input JSON that can be used as an argument
+       for [1m--cli-input-json[22m. Similarly, if provided [1myaml-input [22mit will print a
+       sample  input  YAML that can be used with [1m--cli-input-yaml[22m. If provided
+       with the value [1moutput[22m, it validates the command inputs  and  returns  a
+       sample output JSON for that command. The generated JSON skeleton is not
+       stable  between versions of the AWS CLI and there are no backwards com-
+       patibility guarantees in the JSON skeleton generated.
+
+[1mGLOBAL OPTIONS[0m
+       [1m--debug [22m(boolean)
+
+       Turn on debug logging.
+
+       [1m--endpoint-url [22m(string)
+
+       Override command's default URL with the given URL.
+
+       [1m--no-verify-ssl [22m(boolean)
+
+       By default, the AWS CLI uses SSL when communicating with AWS  services.
+       For each SSL connection, the AWS CLI will verify SSL certificates. This
+       option overrides the default behavior of verifying SSL certificates.
+
+       [1m--no-paginate [22m(boolean)
+
+       Disable  automatic pagination. If automatic pagination is disabled, the
+       AWS CLI will only make one call, for the first page of results.
+
+       [1m--output [22m(string)
+
+       The formatting style for command output.
+
+       +o json
+
+       +o text
+
+       +o table
+
+       +o yaml
+
+       +o yaml-stream
+
+       [1m--query [22m(string)
+
+       A JMESPath query to use in filtering the response data.
+
+       [1m--profile [22m(string)
+
+       Use a specific profile from your credential file.
+
+       [1m--region [22m(string)
+
+       The region to use. Overrides config/env settings.
+
+       [1m--version [22m(string)
+
+       Display the version of this tool.
+
+       [1m--color [22m(string)
+
+       Turn on/off color output.
+
+       +o on
+
+       +o off
+
+       +o auto
+
+       [1m--no-sign-request [22m(boolean)
+
+       Do not sign requests. Credentials will not be loaded if  this  argument
+       is provided.
+
+       [1m--ca-bundle [22m(string)
+
+       The CA certificate bundle to use when verifying SSL certificates. Over-
+       rides config/env settings.
+
+       [1m--cli-read-timeout [22m(int)
+
+       The  maximum socket read time in seconds. If the value is set to 0, the
+       socket read will be blocking and not timeout. The default value  is  60
+       seconds.
+
+       [1m--cli-connect-timeout [22m(int)
+
+       The  maximum  socket connect time in seconds. If the value is set to 0,
+       the socket connect will be blocking and not timeout. The default  value
+       is 60 seconds.
+
+       [1m--cli-binary-format [22m(string)
+
+       The formatting style to be used for binary blobs. The default format is
+       base64.  The  base64  format  expects  binary blobs to be provided as a
+       base64 encoded string. The raw-in-base64-out format preserves  compati-
+       bility with AWS CLI V1 behavior and binary values must be passed liter-
+       ally.  When  providing  contents  from a file that map to a binary blob
+       [1mfileb:// [22mwill always be treated as binary and use the file contents di-
+       rectly regardless of the [1mcli-binary-format [22msetting. When using  [1mfile://[0m
+       the  file  contents  will need to properly formatted for the configured
+       [1mcli-binary-format[22m.
+
+       +o base64
+
+       +o raw-in-base64-out
+
+       [1m--no-cli-pager [22m(boolean)
+
+       Disable cli pager for output.
+
+       [1m--cli-auto-prompt [22m(boolean)
+
+       Automatically prompt for CLI input parameters.
+
+       [1m--no-cli-auto-prompt [22m(boolean)
+
+       Disable automatically prompt for CLI input parameters.
+
+[1mOUTPUT[0m
+       domainAssociation -> (structure)
+          Describes the structure of a domain association, which associates  a
+          custom domain with an Amplify app.
+
+          domainAssociationArn -> (string) [required]
+              The Amazon Resource Name (ARN) for the domain association.
+
+              Constraints:
+
+              +o max: [1m1000[0m
+
+          domainName -> (string) [required]
+              The name of the domain.
+
+              Constraints:
+
+              +o max: [1m64[0m
+
+              +o pattern:
+                [1m^(((?!-)[A-Za-z0-9-]{0,62}[A-Za-z0-9])\.)+((?!-)[A-Za-z0-9-]{1,62}[A-Za-z0-9])(\.)?$[0m
+
+          enableAutoSubDomain -> (boolean) [required]
+              Enables the automated creation of subdomains for branches.
+
+          autoSubDomainCreationPatterns -> (list)
+              Sets branch patterns for automatic subdomain creation.
+
+              (string)
+                 Constraints:
+
+                 +o min: [1m1[0m
+
+                 +o max: [1m2048[0m
+
+                 +o pattern: [1m(?s).+[0m
+
+          autoSubDomainIAMRole -> (string)
+              The  required  AWS  Identity and Access Management (IAM) service
+              role for the Amazon Resource Name (ARN) for automatically creat-
+              ing subdomains.
+
+              Constraints:
+
+              +o max: [1m1000[0m
+
+              +o pattern: [1m^$|^arn:aws:iam::\d{12}:role.+[0m
+
+          domainStatus -> (string) [required]
+              The current status of the domain association.
+
+              Possible values:
+
+              +o [1mPENDING_VERIFICATION[0m
+
+              +o [1mIN_PROGRESS[0m
+
+              +o [1mAVAILABLE[0m
+
+              +o [1mIMPORTING_CUSTOM_CERTIFICATE[0m
+
+              +o [1mPENDING_DEPLOYMENT[0m
+
+              +o [1mAWAITING_APP_CNAME[0m
+
+              +o [1mFAILED[0m
+
+              +o [1mCREATING[0m
+
+              +o [1mREQUESTING_CERTIFICATE[0m
+
+              +o [1mUPDATING[0m
+
+          updateStatus -> (string)
+              The status of the domain update operation that is  currently  in
+              progress. The following list describes the valid update states.
+                 REQUESTING_CERTIFICATE
+
+              The certificate is in the process of being updated.
+                 PENDING_VERIFICATION
+
+              Indicates  that an Amplify managed certificate is in the process
+              of being verified. This occurs during the creation of  a  custom
+              domain  or when a custom domain is updated to use a managed cer-
+              tificate.
+                 IMPORTING_CUSTOM_CERTIFICATE
+
+              Indicates that an Amplify custom certificate is in  the  process
+              of  being  imported. This occurs during the creation of a custom
+              domain or when a custom domain is updated to use a  custom  cer-
+              tificate.
+                 PENDING_DEPLOYMENT
+
+              Indicates  that  the  subdomain or certificate changes are being
+              propagated.
+                 AWAITING_APP_CNAME
+
+              Amplify is waiting for CNAME records corresponding to subdomains
+              to be propagated. If your custom domain is on Route 53,  Amplify
+              handles  this  for you automatically. For more information about
+              custom domains, see [4mSetting[24m [4mup[24m [4mcustom[24m  [4mdomains[24m  in  the  [4mAmplify[0m
+              [4mHosting[24m [4mUser[24m [4mGuide[24m .
+                 UPDATE_COMPLETE
+
+              The certificate has been associated with a domain.
+                 UPDATE_FAILED
+
+              The  certificate has failed to be provisioned or associated, and
+              there is no existing active certificate to roll back to.
+
+              Possible values:
+
+              +o [1mREQUESTING_CERTIFICATE[0m
+
+              +o [1mPENDING_VERIFICATION[0m
+
+              +o [1mIMPORTING_CUSTOM_CERTIFICATE[0m
+
+              +o [1mPENDING_DEPLOYMENT[0m
+
+              +o [1mAWAITING_APP_CNAME[0m
+
+              +o [1mUPDATE_COMPLETE[0m
+
+              +o [1mUPDATE_FAILED[0m
+
+          statusReason -> (string) [required]
+              Additional information that describes why the domain association
+              is in the current state.
+
+              Constraints:
+
+              +o max: [1m1000[0m
+
+          certificateVerificationDNSRecord -> (string)
+              The DNS record for certificate verification.
+
+              Constraints:
+
+              +o max: [1m1000[0m
+
+          subDomains -> (list) [required]
+              The subdomains for the domain association.
+
+              Constraints:
+
+              +o max: [1m500[0m
+
+              (structure)
+                 The subdomain for the domain association.
+
+                 subDomainSetting -> (structure) [required]
+                     Describes the settings for the subdomain.
+
+                     prefix -> (string) [required]
+                        The prefix setting for the subdomain.
+
+                        Constraints:
+
+                        +o max: [1m255[0m
+
+                        +o pattern: [1m(?s).*[0m
+
+                     branchName -> (string) [required]
+                        The branch name setting for the subdomain.
+
+                        Constraints:
+
+                        +o min: [1m1[0m
+
+                        +o max: [1m255[0m
+
+                        +o pattern: [1m(?s).+[0m
+
+                 verified -> (boolean) [required]
+                     The verified status of the subdomain
+
+                 dnsRecord -> (string) [required]
+                     The DNS record for the subdomain.
+
+                     Constraints:
+
+                     +o max: [1m1000[0m
+
+          certificate -> (structure)
+              Describes the SSL/TLS certificate for  the  domain  association.
+              This  can be your own custom certificate or the default certifi-
+              cate that Amplify provisions for you.
+
+              If you are updating your domain to use a different  certificate,
+              [1mcertificate  [22mpoints to the new certificate that is being created
+              instead of the current active certificate.  Otherwise,  [1mcertifi-[0m
+              [1mcate [22mpoints to the current active certificate.
+
+              type -> (string) [required]
+                 The type of SSL/TLS certificate that you want to use.
+
+                 Specify  [1mAMPLIFY_MANAGED  [22mto use the default certificate that
+                 Amplify provisions for you.
+
+                 Specify [1mCUSTOM [22mto use your own certificate that you have  al-
+                 ready  added  to  Certificate Manager in your Amazon Web Ser-
+                 vices account. Make sure you request (or import) the certifi-
+                 cate in the US East (N.  Virginia)  Region  (us-east-1).  For
+                 more  information about using ACM, see [4mImporting[24m [4mcertificates[0m
+                 [4minto[24m [4mCertificate[24m [4mManager[24m in the [4mACM[24m [4mUser[24m [4mguide[24m .
+
+                 Possible values:
+
+                 +o [1mAMPLIFY_MANAGED[0m
+
+                 +o [1mCUSTOM[0m
+
+              customCertificateArn -> (string)
+                 The Amazon resource name (ARN) for a custom certificate  that
+                 you  have already added to Certificate Manager in your Amazon
+                 Web Services account.
+
+                 This field is required only when the certificate type is [1mCUS-[0m
+                 [1mTOM [22m.
+
+                 Constraints:
+
+                 +o min: [1m0[0m
+
+                 +o max: [1m1000[0m
+
+                 +o pattern: [1m^arn:aws:acm:[a-z0-9-]+:\d{12}:certificate\/.+$[0m
+
+              certificateVerificationDNSRecord -> (string)
+                 The DNS record for certificate verification.
+
+                 Constraints:
+
+                 +o max: [1m1000[0m
+
+                                                   [4mCREATE-DOMAIN-ASSOCIATION[24m()
