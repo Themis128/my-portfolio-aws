@@ -1,5 +1,5 @@
 import { Amplify } from 'aws-amplify';
-import amplifyOutputs from '../amplify_outputs.json';
+const amplifyOutputs = require('../amplify_outputs.json');
 
 // Define proper types
 interface AmplifyConfig {
