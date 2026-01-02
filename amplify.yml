@@ -14,7 +14,7 @@ frontend:
         - pnpm run build
         - echo "Build completed successfully"
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
@@ -33,12 +33,12 @@ buildTypes:
       GENERATE_SOURCEMAP: "false"
       NEXT_WEBPACK_USEPOLLING: "false"
 
-# SSR configuration disabled for static export
-# ssr:
-#   enabled: true
-#   runtime:
-#     type: "nodejs"
-#     version: "18"
+# SSR configuration enabled for API routes
+ssr:
+  enabled: true
+  runtime:
+    type: "nodejs"
+    version: "18"
 
 # Preview deployments
 preview:

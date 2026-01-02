@@ -1,8 +1,13 @@
 "use client";
+import { generateClient } from '@aws-amplify/api';
 import { motion } from 'framer-motion';
 import { Clock, Github, Linkedin, Mail, MapPin, MessageSquare, Send } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import '../lib/amplify-client-config'; // Ensure Amplify is configured
+import { ensureAmplifyConfigured } from '../lib/amplify-client-config';
+import { sendContact } from '../lib/graphql/mutations';
 import { PersonalData } from '../lib/personal-data';
+import '../lib/polyfills'; // Load browser polyfills
 import { Input } from './input';
 import { Textarea } from './textarea';
 import { Button } from "./ui/button";
@@ -74,28 +79,27 @@ export default function Contact({ data }: ContactProps) {
 
     while (attempt < maxRetries) {
       try {
-        // Send to Formspree (replace with your actual Formspree endpoint)
-        const response = await fetch('https://formspree.io/f/your-form-id', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+        // Ensure Amplify is configured before making API calls
+        await ensureAmplifyConfigured();
+
+        // Use the sendContact mutation with Slack and SES notifications
+        const client = generateClient();
+        await client.graphql({
+          query: sendContact,
+          variables: {
             name: formData.name.trim(),
             email: formData.email.trim(),
             message: formData.message.trim(),
-          }),
+          },
         });
 
-        if (response.ok) {
-          // Reset form
-          setFormData({ name: '', email: '', message: '' });
-          setSubmitStatus('success');
+        // Reset form
+        setFormData({ name: '', email: '', message: '' });
+        setSubmitStatus('success');
 
-          // Reset success message after 5 seconds
-          setTimeout(() => setSubmitStatus('idle'), 5000);
-          return;
-        } else {
-          throw new Error('Formspree submission failed');
-        }
+        // Reset success message after 5 seconds
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+        return;
 
       } catch (error) {
         console.error(`Error sending message (attempt ${attempt + 1}):`, error);

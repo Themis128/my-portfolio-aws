@@ -2,8 +2,8 @@ import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Static export mode for Amplify Hosting - supports API routes and dynamic features
-  output: 'export', // Enable static export
+  // Enable SSR for API routes and dynamic features
+  // output: 'export', // Disabled for SSR
   trailingSlash: true,
   reactStrictMode: true,
   // AWS Amplify specific optimizations
@@ -55,9 +55,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@aws-amplify/ui-react', 'lucide-react'], // Optimize Amplify and icon imports
   },
 
-  // Image optimization (disabled for static export)
+  // Image optimization (enabled for SSR)
   images: {
-    unoptimized: true, // Required for static export
+    unoptimized: false, // Enabled for SSR
     formats: ['image/webp', 'image/avif'],
     remotePatterns: [
       {
