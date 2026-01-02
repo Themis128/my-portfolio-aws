@@ -14,21 +14,14 @@ frontend:
         - pnpm run build
         - echo "Build completed successfully"
   artifacts:
-    baseDirectory: .
+    baseDirectory: out
     files:
-      - '.next/**/*'
-      - 'public/**/*'
-      - 'package.json'
-      - 'next.config.ts'
+      - '**/*'
   cache:
     paths:
       - .next/cache/**/*
       - node_modules/**/*
       - ~/.cache/**/*
-
-# SSR configuration for Next.js
-ssr:
-  enabled: true
 
 # Build optimization
 buildTypes:
