@@ -1,5 +1,5 @@
 import { Amplify } from 'aws-amplify';
-import outputs from '../amplify_outputs.json';
+import outputs from '../amplify/amplify_outputs.json';
 
 // Define proper types
 interface AmplifyConfig {
@@ -16,8 +16,8 @@ const configureAmplify = (): void => {
     Amplify.configure(outputs, { ssr: true });
     isConfigured = true;
     console.log(`✅ Amplify configured successfully for runtime`);
-  } catch (error) {
-    console.error('❌ Failed to configure Amplify:', error);
+  } catch {
+    console.error('❌ Failed to configure Amplify');
     // Don't throw here as this might be expected during build time
   }
 };
@@ -41,8 +41,8 @@ export const ensureAmplifyConfigured = async (): Promise<void> => {
     Amplify.configure(outputs, { ssr: true });
     isConfigured = true;
     console.log(`✅ Amplify configured successfully`);
-  } catch (error) {
-    console.error('❌ Failed to configure Amplify:', error);
+  } catch {
+    console.error('❌ Failed to configure Amplify');
     // Don't throw - allow component to render even if config fails
   }
 };
