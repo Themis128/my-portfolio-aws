@@ -82,8 +82,14 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_DOMAIN: process.env.AMPLIFY_APP_DOMAIN || 'dcwmv1pw85f0j.amplifyapp.com',
   },
 
-  // Turbopack config: disable for Amplify builds to avoid caching issues
-  // turbopack: false, // Commented out to avoid TypeScript error
+  // Turbopack config: disabled for stability (using webpack instead)
+  webpack: (config, { dev }) => {
+    if (dev) {
+      // Disable Turbopack in development
+      config.experiments = { ...config.experiments, topLevelAwait: false };
+    }
+    return config;
+  },
 };
 
 const nextConfigWithPWA = nextConfig;

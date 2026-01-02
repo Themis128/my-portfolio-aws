@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "TURBOPACK=0 next dev",
     "build:21st-local": "pnpm --prefix 21st-extension-main/21st-extension-main install --no-frozen-lockfile && pnpm --prefix 21st-extension-main/21st-extension-main/packages/srpc install --no-frozen-lockfile && pnpm --prefix 21st-extension-main/21st-extension-main/packages/srpc build && pnpm --prefix 21st-extension-main/21st-extension-main/packages/extension-toolbar-srpc-contract install --no-frozen-lockfile && pnpm --prefix 21st-extension-main/21st-extension-main/packages/extension-toolbar-srpc-contract build",
     "build": "next build",
     "start": "next start",
