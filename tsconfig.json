@@ -67,6 +67,7 @@
     "tests/**",
     "test-results/**",
     "playwright-report/**",
+    "mcp-servers/**",
     "$amplify/**"
   ]
 }
