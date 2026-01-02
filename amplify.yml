@@ -14,13 +14,9 @@ frontend:
         - pnpm run build
         - echo "Build completed successfully"
   artifacts:
-    baseDirectory: .
+    baseDirectory: .next
     files:
-      - '.next/**/*'
-      - 'package.json'
-      - 'next.config.ts'
-      - 'public/**/*'
-      - 'node_modules/**/*'
+      - '**/*'
   cache:
     paths:
       - .next/cache/**/*
