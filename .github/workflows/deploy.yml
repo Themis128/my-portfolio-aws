@@ -69,7 +69,6 @@ jobs:
       env:
         NODE_OPTIONS: "--max-old-space-size=4096"
         NEXT_TELEMETRY_DISABLED: "1"
-        NEXT_TELEMETRY_DISABLED: "1"
     - name: Performance audit
       run: |
         npx lighthouse https://baltzakisthemis.com --output=json --output-path=./lighthouse-results.json || echo "Lighthouse audit completed"
