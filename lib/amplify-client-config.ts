@@ -1,17 +1,20 @@
 import { Amplify } from 'aws-amplify';
+import outputs from '../amplify_outputs.json';
 
 // Define proper types
 interface AmplifyConfig {
   [key: string]: unknown;
 }
 
+let isConfigured = false;
+
 // Configure Amplify for runtime (not build time)
 const configureAmplify = (): void => {
-  try {
-    // Amplify will automatically configure itself from environment variables
-    // or amplify_outputs.json at runtime. We don't need to explicitly import it.
-    Amplify.configure({});
+  if (isConfigured) return;
 
+  try {
+    Amplify.configure(outputs, { ssr: true });
+    isConfigured = true;
     console.log(`✅ Amplify configured successfully for runtime`);
   } catch (error) {
     console.error('❌ Failed to configure Amplify:', error);
@@ -19,20 +22,31 @@ const configureAmplify = (): void => {
   }
 };
 
-// Configure Amplify immediately when this module is loaded
-configureAmplify();
+// Configure Amplify immediately when this module is loaded (browser only)
+if (typeof window !== 'undefined') {
+  configureAmplify();
+}
 
 // Export functions for compatibility
 export const getAmplifyConfig = (): AmplifyConfig | null => {
-  // Return a basic config object for compatibility
-  return {};
+  // Return the outputs config object
+  return outputs;
 };
 
 // Export a function to ensure Amplify is configured (for use in components)
-export const ensureAmplifyConfigured = (): void => {
-  // Amplify is already configured above
+export const ensureAmplifyConfigured = async (): Promise<void> => {
+  if (isConfigured) return;
+
+  try {
+    Amplify.configure(outputs, { ssr: true });
+    isConfigured = true;
+    console.log(`✅ Amplify configured successfully`);
+  } catch (error) {
+    console.error('❌ Failed to configure Amplify:', error);
+    // Don't throw - allow component to render even if config fails
+  }
 };
 
 // For backward compatibility, export a default config object
-const defaultConfig: AmplifyConfig = {};
+const defaultConfig: AmplifyConfig = outputs;
 export default defaultConfig;

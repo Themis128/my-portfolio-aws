@@ -13,7 +13,9 @@ test.describe('Contact Form - Live Production Test', () => {
     });
 
     // Navigate to the live production site
-    await page.goto('https://baltzakisthemis.com/');
+    const testUrl = process.env.TEST_URL || 'https://baltzakisthemis.com/';
+    console.log('Testing URL:', testUrl);
+    await page.goto(testUrl);
 
     // Wait for the page to load completely
     await page.waitForLoadState('networkidle');
@@ -30,7 +32,8 @@ test.describe('Contact Form - Live Production Test', () => {
         await page.locator('nav button, header button, a[href*="#contact"], button:has-text("Contact")').filter({ hasText: 'Contact' }).click({ timeout: 3000 });
         await page.waitForTimeout(1500); // Wait for scroll
         console.log('✅ Navigated to contact section');
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (_) {
         console.log('⚠️ Could not click contact navigation, scrolling manually');
         // Scroll to contact section manually
         await contactSection.scrollIntoViewIfNeeded();
@@ -80,7 +83,8 @@ test.describe('Contact Form - Live Production Test', () => {
       await expect(submitButton).toBeVisible();
 
       console.log('✅ All form elements are visible');
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
       console.log('⚠️ Some form elements not found or not visible');
       // Try with more flexible selectors
       const visibleElements = await page.locator('input[type="text"], input[type="email"], textarea, button[type="submit"]').count();
@@ -163,7 +167,7 @@ test.describe('Contact Form - Live Production Test', () => {
       await page.screenshot({ path: 'contact-form-timeout.png' });
 
       // Check network requests that might have been made
-      const networkRequests = [];
+      const networkRequests: Array<{ url: string; method: string }> = [];
       page.on('request', request => {
         if (request.url().includes('appsync') || request.url().includes('graphql') || request.url().includes('api')) {
           networkRequests.push({
@@ -191,7 +195,9 @@ test.describe('Contact Form - Live Production Test', () => {
   });
 
   test('should validate required fields on baltzakisthemis.com', async ({ page }) => {
-    await page.goto('https://baltzakisthemis.com/');
+    const testUrl = process.env.TEST_URL || 'https://baltzakisthemis.com/';
+    console.log('Testing URL for validation:', testUrl);
+    await page.goto(testUrl);
 
     // Wait for page to load
     await page.waitForLoadState('networkidle');
@@ -227,7 +233,8 @@ test.describe('Contact Form - Live Production Test', () => {
         await page.waitForTimeout(500);
         console.log('✅ Scrolled to form elements');
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
       console.log('⚠️ Could not navigate - testing form in current viewport');
     }
 
