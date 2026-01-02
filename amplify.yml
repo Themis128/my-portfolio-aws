@@ -34,10 +34,10 @@ ssr:
 # Build optimization
 buildTypes:
   - type: BUILD
-    computeType: BUILD_GENERAL1_LARGE
+    computeType: BUILD_GENERAL1_2XLARGE
     environmentVariables:
-      NODE_OPTIONS: "--max-old-space-size=4096"
       NEXT_TELEMETRY_DISABLED: "1"
+      NODE_OPTIONS: "--max-old-space-size=8192"
 
 # Preview deployments
 preview:

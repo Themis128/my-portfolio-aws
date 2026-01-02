@@ -54,8 +54,8 @@ jobs:
 
           case $TARGET_ENV in
             "production")
-              echo "url=https://baltzakisthemis.com" >> $GITHUB_OUTPUT
-              echo "api_url=https://baltzakisthemis.com/api" >> $GITHUB_OUTPUT
+              echo "url=https://dcwmv1pw85f0j.amplifyapp.com" >> $GITHUB_OUTPUT
+              echo "api_url=https://dcwmv1pw85f0j.amplifyapp.com/api" >> $GITHUB_OUTPUT
               echo "environment=production" >> $GITHUB_OUTPUT
               ;;
             "staging")
