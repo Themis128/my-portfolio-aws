@@ -63,7 +63,7 @@ jobs:
           # E2E tests (if configured)
           if [ -f "playwright.config.ts" ]; then
             npx playwright install-deps
-            npx playwright test --headed=false
+            npx playwright test
             E2E_EXIT_CODE=$?
           else
             E2E_EXIT_CODE=0
