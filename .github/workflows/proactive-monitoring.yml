@@ -27,14 +27,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -173,29 +173,30 @@ jobs:
           TARGET_URL="${{ steps.env-config.outputs.url }}"
           ENVIRONMENT="${{ steps.env-config.outputs.environment }}"
 
-          echo "🔍 Scanning for errors in $ENVIRONMENT..."
+          echo "🔍 Scanning for server errors in $ENVIRONMENT..."
 
-          # Check for common error patterns
+          # Check for server error patterns (5xx errors, exceptions)
           CONTENT=$(curl -s "$TARGET_URL")
 
           ERROR_FOUND=false
 
-          if echo "$CONTENT" | grep -i -q "error\|exception\|500\|404"; then
-            echo "⚠️ Error patterns detected in page content"
+          # Only flag server errors, not client errors like 404
+          if echo "$CONTENT" | grep -i -q "error\|exception\|500\|502\|503"; then
+            echo "⚠️ Server error patterns detected in page content"
             ERROR_FOUND=true
           fi
 
-          # Check response headers for error status
+          # Check response headers for server error status (5xx only)
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$TARGET_URL")
-          if [ "$STATUS" -ge 400 ]; then
-            echo "⚠️ HTTP error status: $STATUS"
+          if [ "$STATUS" -ge 500 ]; then
+            echo "⚠️ HTTP server error status: $STATUS"
             ERROR_FOUND=true
           fi
 
           if [ "$ERROR_FOUND" = true ]; then
             echo "errors_detected=true" >> $GITHUB_OUTPUT
           else
-            echo "✅ No errors detected"
+            echo "✅ No server errors detected"
             echo "errors_detected=false" >> $GITHUB_OUTPUT
           fi
 
