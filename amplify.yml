@@ -36,6 +36,9 @@ buildTypes:
 # SSR configuration for Next.js - required for API routes and dynamic features
 ssr:
   enabled: true
+  runtime:
+    type: "nodejs"
+    version: "18"
 
 # Preview deployments
 preview:
