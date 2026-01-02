@@ -37,8 +37,8 @@ buildTypes:
 ssr:
   enabled: true
   runtime:
-    type: "nodejs"
-    version: "18"
+    type: 'nodejs'
+    version: '18'
 
 # Preview deployments
 preview:

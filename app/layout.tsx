@@ -1,5 +1,4 @@
 import '@aws-amplify/ui-react/styles.css';
-import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import AmplifyInitializer from '../components/AmplifyInitializer';
@@ -238,7 +237,6 @@ export default function RootLayout({
           See: https://github.com/21st-dev/21st-extension
         */}
         <ToolbarMountController />
-        <Analytics />
       </body>
     </html>
   );
