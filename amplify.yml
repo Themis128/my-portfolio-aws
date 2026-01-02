@@ -29,7 +29,13 @@ buildTypes:
     computeType: BUILD_GENERAL1_3XLARGE
     environmentVariables:
       NEXT_TELEMETRY_DISABLED: "1"
-      NODE_OPTIONS: "--max-old-space-size=12288"
+      NODE_OPTIONS: "--max-old-space-size=20480"
+      GENERATE_SOURCEMAP: "false"
+      NEXT_WEBPACK_USEPOLLING: "false"
+
+# Static export configuration for Next.js (no SSR needed)
+# ssr:
+#   enabled: true
 
 # Preview deployments
 preview:

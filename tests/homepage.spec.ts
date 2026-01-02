@@ -53,9 +53,9 @@ test('homepage loads correctly', async ({ page }: { page: Page }) => {
 test('navigation works', async ({ page }: { page: Page }) => {
   await page.goto('/');
 
-  // Wait for page to load completely
-  await page.waitForLoadState('networkidle');
-  await page.waitForTimeout(2000); // Wait for animations
+  // Wait for page to load completely (more reliable than networkidle)
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForTimeout(1000); // Wait for animations
 
   // Test desktop navigation
   await page.setViewportSize({ width: 1024, height: 768 });

@@ -2,8 +2,8 @@ import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // SSR mode for Amplify (not static export) - needed for API routes and contact form
-  // output: 'export', // Disabled for SSR mode
+  // Static export mode for Amplify Hosting - required for static deployment
+  output: 'export', // Enable static export for Amplify
   trailingSlash: true,
   reactStrictMode: true,
   // AWS Amplify specific optimizations
@@ -55,9 +55,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@aws-amplify/ui-react', 'lucide-react'], // Optimize Amplify and icon imports
   },
 
-  // Image optimization (enabled for SSR mode)
+  // Image optimization (disabled for static export mode)
   images: {
-    unoptimized: false, // Enabled for SSR mode
+    unoptimized: true, // Required for static export mode
     formats: ['image/webp', 'image/avif'],
     remotePatterns: [
       {
@@ -79,7 +79,7 @@ const nextConfig: NextConfig = {
   // Environment variables that should be available at build time
   env: {
     NEXT_PUBLIC_AMPLIFY_ENV: process.env.AMPLIFY_ENV || 'dev',
-    NEXT_PUBLIC_DOMAIN: process.env.AMPLIFY_APP_DOMAIN || 'dcwmv1pw85f0j.amplifyapp.com',
+    NEXT_PUBLIC_DOMAIN: process.env.AMPLIFY_APP_DOMAIN || 'baltzakisthemis.com',
   },
 
   // Turbopack config: disabled for stability (using webpack instead)
