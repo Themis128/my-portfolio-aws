@@ -90,6 +90,45 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/cloudless-favicon.ico" />
 
+        {/* Structured Data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Themistoklis Baltzakis",
+              "jobTitle": "Systems and Network Engineer",
+              "description": "Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.",
+              "url": "https://baltzakisthemis.com",
+              "sameAs": [
+                "https://github.com/Themis128",
+                "https://www.linkedin.com/in/baltzakis-themis"
+              ],
+              "knowsAbout": [
+                "Network Engineering",
+                "Cloud Computing",
+                "Cisco Systems",
+                "Azure Active Directory",
+                "Microsoft 365",
+                "AWS Cloud",
+                "Data Analytics",
+                "Python",
+                "TypeScript",
+                "Next.js"
+              ],
+              "hasOccupation": {
+                "@type": "Occupation",
+                "name": "Systems and Network Engineer",
+                "occupationLocation": {
+                  "@type": "Country",
+                  "name": "Greece"
+                }
+              }
+            })
+          }}
+        />
+
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
           <>

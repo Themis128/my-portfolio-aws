@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Basic health checks
     const checks: {
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
         } else {
           checks.amplify = 'not_configured';
         }
-      } catch (error) {
+      } catch {
         checks.amplify = 'error';
       }
     }
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
       // This would be where you'd check database connections
       // For now, we'll just mark it as available
       checks.database = 'available';
-    } catch (error) {
+    } catch {
       checks.database = 'unavailable';
     }
 

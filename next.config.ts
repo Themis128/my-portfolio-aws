@@ -2,8 +2,8 @@ import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable static export for Amplify hosting
-  output: 'export',
+  // Reverting to SSR mode for client-side functionality
+  // output: 'export',
   trailingSlash: true,
   reactStrictMode: true,
   // AWS Amplify specific optimizations
@@ -32,6 +32,18 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.google-analytics.com *.googletagmanager.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' *.amazonaws.com *.amplifyapp.com;"
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload'
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
           }
         ]
       }
@@ -43,8 +55,9 @@ const nextConfig: NextConfig = {
   //   optimizePackageImports: ['@aws-amplify/ui-react', 'lucide-react'], // Optimize Amplify and icon imports
   // },
 
-  // Image optimization (optimized for SSR)
+  // Image optimization (unoptimized for static export compatibility)
   images: {
+    unoptimized: true, // Required for static export mode
     formats: ['image/webp', 'image/avif'],
     remotePatterns: [
       {
@@ -72,16 +85,6 @@ const nextConfig: NextConfig = {
   // Turbopack config: disable for Amplify builds to avoid caching issues
   // turbopack: false, // Commented out to avoid TypeScript error
 };
-
-// Wrap with PWA (disabled in development)
-// const nextConfigWithPWA = withPWA(nextConfig, {
-//   dest: 'public',
-//   register: true,
-//   skipWaiting: true,
-//   disable: process.env.NODE_ENV === 'development',
-//   buildExcludes: [/manifest\.json$/],
-//   sw: 'public/sw.js',
-// });
 
 const nextConfigWithPWA = nextConfig;
 

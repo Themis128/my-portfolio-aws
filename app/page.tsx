@@ -1,15 +1,17 @@
-import AIBotWrapper from '../components/AIBotWrapper';
-import About from '../components/About';
-import Achievements from '../components/Achievements';
-import Certifications from '../components/Certifications';
-import Contact from '../components/Contact';
-import Experience from '../components/Experience';
-import Languages from '../components/Languages';
 import ModernHero from '../components/ModernHero';
-import Projects from '../components/Projects';
+import About from '../components/About';
 import Skills from '../components/Skills';
-import { Suspense } from 'react';
+import Experience from '../components/Experience';
+import Certifications from '../components/Certifications';
+import Languages from '../components/Languages';
+import Achievements from '../components/Achievements';
+import Projects from '../components/Projects';
+import { lazy, Suspense } from 'react';
 import { getPersonalDataServer } from '../lib/personal-data';
+
+// Lazy load heavy components for better performance
+const AIBotWrapper = lazy(() => import('../components/AIBotWrapper'));
+const ContactSection = lazy(() => import('../components/ContactSection'));
 
 export default function Home() {
   const personalData = getPersonalDataServer();
@@ -25,16 +27,11 @@ export default function Home() {
       <Languages data={personalData} />
       <Achievements data={personalData} />
       <Projects data={personalData} />
-      <AIBotWrapper />
-      <Suspense fallback={
-        <section id="contact" className="py-24">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Contact Me</h2>
-            <p>Loading contact form...</p>
-          </div>
-        </section>
-      }>
-        <Contact data={personalData} />
+      <Suspense fallback={<div className="py-24 text-center">Loading AI features...</div>}>
+        <AIBotWrapper />
+      </Suspense>
+      <Suspense fallback={<div className="py-24 text-center">Loading contact form...</div>}>
+        <ContactSection data={personalData} />
       </Suspense>
     </div>
   );
