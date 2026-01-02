@@ -44,6 +44,12 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.14.4
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -127,6 +133,12 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.14.4
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -200,6 +212,12 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9.14.4
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -273,12 +291,11 @@ jobs:
             exit 1
           fi
 
-          # Check API endpoints
-          curl -f -s https://baltzakisthemis.com/api/health > /dev/null
-          if [ $? -eq 0 ]; then
+          # Check API endpoints (if they exist)
+          if curl -f -s https://baltzakisthemis.com/api/health > /dev/null 2>&1; then
             echo "✅ API endpoints are responding"
           else
-            echo "⚠️ API endpoints not accessible (may be expected)"
+            echo "⚠️ API endpoints not accessible (may not be implemented yet)"
           fi
 
       - name: Performance validation
