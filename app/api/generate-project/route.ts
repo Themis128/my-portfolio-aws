@@ -5,9 +5,7 @@ export async function POST(request: NextRequest) {
   const {
     projectName,
     projectDescription,
-    model = 'gpt-4',
-    temperature = 0.7,
-    maxTokens = 2000
+    model = 'gpt-4'
   } = body;
 
   try {
@@ -69,7 +67,7 @@ function generateProjectStructure(projectName: string, description: string): str
 
   // Determine technology stack based on description keywords
   const descLower = description.toLowerCase();
-  let techStack = ['React', 'TypeScript', 'Next.js', 'Tailwind CSS'];
+  const techStack = ['React', 'TypeScript', 'Next.js', 'Tailwind CSS'];
 
   if (descLower.includes('api') || descLower.includes('backend')) {
     techStack.push('Node.js', 'Express', 'MongoDB');

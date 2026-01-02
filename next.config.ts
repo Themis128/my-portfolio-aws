@@ -3,8 +3,8 @@ import type { NextConfig } from "next";
 import withPWA from 'next-pwa';
 
 const nextConfig: NextConfig = {
-  // Static export for Amplify hosting
-  output: 'export',
+  // Reverting to SSR mode for client-side functionality
+  // output: 'export',
   trailingSlash: true,
   reactStrictMode: true,
   // AWS Amplify specific optimizations
