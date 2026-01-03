@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Enable static export for Amplify hosting compatibility
-  // output: 'export', // Removed to enable Image Optimization API
+  output: 'export', // Required for Amplify - image optimization works with static export
   trailingSlash: true,
   reactStrictMode: true,
   // AWS Amplify specific optimizations
