@@ -3,11 +3,19 @@ import AIGeneratorClient from './client';
 
 export const metadata: Metadata = {
   title: 'AI Project Generator | Themistoklis Baltzakis',
-  description: 'Create amazing projects with AI-powered generation. Choose from multiple AI models including GPT-4, Claude 3, Codex, and DALL-E 3.',
-  keywords: ['AI', 'Project Generator', 'GPT-4', 'Claude 3', 'Code Generation', 'AI Tools'],
+  description:
+    'Create amazing projects with Gemini AI-powered generation. Choose from multiple Gemini AI models including Gemini 1.5 Pro and Gemini 1.5 Flash.',
+  keywords: [
+    'AI',
+    'Project Generator',
+    'Gemini',
+    'Google AI',
+    'Code Generation',
+    'AI Tools',
+  ],
   openGraph: {
     title: 'AI Project Generator',
-    description: 'Create amazing projects with AI-powered generation',
+    description: 'Create amazing projects with Gemini AI-powered generation',
     type: 'website',
   },
 };

@@ -61,14 +61,14 @@ const models: Model[] = [
   {
     id: 'codex',
     name: 'Codex',
-    description: 'Specialized for code generation',
+    description: 'Fast and efficient for code generation',
     icon: <Code className="w-4 h-4" />,
     color: 'from-green-500 to-emerald-500',
   },
   {
     id: 'dall-e',
     name: 'DALL-E 3',
-    description: 'Advanced image generation',
+    description: 'Advanced image generation capabilities',
     icon: <ImageIcon className="w-4 h-4" />,
     color: 'from-orange-500 to-red-500',
   },

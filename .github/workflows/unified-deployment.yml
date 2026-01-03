@@ -2,7 +2,7 @@ name: 🚀 Deploy to Production
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [master, main]
 
 jobs:
   deploy:
@@ -37,7 +37,45 @@ jobs:
 
       - name: Start deployment
         run: |
+          echo "Starting Amplify deployment..."
           aws amplify start-deployment \
             --app-id dcwmv1pw85f0j \
             --branch-name master \
-            --source-dir .
+            --source-dir . \
+            --no-cli-pager
+
+      - name: Wait for deployment completion
+        run: |
+          echo "Waiting for deployment to complete..."
+          for i in {1..60}; do
+            STATUS=$(aws amplify get-branch \
+              --app-id dcwmv1pw85f0j \
+              --branch-name master \
+              --query 'branch.status' \
+              --output text 2>/dev/null || echo "DEPLOYING")
+
+            if [ "$STATUS" = "DEPLOYED" ]; then
+              echo "✅ Deployment completed successfully"
+              break
+            elif [ "$STATUS" = "FAILED" ]; then
+              echo "❌ Deployment failed"
+              exit 1
+            fi
+
+            echo "🔄 Deployment in progress... (attempt $i/60)"
+            sleep 30
+          done
+
+          if [ "$STATUS" != "DEPLOYED" ]; then
+            echo "⏰ Deployment timed out after 30 minutes"
+            exit 1
+          fi
+
+      - name: Verify deployment
+        run: |
+          echo "🔍 Verifying deployment status..."
+          aws amplify get-branch \
+            --app-id dcwmv1pw85f0j \
+            --branch-name master \
+            --query 'branch | {status: status, displayName: displayName, framework: framework}' \
+            --output json

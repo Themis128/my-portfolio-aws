@@ -21,6 +21,8 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
       /⬆️⬆️⬆️ Those two errors are expected!/i,
       /No IDE windows found/i,
       /Unable to add filesystem/i,
+      /content-script-vimeo\.js/i,
+      /log-init/i,
     ];
 
     function shouldSuppress(first: unknown) {
@@ -99,6 +101,8 @@ export default function DevConsoleFilter() {
       /⬆️⬆️⬆️ Those two errors are expected!/i,
       /No IDE windows found/i,
       /Unable to add filesystem/i,
+      /content-script-vimeo\.js/i,
+      /log-init/i,
     ];
 
     function shouldSuppress(first: unknown) {

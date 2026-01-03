@@ -34,6 +34,64 @@ const schema = a.schema({
     })
     .authorization((allow) => [allow.publicApiKey()]),
 
+  // Dashboard models
+  User: a
+    .model({
+      id: a.id().required(),
+      name: a.string().required(),
+      email: a.string().required(),
+      role: a.enum(['User', 'Moderator', 'Admin']),
+      status: a.enum(['Active', 'Inactive']),
+      lastLogin: a.datetime(),
+      createdAt: a.datetime().required(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  SystemMetric: a
+    .model({
+      id: a.id().required(),
+      metricType: a.enum(['cpu', 'memory', 'storage', 'network']),
+      value: a.float().required(),
+      timestamp: a.datetime().required(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  ActivityLog: a
+    .model({
+      id: a.id().required(),
+      type: a.enum(['security', 'system', 'maintenance', 'config']),
+      message: a.string().required(),
+      userId: a.string(),
+      timestamp: a.datetime().required(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  Alert: a
+    .model({
+      id: a.id().required(),
+      type: a.enum(['warning', 'error', 'info', 'success']),
+      message: a.string().required(),
+      resolved: a.boolean().required(),
+      resolvedAt: a.datetime(),
+      createdAt: a.datetime().required(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
+  // Audit log model for admin actions
+  AuditLog: a
+    .model({
+      id: a.id().required(),
+      action: a.string().required(),
+      resource: a.string().required(),
+      resourceId: a.string(),
+      userId: a.string(),
+      details: a.json(),
+      ipAddress: a.string(),
+      userAgent: a.string(),
+      timestamp: a.datetime().required(),
+    })
+    .authorization((allow) => [allow.publicApiKey()]),
+
   sendContact: a.mutation()
     .arguments({
       name: a.string().required(),
@@ -84,8 +142,10 @@ const schema = a.schema({
 
   // AI routes
   chat: a.conversation({
-    aiModel: a.ai.model('Claude 3.5 Haiku'),
-    systemPrompt: 'You are a helpful assistant for a software developer portfolio. You can discuss projects, skills, technologies, and provide advice on software development.',
+    aiModel: a.ai.model('Claude 3.5 Sonnet'),
+    systemPrompt: `You are an AI assistant for Themistoklis Baltzakis' portfolio. 
+    Help users learn about his background, skills, projects, experience, and expertise in data analytics, cloud computing, and network engineering.
+    Provide helpful, accurate information about his professional experience and technical skills.`,
   })
     .authorization((allow) => allow.owner()),
 

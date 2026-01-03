@@ -1,13 +1,8 @@
 "use client";
-import { generateClient } from '@aws-amplify/api';
 import { motion } from 'framer-motion';
 import { Clock, Github, Linkedin, Mail, MapPin, MessageSquare, Send } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import '../lib/amplify-client-config'; // Ensure Amplify is configured
-import { ensureAmplifyConfigured } from '../lib/amplify-client-config';
-import { sendContact } from '../lib/graphql/mutations';
 import { PersonalData } from '../lib/personal-data';
-import '../lib/polyfills'; // Load browser polyfills
 import { Input } from './input';
 import { Textarea } from './textarea';
 import { Button } from "./ui/button";
@@ -53,7 +48,7 @@ export default function Contact({ data }: ContactProps) {
     );
   }, [formData]);
 
-  // Optimized change handler with debouncing
+  // Optimized change handler without debouncing for better performance
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -74,48 +69,45 @@ export default function Contact({ data }: ContactProps) {
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
-    const maxRetries = 3;
-    let attempt = 0;
+    try {
+      // Use the simple contact API route instead of AWS AppSync
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+        }),
+      });
 
-    while (attempt < maxRetries) {
-      try {
-        // Ensure Amplify is configured before making API calls
-        await ensureAmplifyConfigured();
-
-        // Use the sendContact mutation with Slack and SES notifications
-        const client = generateClient();
-        await client.graphql({
-          query: sendContact,
-          variables: {
-            name: formData.name.trim(),
-            email: formData.email.trim(),
-            message: formData.message.trim(),
-          },
-        });
-
-        // Reset form
-        setFormData({ name: '', email: '', message: '' });
-        setSubmitStatus('success');
-
-        // Reset success message after 5 seconds
-        setTimeout(() => setSubmitStatus('idle'), 5000);
-        return;
-
-      } catch (error) {
-        console.error(`Error sending message (attempt ${attempt + 1}):`, error);
-        attempt++;
-
-        if (attempt >= maxRetries) {
-          setSubmitStatus('error');
-          setTimeout(() => setSubmitStatus('idle'), 5000);
-        } else {
-          // Exponential backoff
-          await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
-        }
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-    }
 
-    setIsSubmitting(false);
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to send message');
+      }
+
+      // Reset form
+      setFormData({ name: '', email: '', message: '' });
+      setSubmitStatus('success');
+
+      // Reset success message after 3 seconds (faster feedback)
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
   }, [formData, isFormValid, isSubmitting, isOnline]);
 
   // Touch event handlers for mobile optimization
@@ -143,14 +135,14 @@ export default function Contact({ data }: ContactProps) {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.05, // Reduced from 0.1
+        delayChildren: 0.1, // Reduced from 0.2
       },
     },
   }), []);
 
   const itemVariants = useMemo(() => ({
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 10 }, // Reduced from 20
     visible: { opacity: 1, y: 0 },
   }), []);
 

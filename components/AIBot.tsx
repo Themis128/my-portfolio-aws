@@ -47,8 +47,8 @@ const AIBot: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          prompt: userMessage,
-          model: 'models/gemini-2.5-flash',
+          message: userMessage,
+          model: 'gemini-2.5-flash',
           temperature: 0.7,
           maxTokens: 2048,
         }),
@@ -148,10 +148,10 @@ const AIBot: React.FC = () => {
             </CardTitle>
             <Badge
               variant="secondary"
-              className="bg-white/20 text-white border-white/30"
+              className="bg-green-500/20 text-green-700 border-green-500/30"
             >
               <Sparkles className="w-3 h-3 mr-1" />
-              Gemini 2.5
+              Free Mode
             </Badge>
           </div>
           <div className="flex gap-1">

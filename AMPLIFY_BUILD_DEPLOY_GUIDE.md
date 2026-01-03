@@ -53,6 +53,9 @@ pnpm add -g @aws-amplify/cli
 ```bash
 aws configure
 # Enter your AWS Access Key ID, Secret Access Key, default region (eu-central-1), and output format
+
+# Verify configuration
+aws sts get-caller-identity
 ```
 
 ### **3. Initialize Amplify in Your Project**

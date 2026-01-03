@@ -2,10 +2,10 @@ import '@aws-amplify/ui-react/styles.css';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import AmplifyInitializer from '../components/AmplifyInitializer';
+import CustomNavigation from '../components/CustomNavigation';
 import DevConsoleFilter from '../components/DevConsoleFilter';
 import DevListenerPatch from '../components/DevListenerPatch';
 import InstallPrompt from '../components/InstallPrompt';
-import Navigation from '../components/Navigation';
 import ToolbarMountController from '../components/ToolbarMountController';
 import '../globals.css';
 import '../lib/amplify-client-config'; // Configure Amplify early
@@ -24,9 +24,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Themistoklis Baltzakis - Systems and Network Engineer',
+  title: 'Themistoklis Baltzakis - ML/LLM Engineer',
   description:
-    'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
+    'ML/LLM Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
   authors: [{ name: 'Themistoklis Baltzakis' }],
   creator: 'Themistoklis Baltzakis',
   publisher: 'Themistoklis Baltzakis',
@@ -41,9 +41,9 @@ export const metadata: Metadata = {
     apple: '/cloudless-favicon.ico',
   },
   openGraph: {
-    title: 'Themistoklis Baltzakis - Systems and Network Engineer',
+    title: 'Themistoklis Baltzakis - ML/LLM Engineer',
     description:
-      'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
+      'ML/LLM Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
     url: 'https://your-portfolio-domain.com',
     siteName: 'Themistoklis Baltzakis Portfolio',
     locale: 'en_US',
@@ -51,9 +51,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Themistoklis Baltzakis - Systems and Network Engineer',
+    title: 'Themistoklis Baltzakis - ML/LLM Engineer',
     description:
-      'Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
+      'ML/LLM Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
     creator: '@your-twitter-handle', // Replace with your Twitter handle
   },
   robots: {
@@ -94,37 +94,38 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Themistoklis Baltzakis",
-              "jobTitle": "Systems and Network Engineer",
-              "description": "Systems and Network Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.",
-              "url": "https://baltzakisthemis.com",
-              "sameAs": [
-                "https://github.com/Themis128",
-                "https://www.linkedin.com/in/baltzakis-themis"
+              '@context': 'https://schema.org',
+              '@type': 'Person',
+              name: 'Themistoklis Baltzakis',
+              jobTitle: 'ML/LLM Engineer',
+              description:
+                'ML/LLM Engineer with over 15 years of experience in IT support, cloud solutions, and Cisco infrastructure management.',
+              url: 'https://baltzakisthemis.com',
+              sameAs: [
+                'https://github.com/Themis128',
+                'https://www.linkedin.com/in/baltzakis-themis',
               ],
-              "knowsAbout": [
-                "Network Engineering",
-                "Cloud Computing",
-                "Cisco Systems",
-                "Azure Active Directory",
-                "Microsoft 365",
-                "AWS Cloud",
-                "Data Analytics",
-                "Python",
-                "TypeScript",
-                "Next.js"
+              knowsAbout: [
+                'Network Engineering',
+                'Cloud Computing',
+                'Cisco Systems',
+                'Azure Active Directory',
+                'Microsoft 365',
+                'AWS Cloud',
+                'Data Analytics',
+                'Python',
+                'TypeScript',
+                'Next.js',
               ],
-              "hasOccupation": {
-                "@type": "Occupation",
-                "name": "Systems and Network Engineer",
-                "occupationLocation": {
-                  "@type": "Country",
-                  "name": "Greece"
-                }
-              }
-            })
+              hasOccupation: {
+                '@type': 'Occupation',
+                name: 'ML/LLM Engineer',
+                occupationLocation: {
+                  '@type': 'Country',
+                  name: 'Greece',
+                },
+              },
+            }),
           }}
         />
 
@@ -225,7 +226,7 @@ export default function RootLayout({
             className="site-tech-overlay pointer-events-none fixed inset-0 z-0"
             aria-hidden="true"
           />
-          <Navigation />
+          <CustomNavigation />
           {children}
           <InstallPrompt />
         </ThemeProvider>

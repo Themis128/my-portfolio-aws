@@ -24,7 +24,6 @@ jest.mock('framer-motion', () => ({
     children,
   }: {
     children: React.ReactNode;
-    mode?: string;
   }) => <>{children}</>,
 }));
 

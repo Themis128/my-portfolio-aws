@@ -1,9 +1,9 @@
 import { expect, Page, test } from '@playwright/test';
 
 // Test configuration for live production website
-// TODO: Update to custom domain once DNS is configured
 const PRODUCTION_URLS = [
-  'http://localhost:3000'
+  'https://baltzakisthemis.com',
+  'https://www.baltzakisthemis.com'
 ];
 
 // GraphQL API configuration

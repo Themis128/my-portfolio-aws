@@ -1,4 +1,4 @@
-# AWS Amplify Services Documentation
+lvd# AWS Amplify Services Documentation
 
 This document outlines all AWS services required to deploy and operate your portfolio application using the AWS Amplify framework.
 
@@ -240,11 +240,22 @@ generateProjectIdea: a.generation({
 ### **Service**: Amazon Route 53
 **Purpose**: DNS management and domain routing
 **Configuration**:
-- **Hosted Zone**: cloudless.gr
+- **Hosted Zone**: baltzakisthemis.com
 - **Record Types**:
-  - A/AAAA records pointing to CloudFront
-  - CNAME records for subdomains
-  - TXT records for verification
+  - A record (alias) for root domain pointing to CloudFront
+  - CNAME record for www subdomain pointing to CloudFront
+  - TXT records for domain verification
+  - CNAME records for SSL certificate validation
+
+**Current DNS Configuration**:
+```
+baltzakisthemis.com.    A    d3uho3sh727e9v.cloudfront.net (alias)
+www.baltzakisthemis.com. CNAME d3uho3sh727e9v.cloudfront.net
+```
+
+**Domain Association Status**: AWAITING_APP_CNAME (in progress)
+**Amplify App ID**: dcwmv1pw85f0j
+**Default Domain**: dcwmv1pw85f0j.amplifyapp.com
 
 ---
 
@@ -342,6 +353,35 @@ generateProjectIdea: a.generation({
 - **API Errors**: Review CloudWatch Logs for Lambda functions
 - **Authentication Issues**: Check Cognito User Pool configuration
 - **Performance Issues**: Monitor CloudWatch metrics and optimize Lambda functions
+- **Domain Issues**: Check SSL certificate status and DNS records
+  - Verify domain association status in Amplify Console
+  - Check Route 53 DNS records point to correct CloudFront distribution
+  - Ensure SSL certificate is properly configured in ACM
+
+### **Domain Configuration Issues**
+- **404 Errors on Custom Domain**: 
+  - Verify DNS records are correctly configured in Route 53
+  - Check domain association status in Amplify Console
+  - Ensure SSL certificate is valid and not expired
+
+- **SSL Certificate Issues**:
+  - Check certificate status in AWS Certificate Manager
+  - Verify domain ownership verification records
+  - Ensure certificate covers all domain variations (www, root domain)
+
+- **DNS Propagation Issues**:
+  - Allow time for DNS changes to propagate (up to 48 hours)
+  - Verify DNS records using `nslookup` or `dig`
+  - Check for conflicting DNS records
+
+### **Current Domain Status**
+- **Domain**: baltzakisthemis.com
+- **Amplify App ID**: dcwmv1pw85f0j
+- **CloudFront Distribution**: d3uho3sh727e9v.cloudfront.net
+- **Domain Association Status**: AWAITING_APP_CNAME (in progress)
+- **DNS Records**: 
+  - A record (alias) for root domain → d3uho3sh727e9v.cloudfront.net
+  - CNAME record for www subdomain → d3uho3sh727e9v.cloudfront.net
 
 ---
 

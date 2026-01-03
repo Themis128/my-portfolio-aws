@@ -1,9 +1,5 @@
 import * as Sentry from '@sentry/nextjs';
 
-// This file configures the Sentry SDK for the client-side.
-// The config you add here will be used whenever the Sentry SDK is loaded in the browser.
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/
-
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 
@@ -34,3 +30,5 @@ Sentry.init({
     }),
   ],
 });
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

@@ -38,7 +38,8 @@ export const handler = async (event: {
       ],
     };
 
-    const response = await fetch(slackWebhookUrl, {
+    // Use Node.js built-in fetch (available in Node 18+)
+    const response = await globalThis.fetch(slackWebhookUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

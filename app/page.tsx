@@ -17,7 +17,7 @@ export default function Home() {
   const personalData = getPersonalDataServer();
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-white dark:bg-gray-900 pt-16">
       <div id="hero-anchor"></div>
       <ModernHero data={personalData} />
       <About data={personalData} />

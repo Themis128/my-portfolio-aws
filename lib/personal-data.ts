@@ -90,8 +90,8 @@ export interface Company {
 export function getPersonalDataServer(): PersonalData {
   return {
     name: "Themistoklis Baltzakis",
-    title: "BCs Computer Science - MSc Data Analytics",
-    bio: "Experienced IT professional and data analytics expert with a strong foundation in computer science, cloud computing, and software development. Passionate about leveraging cutting-edge technologies including AI/ML, full-stack development, and infrastructure automation to solve complex problems and drive innovation. Active researcher in data analytics methodologies and VS Code extension development.",
+    title: "ML/LLM Engineer - BCs Computer Science - MSc Data Analytics",
+    bio: "Experienced ML/LLM Engineer and data analytics expert with a strong foundation in computer science, cloud computing, and software development. Passionate about leveraging cutting-edge technologies including AI/ML, full-stack development, and infrastructure automation to solve complex problems and drive innovation. Active researcher in data analytics methodologies and VS Code extension development.",
     email: "tbaltzakis@cloudless.gr",
     location: "Greece",
     phone: "+30 6977777838",
@@ -428,12 +428,13 @@ export function getPersonalDataServer(): PersonalData {
     ],
     company: {
       name: "Themis Baltzakis",
-      tagline: "Data Analytics & Cloud Computing Professional",
-      description: "Experienced IT professional specializing in data analytics, cloud computing, network infrastructure, and software development. Expert in AI/ML applications, full-stack web development, infrastructure automation, and VS Code extension development. Passionate about leveraging technology to solve complex problems and drive innovation in the digital landscape.",
+      tagline: "ML/LLM Engineer & Data Analytics Professional",
+      description: "Experienced ML/LLM Engineer specializing in data analytics, cloud computing, network infrastructure, and software development. Expert in AI/ML applications, full-stack web development, infrastructure automation, and VS Code extension development. Passionate about leveraging technology to solve complex problems and drive innovation in the digital landscape.",
       founded: "2000",
       location: "Greece",
       website: "https://www.baltzakisthemis.com",
       focus: [
+        "ML/LLM Engineering",
         "Data Analytics",
         "Cloud Computing",
         "Network Engineering",
@@ -446,6 +447,7 @@ export function getPersonalDataServer(): PersonalData {
         "Research & Innovation"
       ],
       services: [
+        "ML/LLM Model Development",
         "Data Analysis & Visualization",
         "Cloud Infrastructure Design",
         "Network Troubleshooting",

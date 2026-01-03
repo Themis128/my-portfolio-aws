@@ -290,175 +290,109 @@ test.describe('MCP Server - File Operations', () => {
   });
 });
 
-// Contact GraphQL Tests
-test.describe('Contact GraphQL - Form Submissions', () => {
-  const GRAPHQL_ENDPOINT = 'https://ggbslhgtjbgkzcnbm7kfq3z6ku.appsync-api.eu-central-1.amazonaws.com/graphql';
-  const API_KEY = 'da2-ht5uhvqma5fcnnxemn47mnbhya';
+// Contact API Tests
+test.describe('Contact API - Form Submissions', () => {
+  const API_ENDPOINT = 'http://localhost:3000/api/contact/';
 
   test('should submit contact form successfully', async ({ request }) => {
-    const query = `
-      mutation SendContact($name: String!, $email: String!, $message: String!) {
-        sendContact(name: $name, email: $email, message: $message)
-      }
-    `;
-
-    const response = await request.post(GRAPHQL_ENDPOINT, {
+    const response = await request.post(API_ENDPOINT, {
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY
+        'Content-Type': 'application/json'
       },
       data: {
-        query,
-        variables: {
-          name: 'Test User',
-          email: 'test@example.com',
-          message: 'This is a test message from Playwright automated testing.'
-        }
+        name: 'Test User',
+        email: 'test@example.com',
+        message: 'This is a test message from Playwright automated testing.'
       }
     });
 
     expect(response.ok()).toBe(true);
 
     const result = await response.json();
-    expect(result).toHaveProperty('data');
-
-    // Check if sendContact succeeded or failed due to backend deployment
-    if (result.data && result.data.sendContact !== null) {
-      // If the backend is deployed and working
-      expect(typeof result.data.sendContact).toBe('string');
-      expect(result.data.sendContact).toContain('success');
-    } else if (result.errors && result.errors.length > 0) {
-      // If the backend function is not deployed, expect the specific error
-      expect(result.errors[0].message).toContain('Function not found');
-      console.log('sendContact function not deployed - skipping success assertion');
-    } else {
-      // Unexpected case
-      throw new Error('Unexpected response from sendContact mutation');
-    }
+    expect(result).toHaveProperty('success', true);
+    expect(result).toHaveProperty('message');
+    expect(result.message).toContain('success');
   });
 
   test('should validate required fields', async ({ request }) => {
-    const query = `
-      mutation SendContact($name: String!, $email: String!, $message: String!) {
-        sendContact(name: $name, email: $email, message: $message)
-      }
-    `;
-
-    const response = await request.post(GRAPHQL_ENDPOINT, {
+    const response = await request.post(API_ENDPOINT, {
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY
+        'Content-Type': 'application/json'
       },
       data: {
-        query,
-        variables: {
-          name: 'Test User'
-          // Missing email and message
-        }
+        name: 'Test User'
+        // Missing email and message
       }
     });
 
-    expect(response.ok()).toBe(true); // GraphQL returns 200 even for validation errors
+    expect(response.status()).toBe(400);
 
     const result = await response.json();
-    expect(result).toHaveProperty('errors');
-    expect(Array.isArray(result.errors)).toBe(true);
-    expect(result.errors[0]).toHaveProperty('message');
+    expect(result).toHaveProperty('error');
+    expect(result.error).toContain('required');
   });
 
   test('should validate name field', async ({ request }) => {
-    const query = `
-      mutation SendContact($name: String!, $email: String!, $message: String!) {
-        sendContact(name: $name, email: $email, message: $message)
-      }
-    `;
-
-    const response = await request.post(GRAPHQL_ENDPOINT, {
+    const response = await request.post(API_ENDPOINT, {
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY
+        'Content-Type': 'application/json'
       },
       data: {
-        query,
-        variables: {
-          name: '', // Empty name
-          email: 'test@example.com',
-          message: 'Test message'
-        }
+        name: '', // Empty name
+        email: 'test@example.com',
+        message: 'Test message'
       }
     });
 
-    expect(response.ok()).toBe(true);
+    expect(response.status()).toBe(400);
 
     const result = await response.json();
-    // GraphQL validation might handle empty strings differently
-    expect(result).toHaveProperty('data');
-    expect(result.data).toHaveProperty('sendContact');
+    expect(result).toHaveProperty('error');
+    expect(result.error).toContain('required');
   });
 
   test('should validate email field', async ({ request }) => {
-    const query = `
-      mutation SendContact($name: String!, $email: String!, $message: String!) {
-        sendContact(name: $name, email: $email, message: $message)
-      }
-    `;
-
-    const response = await request.post(GRAPHQL_ENDPOINT, {
+    const response = await request.post(API_ENDPOINT, {
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY
+        'Content-Type': 'application/json'
       },
       data: {
-        query,
-        variables: {
-          name: 'Test User',
-          email: '', // Empty email
-          message: 'Test message'
-        }
+        name: 'Test User',
+        email: '', // Empty email
+        message: 'Test message'
       }
     });
 
-    expect(response.ok()).toBe(true);
+    expect(response.status()).toBe(400);
 
     const result = await response.json();
-    expect(result).toHaveProperty('data');
-    expect(result.data).toHaveProperty('sendContact');
+    expect(result).toHaveProperty('error');
+    expect(result.error).toContain('required');
   });
 
   test('should validate message field', async ({ request }) => {
-    const query = `
-      mutation SendContact($name: String!, $email: String!, $message: String!) {
-        sendContact(name: $name, email: $email, message: $message)
-      }
-    `;
-
-    const response = await request.post(GRAPHQL_ENDPOINT, {
+    const response = await request.post(API_ENDPOINT, {
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY
+        'Content-Type': 'application/json'
       },
       data: {
-        query,
-        variables: {
-          name: 'Test User',
-          email: 'test@example.com',
-          message: '' // Empty message
-        }
+        name: 'Test User',
+        email: 'test@example.com',
+        message: '' // Empty message
       }
     });
 
-    expect(response.ok()).toBe(true);
+    expect(response.status()).toBe(400);
 
     const result = await response.json();
-    expect(result).toHaveProperty('data');
-    expect(result.data).toHaveProperty('sendContact');
+    expect(result).toHaveProperty('error');
+    expect(result.error).toContain('required');
   });
 
   test('should handle malformed JSON', async ({ request }) => {
-    const response = await request.post(GRAPHQL_ENDPOINT, {
+    const response = await request.post(API_ENDPOINT, {
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY
+        'Content-Type': 'application/json'
       },
       data: 'invalid json'
     });
@@ -468,32 +402,26 @@ test.describe('Contact GraphQL - Form Submissions', () => {
 
   test('should handle server errors gracefully', async ({ request }) => {
     // Test with invalid data that might cause server errors
-    const query = `
-      mutation SendContact($name: String!, $email: String!, $message: String!) {
-        sendContact(name: $name, email: $email, message: $message)
-      }
-    `;
-
-    const response = await request.post(GRAPHQL_ENDPOINT, {
+    const response = await request.post(API_ENDPOINT, {
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': API_KEY
+        'Content-Type': 'application/json'
       },
       data: {
-        query,
-        variables: {
-          name: 'Test User',
-          email: 'invalid-email-format', // This might cause issues
-          message: 'Test message'
-        }
+        name: 'Test User',
+        email: 'invalid-email-format', // This might cause issues
+        message: 'Test message'
       }
     });
 
     // Should still return a proper response
-    expect([200, 400, 500]).toContain(response.status());
+    expect([200, 400]).toContain(response.status());
 
     const result = await response.json();
-    expect(result).toHaveProperty('data');
+    if (response.status() === 400) {
+      expect(result).toHaveProperty('error');
+    } else {
+      expect(result).toHaveProperty('success', true);
+    }
   });
 });
 

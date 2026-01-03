@@ -16,6 +16,9 @@
     "test:ci": "jest --ci --coverage --watchAll=false",
     "test:scheduled": "node scripts/test-scheduled-functions.js",
     "monitor-costs": "node scripts/monitor-costs.js",
+    "setup-monitoring": "node scripts/setup-monitoring.js",
+    "monitor-deployment": "node scripts/monitor-deployment.js",
+    "verify-deployment": "node scripts/verify-deployment.js",
     "deploy:amplify": "node deploy-amplify.js",
     "deploy:amplify:simple": "node deploy-amplify-simple.js"
   },

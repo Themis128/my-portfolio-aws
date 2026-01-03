@@ -1,10 +1,9 @@
 // import { env } from '$amplify/env/say-hello';
 import { getAmplifyDataClientConfig } from '@aws-amplify/backend/function/runtime';
 import { Amplify } from 'aws-amplify';
-// @ts-ignore - Provided by Lambda layer
-import { Logger } from "@aws-lambda-powertools/logger";
+// import { Logger } from "@aws-lambda-powertools/logger";
 
-const logger = new Logger({ serviceName: "portfolio-say-hello" });
+// const logger = new Logger({ serviceName: "portfolio-say-hello" });
 
 export const handler = async (event: { arguments?: { name?: string } }) => {
   // Configure Amplify client library for use within the function
@@ -15,7 +14,7 @@ export const handler = async (event: { arguments?: { name?: string } }) => {
   // arguments typed from the schema
   const { name } = event.arguments || {};
 
-  logger.info("Processing say hello request", { name });
+  console.log("Processing say hello request", { name });
 
   // Use environment variables and secrets
   const greeting = `Hello, ${name || process.env.NAME || 'World'}!`;
@@ -24,7 +23,7 @@ export const handler = async (event: { arguments?: { name?: string } }) => {
   const hasApiKey = process.env.API_KEY ? 'with API key' : 'without API key';
   const apiEndpoint = process.env.API_ENDPOINT || 'no endpoint configured';
 
-  logger.info("Generated greeting", { greeting, hasApiKey, apiEndpoint });
+  console.log("Generated greeting", { greeting, hasApiKey, apiEndpoint });
 
   // Example: If this function needed to query other Amplify resources,
   // it could now use the configured Amplify client
@@ -42,7 +41,7 @@ export const handler = async (event: { arguments?: { name?: string } }) => {
     }
   };
 
-  logger.info("Returning response", { response });
+  console.log("Returning response", { response });
 
   return response;
 };

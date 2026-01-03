@@ -1,2 +1,0 @@
-# Deployment trigger - Fri Jan  2 03:14:25 EET 2026
-# Force deployment trigger - Fri Jan  2 03:23:04 EET 2026
