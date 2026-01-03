@@ -3,7 +3,9 @@ backend:
   phases:
     preBuild:
       commands:
+        - echo "Node: $(node -v) NPM: $(npm -v)"
         - cd amplify && npm ci
+        - cd amplify && npx tsc --noEmit
         - cd amplify && npm run build
     build:
       commands:
