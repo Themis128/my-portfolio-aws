@@ -43,3 +43,5 @@ const backend = defineBackend({
   weeklyDigest,
   dailyReminder,
 });
+
+export { backend };
