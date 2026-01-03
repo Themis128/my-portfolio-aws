@@ -44,4 +44,5 @@ const backend = defineBackend({
   dailyReminder,
 });
 
+export default backend;
 export { backend };
