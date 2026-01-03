@@ -7,9 +7,7 @@ backend:
         - npm config set fund false
         - npm config set audit false
         - npm config set legacy-peer-deps true
-        - cd amplify && npm ci
-        - cd amplify && npx tsc --noEmit
-        - cd amplify && npm run build
+        - cd amplify && npm ci && npx tsc --noEmit && npm run build
     build:
       commands:
         - npx @aws-amplify/backend-cli pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
