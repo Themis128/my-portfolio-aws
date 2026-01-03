@@ -9,7 +9,7 @@ frontend:
       commands:
         - pnpm run build
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
@@ -17,9 +17,3 @@ frontend:
       - node_modules/**/*
       - .next/cache/**/*
       - pnpm-lock.yaml
-  # Redirects for SPA routing
-  redirects:
-    - source: '<*>'
-      target: '/index.html'
-      status: '200'
-      condition: null
