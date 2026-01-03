@@ -1,0 +1,38 @@
+2026-01-03T12:17:55.153Z [INFO]: # Build environment configured with XLarge build compute type: 72GiB Memory, 36vCPUs, 256GB Disk Space
+2026-01-03T12:17:55.832Z [INFO]: # Cloning repository: git@github.com:Themis128/my-portfolio-aws.git
+2026-01-03T12:18:00.535Z [INFO]: 
+2026-01-03T12:18:00.617Z [INFO]: Cloning into 'my-portfolio-aws'...
+2026-01-03T12:18:00.617Z [INFO]: # Switching to commit: 203a4dbdcb6676c9ffac1b3556a515e57b4b5be7
+2026-01-03T12:18:01.043Z [INFO]: Note: switching to '203a4dbdcb6676c9ffac1b3556a515e57b4b5be7'.
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+                                 changes and commit them, and you can discard any commits you make in this
+                                 state without impacting any branches by switching back to a branch.
+                                 If you want to create a new branch to retain commits you create, you may
+                                 do so (now or later) by using -c with the switch command. Example:
+                                 git switch -c <new-branch-name>
+                                 Or undo this operation with:
+                                 git switch -
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+                                 HEAD is now at 203a4db 🔧 Fix: Add TypeScript compilation and pin peer dependencies for CI robustness
+2026-01-03T12:18:01.094Z [INFO]: Successfully cleaned up Git credentials
+2026-01-03T12:18:01.094Z [INFO]: # Checking for Git submodules at: /codebuild/output/src151750080/src/my-portfolio-aws/.gitmodules
+2026-01-03T12:18:01.102Z [INFO]: # Retrieving environment cache...
+2026-01-03T12:18:01.171Z [INFO]: # Retrieved environment cache
+2026-01-03T12:18:01.171Z [INFO]: ---- Setting Up SSM Secrets ----
+2026-01-03T12:18:01.171Z [INFO]: SSM params {"Path":"/amplify/dcwmv1pw85f0j/master/","WithDecryption":true}
+2026-01-03T12:18:01.930Z [INFO]: # No package override configuration found.
+2026-01-03T12:18:01.935Z [INFO]: # Retrieving cache...
+2026-01-03T12:18:01.979Z [INFO]: # Retrieved cache
+2026-01-03T12:18:06.701Z [INFO]: ## Starting Backend Build
+                                 # Starting phase: preBuild
+                                 # Executing command: cd amplify && npm install
+2026-01-03T12:18:22.883Z [WARNING]: npm error code EINVALIDPACKAGENAME
+2026-01-03T12:18:22.892Z [WARNING]: npm error Invalid package name "@aws-amplify/plugin-types/" of package "@aws-amplify/plugin-types/@aws-sdk/types": name can only contain URL-friendly characters.
+                                    npm error A complete log of this run can be found in: /root/.npm/_logs/2026-01-03T12_18_10_803Z-debug-0.log
+2026-01-03T12:18:22.988Z [ERROR]: !!! Build failed
+2026-01-03T12:18:22.989Z [ERROR]: !!! Error: Command failed with exit code 1
+2026-01-03T12:18:22.989Z [INFO]: # Starting environment caching...
+2026-01-03T12:18:22.989Z [INFO]: # Uploading environment cache artifact...
+2026-01-03T12:18:23.054Z [INFO]: # Uploaded environment cache artifact
+2026-01-03T12:18:23.054Z [INFO]: # Environment caching completed
+

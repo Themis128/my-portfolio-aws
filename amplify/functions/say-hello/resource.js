@@ -7,7 +7,6 @@ import { defineFunction, secret } from '@aws-amplify/backend';
  * - Environment variables and secrets management
  * - Node.js runtime specification
  * - Resource grouping
- * - Lambda layers for dependency management
  */
 export const sayHello = defineFunction({
     // Function name (defaults to directory name 'say-hello')
@@ -27,10 +26,6 @@ export const sayHello = defineFunction({
         NAME: 'World',
         API_ENDPOINT: process.env.API_ENDPOINT || 'https://api.example.com',
         API_KEY: secret('MY_API_KEY')
-    },
-    // Lambda layers for shared dependencies
-    layers: {
-        "@aws-lambda-powertools/logger": "arn:aws:lambda:eu-central-1:094274105915:layer:AWSLambdaPowertoolsTypeScriptV2:12",
     },
     // Resource group name (default: 'function')
     resourceGroupName: 'function'

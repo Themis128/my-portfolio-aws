@@ -4,6 +4,9 @@ backend:
     preBuild:
       commands:
         - 'echo "Node: $(node -v) NPM: $(npm -v)"'
+        - npm config set fund false
+        - npm config set audit false
+        - npm config set legacy-peer-deps true
         - cd amplify && npm ci
         - cd amplify && npx tsc --noEmit
         - cd amplify && npm run build
