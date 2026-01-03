@@ -314,7 +314,7 @@ export default function FreeServicesHub() {
             <Text>{data.description}</Text>
             <Text fontWeight="bold" className="mt-3">Technologies:</Text>
             <View as="ul" className="mt-2">
-              {data.technologies?.filter((tech): tech is string => tech !== null).map((tech: string) => (
+              {data.technologies?.filter((tech: string | null): tech is string => tech !== null).map((tech: string) => (
                 <View as="li" key={tech} className="ml-4">• {tech}</View>
               ))}
             </View>

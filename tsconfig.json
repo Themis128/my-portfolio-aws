@@ -68,6 +68,7 @@
     "test-results/**",
     "playwright-report/**",
     "mcp-servers/**",
+    "gen2-comparison-fresh/**",
     "$amplify/**"
   ]
 }
