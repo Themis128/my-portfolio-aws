@@ -2,8 +2,8 @@ import { withSentryConfig } from '@sentry/nextjs';
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Enable static export for Amplify hosting compatibility
-  output: 'export', // Required for Amplify - image optimization works with static export
+  // SSR mode for Amplify Gen 2 full-stack deployment
+  // Note: Remove 'output: export' to enable SSR with backend integration
   trailingSlash: true,
   reactStrictMode: true,
   // AWS Amplify specific optimizations
@@ -111,15 +111,13 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Enhanced image optimization for performance and cost efficiency
+  // Enhanced image optimization for SSR mode
   images: {
-    unoptimized: false, // Keep optimized for better performance
     formats: ['image/webp', 'image/avif'], // Modern formats for smaller file sizes
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840], // Responsive breakpoints
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Component sizes
     minimumCacheTTL: 86400, // 24 hours cache for optimized images
     dangerouslyAllowSVG: false, // Security: disable SVG optimization
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;", // Additional CSP for images
     remotePatterns: [
       {
         protocol: 'https',
