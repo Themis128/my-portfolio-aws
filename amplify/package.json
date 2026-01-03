@@ -17,8 +17,12 @@
     "constructs": "^10.4.2"
   },
   "devDependencies": {
+    "@aws-sdk/types": "^3.734.0",
     "@types/aws-lambda": "^8.10.147",
     "@types/node": "^22.15.21",
     "typescript": "^5.8.3"
+  },
+  "overrides": {
+    "@aws-amplify/plugin-types/@aws-sdk/types": "^3.734.0"
   }
 }
